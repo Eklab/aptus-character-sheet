@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <windowclass name="aptus_skill_editor_row">
+
+        <script file="scripts/char_skill_editor_row_aptus.lua" />
+
+        <margins control="0,0,0,10" />
+
+       <sheetdata>
+
+            <!-- Marco -->
+            <genericcontrol name="skill_frame">
+                <bounds>0,0,595,110</bounds>
+                <frame name="groupbox" />
+            </genericcontrol>
+
+            <!-- Eliminar habilidad -->
+            <buttoncontrol name="delete_skill">
+                <bounds>565,8,16,16</bounds>
+                <icon normal="aptus_close" pressed="aptus_close" />
+                <tooltip text="Eliminar habilidad" />
+                <script>
+                    function onButtonPress()
+                        window.deleteSkill();
+                    end
+                </script>
+            </buttoncontrol>
+
+            <!-- FILA SUPERIOR: ETIQUETAS -->
+
+            <stringcontrol name="label_name">
+                <bounds>20,8,270,20</bounds>
+                <font>sheetlabel</font>
+                <static text="Habilidad" />
+            </stringcontrol>
+
+            <stringcontrol name="label_attribute">
+                <bounds>315,8,85,20</bounds>
+                <font>sheetlabel</font>
+                <static text="Atri" />
+            </stringcontrol>
+
+            <stringcontrol name="label_level">
+                <bounds>420,8,65,20</bounds>
+                <font>sheetlabel</font>
+                <static text="Nivel" />
+            </stringcontrol>
+
+            <stringcontrol name="label_roll">
+                <bounds>515,8,45,20</bounds>
+                <font>sheetlabel</font>
+                <static text="Tirada" />
+            </stringcontrol>
+
+            <!-- FILA SUPERIOR: VALORES -->
+
+            <stringfield name="name">
+                <bounds>20,28,270,35</bounds>
+                <frame name="fielddark" offset="9,0,5,0" />
+            </stringfield>
+
+            <stringfield name="attribute">
+                <bounds>305,28,85,35</bounds>
+                <frame name="fielddark" offset="9,0,5,0"/>
+            </stringfield>
+
+            <numberfield name="level">
+                <bounds>410,28,65,35</bounds>
+                <frame name="fielddark" />
+            </numberfield>
+
+            <!-- Reserva de dados -->
+            <stringcontrol name="roll_reserve">
+                <bounds>503,28,22,35</bounds>
+                <center />
+                <static />
+            </stringcontrol>
+
+            <!-- Separador Play -->
+            <genericcontrol name="roll_separator">
+                <bounds>525,39,14,14</bounds>
+                <icon>aptus_play</icon>
+                <invisible />
+            </genericcontrol>
+
+            <!-- Dados recogidos -->
+            <stringcontrol name="roll_collect">
+                <bounds>540,28,22,35</bounds>
+                <center />
+                <static />
+            </stringcontrol>
+
+            <!-- Dado ROTO -->
+            <genericcontrol name="roll_roto">
+                <bounds>525,35,21,21</bounds>
+                <icon>aptus_roto</icon>
+                <invisible />
+            </genericcontrol>
+
+            <!-- FILA INFERIOR: ETIQUETAS -->
+
+            <stringcontrol name="label_id">
+                <bounds>20,60,270,20</bounds>
+                <font>sheetlabel</font>
+                <static text="ID" />
+            </stringcontrol>
+
+            <stringcontrol name="label_special">
+                <bounds>315,60,85,20</bounds>
+                <font>sheetlabel</font>
+                <static text="Especial" />
+            </stringcontrol>
+
+            <stringcontrol name="label_pack">
+                <bounds>420,60,65,20</bounds>
+                <font>sheetlabel</font>
+                <static text="Inicial" />
+            </stringcontrol>
+
+            <stringcontrol name="label_profession">
+                <bounds>515,60,65,20</bounds>
+                <font>sheetlabel</font>
+                <static text="Profesión" />
+            </stringcontrol>
+
+            <!-- FILA INFERIOR: VALORES -->
+
+            <stringfield name="id">
+                <bounds>20,78,270,22</bounds>
+                <readonly />
+            </stringfield>
+
+            <button_checkbox name="special">
+                <bounds>330,80,20,20</bounds>
+            </button_checkbox>
+
+            <button_checkbox name="pack">
+                <bounds>428,80,20,20</bounds>
+                <source>progression.pack</source>
+            </button_checkbox>
+
+            <button_checkbox name="profession">
+                <bounds>535,80,20,20</bounds>
+                <source>progression.profession</source>
+            </button_checkbox>
+
+        </sheetdata>
+    </windowclass>
+</root>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+
+    <windowclass name="aptus_weapon">
+        <frame>recordsheet</frame>
+
+        <placement>
+            <size width="500" height="400" />
+        </placement>
+
+        <sheetdata>
+
+            <!-- Cerrar -->
+            <buttoncontrol name="close_weapon">
+                <bounds>450,10,35,35</bounds>
+                <icon normal="aptus_close" pressed="aptus_close" />
+
+                <script>
+                    function onButtonPress()
+                        window.close()
+                    end
+                </script>
+            </buttoncontrol>
+
+            <!-- Nombre -->
+            <stringcontrol name="label_name">
+                <bounds>20,20,100,25</bounds>
+                <static text="Nombre" />
+            </stringcontrol>
+
+            <stringfield name="name">
+                <bounds>130,20,340,25</bounds>
+                <frame name="fieldlight" offset="5,5,5,5" />
+            </stringfield>
+
+            <!-- SELECTOR DE HABILIDAD -->
+
+            <stringcontrol name="label_attack">
+                <bounds>20,65,80,25</bounds>
+                <static text="Ataque" />
+            </stringcontrol>
+
+            <!-- ID DE LA HABILIDAD -->
+            <stringfield name="attack_skill_id">
+                <bounds>110,65,150,25</bounds>
+                <invisible />
+            </stringfield>
+
+            <!-- SELECTOR -->
+            <button_stringcycler name="attack_skill_selector">
+                <bounds>110,65,150,25</bounds>
+
+                <parameters>
+                    <defaultlabel>Seleccionar...</defaultlabel>
+                    <labels>Pelea|Puntería</labels>
+                    <values>pelea|punteria</values>
+                </parameters>
+
+                <script>
+                    function onValueChanged()
+                        local sSkillId = getStringValue()
+
+                        DB.setValue(
+                            window.getDatabaseNode(),
+                            "attack_skill_id",
+                            "string",
+                            sSkillId
+                        )
+                    end
+                </script>
+            </button_stringcycler>
+
+            <!-- Alcance -->
+            <stringcontrol name="label_range">
+                <bounds>20,110,100,25</bounds>
+                <static text="Alcance" />
+            </stringcontrol>
+
+            <stringfield name="range">
+                <bounds>130,110,150,25</bounds>
+                <frame name="fieldlight" offset="5,5,5,5" />
+            </stringfield>
+
+            <!-- DAÑO -->
+            <stringcontrol name="label_damage">
+                <bounds>20,155,100,25</bounds>
+                <static text="Daño" />
+            </stringcontrol>
+
+            <stringfield name="damage_dice">
+                <bounds>130,155,100,25</bounds>
+                <frame name="fieldlight" offset="5,5,5,5" />
+            </stringfield>
+
+            <!-- TIPO DE DAÑO -->
+            <stringcontrol name="label_damage_type">
+                <bounds>250,155,100,25</bounds>
+                <static text="Tipo" />
+            </stringcontrol>
+
+            <button_stringcycler name="damage_type_selector">
+                <bounds>350,155,120,25</bounds>
+
+                <parameters>
+                    <defaultlabel>CON</defaultlabel>
+                    <labels>CON|PER|COR</labels>
+                    <values>CON|PER|COR</values>
+                </parameters>
+            </button_stringcycler>
+
+            <!-- CRÍTICO -->
+            <stringcontrol name="label_critical">
+                <bounds>20,200,100,25</bounds>
+                <static text="Crítico" />
+            </stringcontrol>
+
+            <stringfield name="critical_dice">
+                <bounds>130,200,150,25</bounds>
+                <frame name="fieldlight" offset="5,5,5,5" />
+            </stringfield>
+
+            <!-- Especial -->
+            <stringcontrol name="label_special">
+                <bounds>20,245,100,25</bounds>
+                <static text="Especial" />
+            </stringcontrol>
+
+            <stringfield name="special">
+                <bounds>130,245,340,25</bounds>
+                <frame name="fieldlight" offset="5,5,5,5" />
+            </stringfield>
+
+        </sheetdata>
+    </windowclass>
+
+</root>

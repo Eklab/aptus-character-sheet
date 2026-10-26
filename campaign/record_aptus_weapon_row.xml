@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <windowclass name="aptus_weapon_row">
+
+        <script file="scripts/char_weapon_row_aptus.lua" />
+
+        <margins control="0,0,0,2" />
+
+        <sheetdata>
+
+            <!-- ELIMINAR ARMA DEL PERSONAJE -->
+            <buttoncontrol name="delete_weapon">
+                <bounds>0,0,20,20</bounds>
+
+                <icon normal="button_delete" pressed="button_delete" />
+                <tooltip text="Quitar arma del personaje" />
+
+                <script>
+                    function onInit()
+                        setVisible(Session.IsHost)
+                    end
+
+                    function onButtonPress()
+                        if Session.IsHost then
+                            window.deleteWeapon()
+                        end
+                    end
+                </script>
+            </buttoncontrol>
+
+            <!-- NOMBRE -->
+            <stringfield name="name">
+                <bounds>10,0,115,25</bounds>
+                <readonly />
+            </stringfield>
+
+            <!-- CTA ATAQUE -->
+            <buttoncontrol name="attack_button">
+                <bounds>80,0,25,25</bounds>
+                <icon normal="aptus_roll" pressed="aptus_roll" />
+
+                <script>
+                    function onButtonPress()
+                        window.performAttackRoll()
+                    end
+
+                    function onDragStart(button, x, y, draginfo)
+                        return window.performAttackDrag(draginfo)
+                    end
+                </script>
+            </buttoncontrol>
+
+            <!-- CTA DAÑO -->
+            <buttoncontrol name="damage_button">
+                <bounds>120,0,25,25</bounds>
+                <!-- Pendiente: icono de sangre -->
+            </buttoncontrol>
+
+            <!-- RESERVA -->
+            <stringcontrol name="roll_reserve">
+                <bounds>130,0,22,25</bounds>
+                <center />
+                <static />
+            </stringcontrol>
+
+            <!-- SEPARADOR -->
+            <genericcontrol name="roll_separator">
+                <bounds>145,7,14,14</bounds>
+                <icon>aptus_play</icon>
+                <invisible />
+            </genericcontrol>
+
+            <!-- RECOGIDA -->
+            <stringcontrol name="roll_collect">
+                <bounds>150,0,22,25</bounds>
+                <center />
+                <static />
+            </stringcontrol>
+
+            <!-- DADO ROTO -->
+            <genericcontrol name="roll_roto">
+                <bounds>145,2,21,21</bounds>
+                <icon>aptus_roto</icon>
+                <invisible />
+            </genericcontrol>
+
+            <!-- ALCANCE -->
+            <stringfield name="range">
+                <bounds>190,0,45,25</bounds>
+                <readonly />
+            </stringfield>
+
+            <!-- DAÑO -->
+            <stringcontrol name="damage_display">
+                <bounds>250,0,75,25</bounds>
+                <static />
+            </stringcontrol>
+
+            <!-- CRÍTICO -->
+            <stringfield name="critical_dice">
+                <bounds>320,0,65,25</bounds>
+                <readonly />
+            </stringfield>
+
+            <!-- ESPECIAL -->
+            <stringfield name="special">
+                <bounds>360,0,100,25</bounds>
+                <readonly />
+            </stringfield>
+
+        </sheetdata>
+
+    </windowclass>
+</root>

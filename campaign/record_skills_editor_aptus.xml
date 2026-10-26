@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <windowclass name="aptus_skills_editor">
+
+        <script file="scripts/char_skills_editor_aptus.lua" />
+
+        <frame>groupbox</frame>
+
+        <placement>
+            <size width="650" height="550" />
+        </placement>
+
+        <sheetdata>
+
+            <!-- Boton de cierre -->
+            <buttoncontrol name="close_editor">
+                <bounds>590,5,45,40</bounds>
+
+                <icon normal="aptus_close" pressed="aptus_close" />
+
+                <tooltip text="Cerrar editor" />
+
+                <script>
+                    function onButtonPress()
+                        window.close()
+                    end
+                </script>
+            </buttoncontrol>
+
+            <!-- Titulo -->
+            <stringcontrol name="editor_title">
+                <bounds>20,20,530,30</bounds>
+                <static text="EDITAR HABILIDADES" />
+            </stringcontrol>
+
+            <!-- Lista dinámica de habilidades -->
+            <windowlist name="skills_editor_list">
+
+                <bounds>20,75,610,405</bounds>
+
+                <datasource>.skills</datasource>
+
+                <class>aptus_skill_editor_row</class>
+
+                <columns width="600" filldown="true" />
+
+                <sortby>
+                    <field>name</field>
+                </sortby>
+
+                <script>
+                    function onFilter(w)
+                        local nodeSkill = w.getDatabaseNode()
+
+                        if not nodeSkill then
+                            return false
+                        end
+
+                        return DB.getValue(nodeSkill, "id", "") ~= "generic_skill"
+                    end
+                </script>
+
+            </windowlist>
+
+            <!-- Boton para añadir habilidades -->
+            <buttoncontrol name="add_skill_button">
+                <bounds>450,495,180,30</bounds>
+                <icon normal="aptus_add" pressed="aptus_add" />
+                <tooltip text="Añadir una habilidad al personaje" />
+
+                <script>
+                    function onButtonPress()
+                        window.addSkill()
+                    end
+                </script>
+            </buttoncontrol>
+
+            
+
+        </sheetdata>
+
+    </windowclass>
+</root>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <windowclass name="charsheet_main">
+        <margins control="0,0,0,2" />
+
+        <script file="scripts/char_main_aptus.lua" />
+
+        <sheetdata>
+
+            <!-- MARCO DE ATRIBUTOS -->
+            <frame_aptus_general_main name="mainframe">
+                <bounds>0,0,594,307</bounds>
+            </frame_aptus_general_main>
+
+            
+
+            <!-- CONFIGURACIÓN DE ATRIBUTOS -->
+            <buttoncontrol name="attributes_editor_button">
+                <bounds>5,5,55,55</bounds>
+
+                <tooltip text="Editar atributos" />
+
+                <script>
+                    function onButtonPress()
+                        window.openAttributesEditor()
+                    end
+                </script>
+            </buttoncontrol>
+
+            <!-- LISTA REUTILIZABLE -->
+
+            <windowlist name="aptus_attributes_list">
+                <bounds>15,45,335,230</bounds>
+
+                <class>aptus_attribute_row</class>
+                <datasource>.attributes</datasource>
+
+                <columns width="275" filldown="true" />
+
+                <sortby>
+                    <field>order</field>
+                </sortby>
+
+                <noscroll />
+            </windowlist>
+
+
+            <!-- DEFENSA -->
+            <numberfield name="defense.base">
+                <bounds>33,275,45,25</bounds>
+                <readonly />
+                <center />
+            </numberfield>
+
+            <numberfield name="defense.current">
+                <bounds>88,275,45,25</bounds>
+                <center />
+            </numberfield>
+
+            <!-- SALUD -->
+            <numberfield name="health.base">
+                <bounds>162,275,45,25</bounds>
+                <readonly />
+                <center />
+            </numberfield>
+
+            <numberfield name="health.current">
+                <bounds>215,275,45,25</bounds>
+                <center />
+            </numberfield>
+
+            <!-- PROTECCIÓN: VALOR -->
+            <numberfield name="protection.value">
+                <bounds>287,275,45,25</bounds>
+                <center />
+            </numberfield>
+
+            <!-- PROTECCIÓN: PENALIZACIÓN AGI -->
+            <numberfield name="protection.agi">
+                <bounds>340,275,45,25</bounds>
+                <center />
+            </numberfield>
+
+            <!-- HERIDAS LEVES -->
+
+            <!-- CONTADOR DE HERIDAS -->
+            <numberfield name="wounds">
+                <bounds>465,35,30,20</bounds>
+                <invisible />
+                <center />
+
+                <tooltip text="Heridas actuales (0-7). Ctrl + rueda para modificar." />
+
+                <script>
+                    function onValueChanged()
+                        window.updateWounds()
+                    end
+                </script>
+            </numberfield>
+
+            <!-- ZONA INTERACTIVA DE HERIDAS -->
+            <genericcontrol name="wounds_interaction">
+                <bounds>360,0,160,85</bounds>
+
+                <tooltip text="Ctrl + rueda: añadir o recuperar heridas" />
+
+                <script>
+                    function onWheel(notches)
+                        if not Input.isControlPressed() then
+                            return false
+                        end
+
+                        window.changeWounds(notches)
+
+                        return true
+                    end
+                </script>
+            </genericcontrol>
+
+            <!-- HERIDA LEVE 1 -->
+            <frame_aptus_herida_1 name="wound_1">
+                <bounds>427,60,20,25</bounds>
+                <invisible />
+            </frame_aptus_herida_1>
+
+            <frame_aptus_herida_2 name="wound_2">
+                <bounds>430,85,20,35</bounds>
+                <invisible />
+            </frame_aptus_herida_2>
+
+            <frame_aptus_herida_3 name="wound_3">
+                <bounds>428,110,20,30</bounds>
+                <invisible />
+            </frame_aptus_herida_3>
+
+            <frame_aptus_herida_4 name="wound_4">
+                <bounds>422,160,25,30</bounds>
+                <invisible />
+            </frame_aptus_herida_4>
+
+            <frame_aptus_herida_5 name="wound_5">
+                <bounds>428,188,25,30</bounds>
+                <invisible />
+            </frame_aptus_herida_5>
+
+            <frame_aptus_herida_6 name="wound_6">
+                <bounds>422,215,35,30</bounds>
+                <invisible />
+            </frame_aptus_herida_6>
+
+            <frame_aptus_herida_7 name="wound_7">
+                <bounds>400,250,60,75</bounds>
+                <invisible />
+            </frame_aptus_herida_7>
+
+            <!-- ========================================= -->
+            <!-- CABECERAS DE ARMAS                        -->
+            <!-- ========================================= -->
+
+            <!-- NOMBRE -->
+            <stringcontrol name="weapons_header_name">
+                <bounds>20,370,115,20</bounds>
+                <static text="NOMBRE" />
+            </stringcontrol>
+
+            <!-- ATAQUE -->
+            <stringcontrol name="weapons_header_attack">
+                <bounds>150,370,75,20</bounds>
+                <static text="ATAQUE" />
+            </stringcontrol>
+
+            <!-- ALCANCE -->
+            <stringcontrol name="weapons_header_range">
+                <bounds>210,370,65,20</bounds>
+                <static text="ALCANCE" />
+            </stringcontrol>
+
+            <!-- DAÑO -->
+            <stringcontrol name="weapons_header_damage">
+                <bounds>270,370,75,20</bounds>
+                <static text="DAÑO" />
+            </stringcontrol>
+
+            <!-- CRÍTICO -->
+            <stringcontrol name="weapons_header_critical">
+                <bounds>340,370,65,20</bounds>
+                <static text="CRÍ" />
+            </stringcontrol>
+
+            <!-- ESPECIAL -->
+            <stringcontrol name="weapons_header_special">
+                <bounds>380,370,100,20</bounds>
+                <static text="ESPECIAL" />
+            </stringcontrol>
+
+            <!-- ========================================= -->
+            <!-- LISTA DE ARMAS DEL PERSONAJE              -->
+            <!-- ========================================= -->
+
+            <!-- LISTA DE ARMAS DEL PERSONAJE -->
+            <windowlist name="aptus_weapons_list">
+                <bounds>20,395,565,260</bounds>
+
+                <class>aptus_weapon_row</class>
+                <datasource>.weapons</datasource>
+
+                <columns width="565" filldown="true" />
+
+                <script>
+                    function onDrop(x, y, draginfo)
+                        return window.addWeaponFromDrop(draginfo)
+                    end
+                </script>
+            </windowlist>
+
+        </sheetdata>
+    </windowclass>
+</root>

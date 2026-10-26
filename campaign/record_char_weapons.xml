@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+
+    <windowclass name="charsheet_weapons">
+        <sheetdata>
+
+            <!-- Marco principal -->
+            <frame_char name="weaponsframe">
+                <anchored position="over" />
+            </frame_char>
+
+            <!-- Título -->
+            <label_frametop name="weapons_title">
+                <anchored to="weaponsframe" />
+                <static text="Armas" />
+            </label_frametop>
+
+            <!-- Cabeceras -->
+            <stringcontrol name="weapons_header_name">
+                <bounds>20,40,125,25</bounds>
+                <static text="NOMBRE" />
+            </stringcontrol>
+
+            <stringcontrol name="weapons_header_attack">
+                <bounds>150,40,75,25</bounds>
+                <static text="ATAQUE" />
+            </stringcontrol>
+
+            <stringcontrol name="weapons_header_range">
+                <bounds>230,40,45,25</bounds>
+                <static text="ALC." />
+            </stringcontrol>
+
+            <stringcontrol name="weapons_header_damage">
+                <bounds>280,40,70,25</bounds>
+                <static text="DAÑO" />
+            </stringcontrol>
+
+            <stringcontrol name="weapons_header_critical">
+                <bounds>355,40,65,25</bounds>
+                <static text="CRÍTICO" />
+            </stringcontrol>
+
+            <stringcontrol name="weapons_header_special">
+                <bounds>425,40,140,25</bounds>
+                <static text="ESPECIAL" />
+            </stringcontrol>
+
+            <!-- Ataque básico: Desarmado -->
+            <stringcontrol name="unarmed_name">
+                <bounds>20,70,125,25</bounds>
+                <static text="Desarmado" />
+            </stringcontrol>
+
+            <stringcontrol name="unarmed_attack">
+                <bounds>150,70,75,25</bounds>
+                <static text="Pelea" />
+            </stringcontrol>
+
+            <stringcontrol name="unarmed_range">
+                <bounds>230,70,45,25</bounds>
+                <static text="C.C." />
+            </stringcontrol>
+
+            <stringcontrol name="unarmed_damage">
+                <bounds>280,70,70,25</bounds>
+                <static text="d4 CON" />
+            </stringcontrol>
+
+            <stringcontrol name="unarmed_critical">
+                <bounds>355,70,65,25</bounds>
+                <static text="—" />
+            </stringcontrol>
+
+            <stringcontrol name="unarmed_special">
+                <bounds>425,70,140,25</bounds>
+                <static text="Desarmado." />
+            </stringcontrol>
+
+        </sheetdata>
+    </windowclass>
+
+</root>

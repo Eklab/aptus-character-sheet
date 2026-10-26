@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <windowclass name="aptus_attributes_editor">
+        <script>
+            function onInit()
+                local nodeChar = getDatabaseNode()
+
+                Debug.console(
+                    "[APTUS EDITOR] Nodo del editor:",
+                    nodeChar and DB.getPath(nodeChar) or "SIN NODO"
+                )
+
+                local nodeEffects = nodeChar and DB.getChild(nodeChar, "effects")
+
+                Debug.console(
+                    "[APTUS EDITOR] Nodo de efectos:",
+                    nodeEffects and DB.getPath(nodeEffects) or "SIN EFECTOS"
+                )
+
+                if nodeEffects then
+                    for _, nodeEffect in pairs(DB.getChildren(nodeEffects)) do
+                        Debug.console(
+                            "[APTUS EDITOR] Cargando efecto:",
+                            DB.getPath(nodeEffect)
+                        )
+
+                        modifiers_list.createWindow(nodeEffect)
+                    end
+                end
+            end
+        </script>
+        <frame>groupbox</frame>
+        <placement>
+            <size width="600" height="550" />
+        </placement>
+
+        <sheetdata>
+            <buttoncontrol name="close_editor">
+                <bounds>400,5,45,40</bounds>
+
+                <icon normal="aptus_close" pressed="aptus_close" />
+
+                <tooltip text="Cerrar editor" />
+
+                <script>
+                    function onButtonPress()
+                        window.close()
+                    end
+                </script>
+            </buttoncontrol>
+
+            <stringcontrol name="editor_title">
+                <bounds>20,20,420,30</bounds>
+                <static text="EDITAR ATRIBUTOS" />
+            </stringcontrol>
+
+            <!-- CABECERAS -->
+
+            <stringcontrol name="header_base">
+                <bounds>185,65,60,25</bounds>
+                <static text="Base" />
+            </stringcontrol>
+
+            <stringcontrol name="header_modifier">
+                <bounds>265,65,90,25</bounds>
+                <static text="Alteración" />
+            </stringcontrol>
+
+            <stringcontrol name="header_effective">
+                <bounds>370,65,75,25</bounds>
+                <static text="Efectivo" />
+            </stringcontrol>
+
+            <!-- FUERZA -->
+
+            <stringcontrol name="label_fue">
+                <bounds>20,100,150,25</bounds>
+                <static textres="aptus_attribute_fue" />
+            </stringcontrol>
+
+            <numberfield name="attributes.fue.base">
+                <bounds>190,100,45,25</bounds>
+            </numberfield>
+
+            <numberfield name="attributes.fue.alteration">
+                <bounds>285,100,45,25</bounds>
+            </numberfield>
+
+            <numberfield name="attributes.fue.effective">
+                <bounds>385,100,45,25</bounds>
+                <readonly />
+            </numberfield>
+
+            <!-- AGILIDAD -->
+
+            <stringcontrol name="label_agi">
+                <bounds>20,135,150,25</bounds>
+                <static textres="aptus_attribute_agi" />
+            </stringcontrol>
+
+            <numberfield name="attributes.agi.base">
+                <bounds>190,135,45,25</bounds>
+            </numberfield>
+
+            <numberfield name="attributes.agi.alteration">
+                <bounds>285,135,45,25</bounds>
+            </numberfield>
+
+            <numberfield name="attributes.agi.effective">
+                <bounds>385,135,45,25</bounds>
+                <readonly />
+            </numberfield>
+
+            <!-- CONSTITUCIÓN -->
+
+            <stringcontrol name="label_con">
+                <bounds>20,170,150,25</bounds>
+                <static textres="aptus_attribute_con" />
+            </stringcontrol>
+
+            <numberfield name="attributes.con.base">
+                <bounds>190,170,45,25</bounds>
+            </numberfield>
+
+            <numberfield name="attributes.con.alteration">
+                <bounds>285,170,45,25</bounds>
+            </numberfield>
+
+            <numberfield name="attributes.con.effective">
+                <bounds>385,170,45,25</bounds>
+                <readonly />
+            </numberfield>
+
+            <!-- PERCEPCIÓN -->
+
+            <stringcontrol name="label_per">
+                <bounds>20,205,150,25</bounds>
+                <static textres="aptus_attribute_per" />
+            </stringcontrol>
+
+            <numberfield name="attributes.per.base">
+                <bounds>190,205,45,25</bounds>
+            </numberfield>
+
+            <numberfield name="attributes.per.alteration">
+                <bounds>285,205,45,25</bounds>
+            </numberfield>
+
+            <numberfield name="attributes.per.effective">
+                <bounds>385,205,45,25</bounds>
+                <readonly />
+            </numberfield>
+
+            <!-- INTELIGENCIA -->
+
+            <stringcontrol name="label_int">
+                <bounds>20,240,150,25</bounds>
+                <static textres="aptus_attribute_int" />
+            </stringcontrol>
+
+            <numberfield name="attributes.int.base">
+                <bounds>190,240,45,25</bounds>
+            </numberfield>
+
+            <numberfield name="attributes.int.alteration">
+                <bounds>285,240,45,25</bounds>
+            </numberfield>
+
+            <numberfield name="attributes.int.effective">
+                <bounds>385,240,45,25</bounds>
+                <readonly />
+            </numberfield>
+
+            <!-- ESPÍRITU -->
+
+            <stringcontrol name="label_esp">
+                <bounds>20,275,150,25</bounds>
+                <static textres="aptus_attribute_esp" />
+            </stringcontrol>
+
+            <numberfield name="attributes.esp.base">
+                <bounds>190,275,45,25</bounds>
+            </numberfield>
+
+            <numberfield name="attributes.esp.alteration">
+                <bounds>285,275,45,25</bounds>
+            </numberfield>
+
+            <numberfield name="attributes.esp.effective">
+                <bounds>385,275,45,25</bounds>
+                <readonly />
+            </numberfield>
+
+            <!-- SECCIÓN MODIFICADORES -->
+            <stringcontrol name="modifiers_title">
+                <bounds>20,325,250,25</bounds>
+                <static text="MODIFICADORES" />
+            </stringcontrol>
+
+            <buttoncontrol name="add_modifier">
+                <bounds>540,325,25,25</bounds>
+
+                <icon normal="aptus_add" pressed="aptus_add" />
+
+                <tooltip text="Añadir modificador" />
+
+                <script>
+                    function onButtonPress()
+                        local nodeChar = window.getDatabaseNode()
+
+                        if not nodeChar then
+                            return
+                        end
+
+                        local nodeEffects = DB.createChild(
+                            nodeChar,
+                            "effects"
+                        )
+
+                        if not nodeEffects then
+                            return
+                        end
+
+                        local nodeEffect = DB.createChild(nodeEffects)
+
+                        if not nodeEffect then
+                            return
+                        end
+
+                        DB.setValue(nodeEffect, "name", "string", "Nuevo modificador")
+                        DB.setValue(nodeEffect, "label", "string", "")
+                        DB.setValue(nodeEffect, "isactive", "number", 0)
+
+                        window.modifiers_list.createWindow(nodeEffect)
+                    end
+                </script>
+            </buttoncontrol>
+
+            <!-- CABECERAS -->
+
+            <stringcontrol name="modifiers_header_active">
+                <bounds>20,360,65,25</bounds>
+                <static text="Activo" />
+            </stringcontrol>
+
+            <stringcontrol name="modifiers_header_name">
+                <bounds>95,360,170,25</bounds>
+                <static text="Nombre" />
+            </stringcontrol>
+
+            <stringcontrol name="modifiers_header_effects">
+                <bounds>285,360,220,25</bounds>
+                <static text="Modificadores" />
+            </stringcontrol>
+
+            <!-- LISTA DE MODIFICADORES -->
+
+            <windowlist name="modifiers_list">
+                <bounds>20,390,555,105</bounds>
+                <class>aptus_modifier_row</class>
+                <datasource>effects</datasource>
+            </windowlist>
+
+        </sheetdata>
+    </windowclass>
+</root>

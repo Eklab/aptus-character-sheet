@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <windowclass name="aptus_modifier_row">
+        <sheetdata>
+
+            <!-- ACTIVO -->
+            <button_checkbox name="isactive">
+                <bounds>25,0,25,25</bounds>
+                <tooltip text="Activar o desactivar modificador" />
+            </button_checkbox>
+
+            <!-- NOMBRE -->
+            <stringfield name="name">
+                <bounds>75,0,175,25</bounds>
+            </stringfield>
+
+            <!-- MODIFICADORES -->
+            <stringfield name="label">
+                <bounds>265,0,220,25</bounds>
+            </stringfield>
+
+            <!-- ELIMINAR MODIFICADOR -->
+            <buttoncontrol name="delete_modifier">
+                <bounds>525,7,12,12</bounds>
+
+                <icon normal="aptus_close" pressed="aptus_close" />
+
+                <tooltip text="Eliminar modificador" />
+
+                <script>
+                    function onButtonPress()
+                        local nodeEffect = window.getDatabaseNode()
+
+                        if not nodeEffect then
+                            return
+                        end
+
+                        DB.deleteNode(nodeEffect)
+                    end
+                </script>
+            </buttoncontrol>
+
+        </sheetdata>
+    </windowclass>
+</root>

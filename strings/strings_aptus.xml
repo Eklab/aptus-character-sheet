@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <string name="aptus_label_attributes">Atributos</string>
+
+    <string name="aptus_attribute_fue">Fuerza</string>
+    <string name="aptus_attribute_agi">Agilidad</string>
+    <string name="aptus_attribute_con">Constitución</string>
+    <string name="aptus_attribute_per">Percepción</string>
+    <string name="aptus_attribute_int">Inteligencia</string>
+    <string name="aptus_attribute_esp">Espíritu</string>
+
+    <string name="aptus_label_professions">Profesiones</string>
+    <string name="aptus_label_age">Edad</string>
+    <string name="aptus_label_rank">Rango</string>
+
+    <!-- Catálogo de habilidades -->
+    <string name="library_recordtype_label_aptus_skill">Habilidades</string>
+    <string name="library_recordtype_single_aptus_skill">Habilidad</string>
+
+    <!-- Catálogo de armas -->
+    <string name="library_recordtype_label_aptus_weapon">Armas</string>
+    <string name="library_recordtype_single_aptus_weapon">Arma</string>
+</root>

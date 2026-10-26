@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<root>
+    <windowclass name="ct_entry" merge="join">
+        <sheetdata>
+
+            <!-- Heridas APTUS -->
+            <numberfield name="wounds">
+                <bounds>150,5,35,25</bounds>
+                <tooltip text="Heridas APTUS (0-7)" />
+
+                <script>
+                    function onWheel(notches)
+                        if not Input.isControlPressed() then
+                            return false;
+                        end
+
+                        local nWounds = getValue();
+                        nWounds = math.max(0, math.min(7, nWounds + notches));
+
+                        setValue(nWounds);
+                        return true;
+                    end
+                </script>
+            </numberfield>
+
+        </sheetdata>
+    </windowclass>
+</root>

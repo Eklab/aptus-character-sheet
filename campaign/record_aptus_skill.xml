@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+
+    <windowclass name="aptus_skill">
+        <frame>recordsheet</frame>
+
+        <placement>
+            <size width="500" height="450" />
+        </placement>
+
+        <sheetdata>
+            <!-- Cerrar ventana -->
+            <buttoncontrol name="close_skill">
+                <bounds>450,10,35,35</bounds>
+
+                <icon normal="aptus_close" pressed="aptus_close" />
+
+                <tooltip text="Cerrar habilidad" />
+
+                <script>
+                    function onButtonPress()
+                        window.close()
+                    end
+                </script>
+            </buttoncontrol>
+
+            <!-- Nombre -->
+            <stringcontrol name="label_name">
+                <bounds>20,20,100,25</bounds>
+                <static text="Nombre" />
+            </stringcontrol>
+
+            <stringfield name="name">
+                <bounds>130,20,270,25</bounds>
+                <frame name="fieldlight" offset="5,5,5,5" />
+            </stringfield>
+
+            <!-- Identificador -->
+            <stringcontrol name="label_id">
+                <bounds>20,60,100,25</bounds>
+                <static text="ID" />
+            </stringcontrol>
+
+            <stringfield name="id">
+                <bounds>130,60,340,25</bounds>
+                <readonly />
+            </stringfield>
+
+            <!-- Atributo -->
+            <stringcontrol name="label_attribute">
+                <bounds>20,100,100,25</bounds>
+                <static text="Atributo" />
+            </stringcontrol>
+
+            <stringfield name="attribute">
+                <bounds>130,100,100,25</bounds>
+                <frame name="fieldlight" offset="5,5,5,5" />
+            </stringfield>
+
+            <!-- Especial -->
+            <stringcontrol name="label_special">
+                <bounds>260,100,100,25</bounds>
+                <static text="Especial" />
+            </stringcontrol>
+
+            <numberfield name="special">
+                <bounds>370,100,50,25</bounds>
+                <frame name="fieldlight" offset="5,5,5,5" />
+            </numberfield>
+
+            <!-- Descripción -->
+            <stringcontrol name="label_description">
+                <bounds>20,150,200,25</bounds>
+                <static text="DESCRIPCIÓN" />
+            </stringcontrol>
+
+            <formattedtextfield name="description">
+                <bounds>20,180,450,240</bounds>
+                <frame name="fieldlight" offset="5,5,5,5" />
+            </formattedtextfield>
+
+        </sheetdata>
+    </windowclass>
+
+</root>

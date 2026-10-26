@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <!-- TIRADA -->
+    <icon name="aptus_roll"
+          file="graphics/icons/aptus_roll.png" />
+
+    <!-- INICIATIVA -->
+    <icon name="aptus_initiative"
+          file="graphics/icons/aptus_iniciative.png" />
+
+    <!-- CONFIGURACION -->
+    <icon name="aptus_settings"
+      file="graphics/icons/aptus_settings.png" />
+
+    <!-- CERRAR VENTANA -->
+    <icon name="aptus_close"
+        file="graphics/icons/aptus_close.png" />
+
+    <!-- ANADIR -->
+    <icon name="aptus_add" file="graphics/icons/aptus_add.png" />
+
+    <!-- SKILL -->
+    <icon name="aptus_skills" file="graphics/icons/aptus_skill.png" />
+
+    <linksettings>
+        <class key="aptus_skill" normal="aptus_skills" />
+    </linksettings>
+
+    <!-- Dado roto -->
+    <icon name="aptus_roto" file="graphics/icons/aptus_roto.png" />
+
+    <!-- Aptus play tirada -->
+    <icon name="aptus_play" file="graphics/icons/aptus_play.png" />
+
+    <!-- MARCAS DE HERIDAS -->
+    <framedef name="aptus_frame_herida_1">
+        <bitmap file="graphics/frames/aptus_herida_1.png" />
+    </framedef>
+
+    <framedef name="aptus_frame_herida_2">
+        <bitmap file="graphics/frames/aptus_herida_2.png" />
+    </framedef>
+
+    <framedef name="aptus_frame_herida_3">
+        <bitmap file="graphics/frames/aptus_herida_3.png" />
+    </framedef>
+
+    <framedef name="aptus_frame_herida_4">
+        <bitmap file="graphics/frames/aptus_herida_4.png" />
+    </framedef>
+
+    <framedef name="aptus_frame_herida_5">
+        <bitmap file="graphics/frames/aptus_herida_5.png" />
+    </framedef>
+
+    <framedef name="aptus_frame_herida_6">
+        <bitmap file="graphics/frames/aptus_herida_6.png" />
+    </framedef>
+
+    <framedef name="aptus_frame_herida_7">
+        <bitmap file="graphics/frames/aptus_herida_7.png" />
+    </framedef>
+
+</root>

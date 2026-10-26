@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+
+    <windowclass name="aptus_skill_row">
+
+        <script file="scripts/char_skill_row_aptus.lua" />
+
+        <margins control="0,0,0,2" />
+
+        <sheetdata>
+
+            <!-- Indicador de progresión -->
+            <stringcontrol name="progression_indicator">
+                <bounds>2,0,20,25</bounds>
+                <static />
+                <center />
+            </stringcontrol>
+
+            <!-- Nombre de la habilidad -->
+            <stringfield name="name">
+                <bounds>25,0,140,25</bounds>
+                <readonly />
+            </stringfield>
+
+            <!-- Atributo asociado -->
+            <stringcontrol name="attribute_display">
+                <bounds>170,0,40,25</bounds>
+                <static />
+            </stringcontrol>
+
+            <!-- Nivel de habilidad -->
+            <numberfield name="level">
+                <bounds>215,0,30,25</bounds>
+                <readonly />
+            </numberfield>
+
+            <!-- Reserva de dados -->
+            <stringcontrol name="roll_reserve">
+                <bounds>287,0,22,25</bounds>
+                <center />
+                <static />
+            </stringcontrol>
+
+            <!-- Separador Play -->
+            <genericcontrol name="roll_separator">
+                <bounds>308,7,14,14</bounds>
+                <icon>aptus_play</icon>
+                <invisible />
+            </genericcontrol>
+
+            <!-- Dados recogidos -->
+            <stringcontrol name="roll_collect">
+                <bounds>323,0,22,25</bounds>
+                <center />
+                <static />
+            </stringcontrol>
+
+            <!-- Icono de dado ROTO -->
+            <genericcontrol name="roll_roto">
+                <bounds>300,2,21,21</bounds>
+                <icon>aptus_roto</icon>
+                <invisible />
+            </genericcontrol>
+
+            <!-- CTA de tirada -->
+            <buttoncontrol name="roll_button">
+                <bounds>385,0,25,25</bounds>
+                <icon normal="aptus_roll" pressed="aptus_roll" />
+
+                <script>
+                    function onButtonPress()
+                        window.performSkillRoll();
+                    end
+
+                    function onDragStart(button, x, y, draginfo)
+                        return window.performSkillDrag(draginfo);
+                    end
+                </script>
+            </buttoncontrol>
+
+        </sheetdata>
+
+    </windowclass>
+
+</root>

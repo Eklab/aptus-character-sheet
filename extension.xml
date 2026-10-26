@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root version="4.1">
+    <properties>
+        <name>APTUS Character Sheet</name>
+        <version>0.1</version>
+        <author>APTUS</author>
+        <description>Ficha de personaje para APTUS.</description>
+
+        <ruleset>
+            <name>CoreRPG</name>
+        </ruleset>
+    </properties>
+
+    <base>
+        <!-- Gestores globales -->
+        <script name="APTUSSkillsManager" file="scripts/manager_aptus_skills.lua" />
+
+        <!-- Textos traducibles -->
+        <includefile source="strings/strings_aptus.xml" />
+
+        <!-- Ficha de personaje -->
+        <includefile source="campaign/record_char_aptus.xml" />
+        <!-- Ficha de personaje - Template - Fila de Atributos -->
+        <includefile source="campaign/record_attribute_row_aptus.xml" />
+        <!-- Ficha de personaje - Configuracion de Atributos -->
+        <includefile source="campaign/record_attributes_editor_aptus.xml" />
+
+        <!-- Ficha de personaje - Habilidades -->
+        <includefile source="campaign/record_char_abilities_aptus.xml" />
+        <!-- Ficha de personaje - Template - Fila de Habilidades -->
+        <includefile source="campaign/record_skill_row_aptus.xml" />
+        <!-- Ficha de personaje - Configuracion de Habilidades -->
+        <includefile source="campaign/record_skills_editor_aptus.xml" />
+        <!-- Ficha de personaje - Template - Edicion de Habilidades -->
+        <includefile source="campaign/record_skill_editor_row_aptus.xml" />
+        <script file="scripts/char_skill_editor_row_aptus.lua" />
+
+        <!-- ENDIDAD HABILIDAD -->
+        <includefile source="campaign/record_aptus_skill.xml" />
+
+        <!-- Efectos -->
+        <script
+            name="APTUSEffectsManager"
+            file="scripts/manager_aptus_effects.lua" />
+
+        <includefile source="campaign/record_modifier_row_aptus.xml"/>
+
+        <!-- Graficos -->
+        <includefile source="graphics/graphics_aptus.xml" />
+
+
+        <framedef name="aptus_frame_general_main">
+            <bitmap file="graphics/frames/frame-conjunto-main.png" />
+            <offset>0,0,0,0</offset>
+        </framedef>
+
+        <!-- PLANTILLA DEL FONDO GENERAL -->
+        <template name="frame_aptus_general_main">
+            <genericcontrol>
+                <frame name="aptus_frame_general_main" />
+            </genericcontrol>
+        </template>
+
+        <!-- IMAGEN HERIDA 1 -->
+        <framedef name="aptus_frame_herida_1">
+            <bitmap file="graphics/frames/aptus_herida_1.png" />
+            <offset>0,0,0,0</offset>
+        </framedef>
+
+        <template name="frame_aptus_herida_1">
+            <genericcontrol>
+                <frame name="aptus_frame_herida_1" />
+            </genericcontrol>
+        </template>
+
+        <!-- IMAGEN HERIDA 2 -->
+        <framedef name="aptus_frame_herida_2">
+            <bitmap file="graphics/frames/aptus_herida_2.png" />
+            <offset>0,0,0,0</offset>
+        </framedef>
+
+        <template name="frame_aptus_herida_2">
+            <genericcontrol>
+                <frame name="aptus_frame_herida_2" />
+            </genericcontrol>
+        </template>
+
+        <!-- IMAGEN HERIDA 3 -->
+        <framedef name="aptus_frame_herida_3">
+            <bitmap file="graphics/frames/aptus_herida_3.png" />
+            <offset>0,0,0,0</offset>
+        </framedef>
+
+        <template name="frame_aptus_herida_3">
+            <genericcontrol>
+                <frame name="aptus_frame_herida_3" />
+            </genericcontrol>
+        </template>
+
+        <!-- IMAGEN HERIDA 4 -->
+        <framedef name="aptus_frame_herida_4">
+            <bitmap file="graphics/frames/aptus_herida_4.png" />
+            <offset>0,0,0,0</offset>
+        </framedef>
+
+        <template name="frame_aptus_herida_4">
+            <genericcontrol>
+                <frame name="aptus_frame_herida_4" />
+            </genericcontrol>
+        </template>
+
+        <!-- IMAGEN HERIDA 5 -->
+        <framedef name="aptus_frame_herida_5">
+            <bitmap file="graphics/frames/aptus_herida_5.png" />
+            <offset>0,0,0,0</offset>
+        </framedef>
+
+        <template name="frame_aptus_herida_5">
+            <genericcontrol>
+                <frame name="aptus_frame_herida_5" />
+            </genericcontrol>
+        </template>
+
+        <!-- IMAGEN HERIDA 6 -->
+        <framedef name="aptus_frame_herida_6">
+            <bitmap file="graphics/frames/aptus_herida_6.png" />
+            <offset>0,0,0,0</offset>
+        </framedef>
+
+        <template name="frame_aptus_herida_6">
+            <genericcontrol>
+                <frame name="aptus_frame_herida_6" />
+            </genericcontrol>
+        </template>
+
+        <!-- IMAGEN HERIDA 7 -->
+        <framedef name="aptus_frame_herida_7">
+            <bitmap file="graphics/frames/aptus_herida_7.png" />
+            <offset>0,0,0,0</offset>
+        </framedef>
+
+        <template name="frame_aptus_herida_7">
+            <genericcontrol>
+                <frame name="aptus_frame_herida_7" />
+            </genericcontrol>
+        </template>
+
+
+        <includefile source="ct/ct_aptus.xml" />
+        <script name="APTUSCombatTracker" file="scripts/ct_aptus.lua" />
+
+        <includefile source="campaign/record_char_weapons.xml" />
+
+        <!-- Gestor del catálogo de armas -->
+        <script name="APTUSWeaponsManager" file="scripts/manager_aptus_weapons.lua" />
+        <includefile source="campaign/record_aptus_weapon.xml" />
+
+        <includefile source="campaign/record_aptus_weapon_row.xml" />
+
+        <!-- TESTS-->
+        <!--script
+            name="APTUSEffectsTest"
+            file="scripts/test_aptus_effects.lua" />-->
+        
+    </base>
+</root>

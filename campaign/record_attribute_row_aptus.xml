@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <windowclass name="aptus_attribute_row">
+
+        <script file="scripts/char_attribute_row_aptus.lua" />
+
+        <sheetdata>
+            <genericcontrol name="row_height">
+                <bounds>0,0,1,30</bounds>
+                <disabled />
+            </genericcontrol>
+
+            <!-- NOMBRE -->
+            <stringcontrol name="attribute_name">
+                <bounds>0,0,275,38</bounds>
+                <invisible />
+            </stringcontrol>
+
+            <!-- VALOR EFECTIVO -->
+            <numberfield name="effective">
+                <bounds>180,0,35,25</bounds>
+                <center/>
+                <readonly />
+            </numberfield>
+
+            <!-- TIRADA DE ATRIBUTO -->
+            <buttoncontrol name="roll_button">
+                <bounds>245,0,25,25</bounds>
+
+                <icon normal="aptus_roll" pressed="aptus_roll" />
+
+                <tooltip text="Tirada de atributo" />
+
+                <script>
+                    function onButtonPress()
+                        window.rollAttribute()
+                    end
+                </script>
+            </buttoncontrol>
+
+            <!-- INICIATIVA -->
+            <buttoncontrol name="initiative_button">
+                <bounds>290,0,25,25</bounds>
+
+                <icon normal="aptus_initiative" pressed="aptus_initiative" />
+
+                <tooltip text="Iniciativa" />
+
+                <script>
+                    function onButtonPress()
+                        window.rollInitiative()
+                    end
+                </script>
+            </buttoncontrol>
+
+        </sheetdata>
+    </windowclass>
+</root>
