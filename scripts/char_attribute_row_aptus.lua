@@ -92,6 +92,7 @@ function rollInitiative()
 
     APTUSDice.performRoll(rActor, {
         sRollMode = "QUANTIFICATION",
+        bAptusInitiative = true,
         sLabel = aAttributeNames[sAttribute] or sAttribute,
         sAttribute = sAttribute,
 

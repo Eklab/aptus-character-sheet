@@ -1,12 +1,18 @@
 -- APTUS - Combat Tracker
--- Sincronización de heridas entre PJ y Combat Tracker
+-- Sincronización de heridas e iniciativa entre PJ y Combat Tracker
 
 local bSyncing = false;
+local OOB_MSGTYPE_INITIATIVE = "aptus_initiative";
+local fPreviousPostResolve = nil;
 
 function onInit()
+    fPreviousPostResolve = GameManager.getMultiKeyFunction("onActionPostResolve", "aptus");
+    GameManager.setMultiKeyFunction("onActionPostResolve", "aptus", onAptusPostResolve);
     if not Session.IsHost then
         return;
     end
+
+    OOBManager.registerOOBMsgHandler(OOB_MSGTYPE_INITIATIVE, onInitiativeMessage);
 
     DB.addHandler("combattracker.list.*.wounds", "onUpdate", onCTWoundsChanged);
     DB.addHandler("charsheet.*.wounds", "onUpdate", onCharacterWoundsChanged);
@@ -14,6 +20,9 @@ function onInit()
 end
 
 function onClose()
+    if GameManager.getMultiKeyFunction("onActionPostResolve", "aptus") == onAptusPostResolve then
+        GameManager.setMultiKeyFunction("onActionPostResolve", "aptus", fPreviousPostResolve);
+    end
     if not Session.IsHost then
         return;
     end
@@ -112,4 +121,68 @@ function onCombatantLinked(nodeLink)
     nWounds = math.max(0, math.min(7, nWounds));
 
     DB.setValue(nodeCT, "wounds", "number", nWounds);
+end
+
+-- Se ejecuta en la sesión que resuelve la tirada, también para jugadores.
+function onAptusPostResolve(rSource, rTarget, rRoll)
+    if fPreviousPostResolve then
+        fPreviousPostResolve(rSource, rTarget, rRoll);
+    end
+
+    if not rRoll or rRoll.sType ~= "aptus"
+        or rRoll.bAptusInitiative ~= true
+        or rRoll.bAptusResolved ~= true
+        or not (rRoll.sDesc or ""):find("[MODO:QUANTIFICATION]", 1, true) then
+        return;
+    end
+
+    local sCharPath = ActorManager.getCreatureNodeName(rSource);
+    local nInitiative = tonumber(rRoll.nAptusSuccesses);
+    if not sCharPath or not sCharPath:match("^charsheet%.[^%.]+$")
+        or not nInitiative or nInitiative < 0
+        or nInitiative == math.huge or nInitiative ~= math.floor(nInitiative) then
+        return;
+    end
+
+    if Session.IsHost then
+        applyInitiative(sCharPath, nInitiative);
+    else
+        Comm.deliverOOBMessage({
+            type = OOB_MSGTYPE_INITIATIVE,
+            sCharPath = sCharPath,
+            nInitiative = nInitiative,
+        }, "");
+    end
+end
+
+function onInitiativeMessage(msgOOB)
+    if not Session.IsHost then
+        return;
+    end
+
+    applyInitiative(msgOOB.sCharPath, msgOOB.nInitiative);
+end
+
+function applyInitiative(sCharPath, nInitiative)
+    if not Session.IsHost or type(sCharPath) ~= "string"
+        or not sCharPath:match("^charsheet%.[^%.]+$") then
+        return;
+    end
+
+    nInitiative = tonumber(nInitiative);
+    if not nInitiative or nInitiative < 0
+        or nInitiative == math.huge or nInitiative ~= math.floor(nInitiative) then
+        return;
+    end
+
+    local nodeChar = DB.findNode(sCharPath);
+    if not nodeChar then
+        return;
+    end
+
+    local nodeCT = CombatManager.getCTFromNode(nodeChar);
+    if nodeCT then
+        -- Sustituir el valor previo, incluso cuando el nuevo resultado es cero.
+        DB.setValue(nodeCT, "initresult", "number", nInitiative);
+    end
 end
