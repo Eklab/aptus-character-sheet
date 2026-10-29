@@ -1,12 +1,49 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <root>
+    <!-- Solo el tracker del director contiene la columna Heridas APTUS. -->
+    <windowclass name="combattracker_host" merge="join">
+        <placement>
+            <size width="700" />
+        </placement>
+        <sizelimits>
+            <minimum width="500" />
+        </sizelimits>
+    </windowclass>
+
+    <windowclass name="sub_ct_header_host" merge="join">
+        <sheetdata>
+            <label_list_content_number_right name="label_wounds" insertbefore="label_name">
+                <anchored to="label_init" width="50" height="20" merge="replace">
+                    <top />
+                    <right anchor="left" offset="-15" />
+                </anchored>
+                <static text="Heridas" />
+            </label_list_content_number_right>
+            <label_ct_header_name_v2 name="label_name">
+                <anchored>
+                    <right parent="label_wounds" anchor="left" relation="absolute" offset="-10" />
+                </anchored>
+            </label_ct_header_name_v2>
+        </sheetdata>
+    </windowclass>
+
     <windowclass name="ct_entry" merge="join">
         <sheetdata>
 
             <!-- Heridas APTUS -->
-            <numberfield name="wounds">
-                <bounds>150,5,35,25</bounds>
+            <numberfield name="wounds" insertbefore="name">
+                <anchored to="initresult" width="50" height="20">
+                    <top />
+                    <right anchor="left" offset="-15" />
+                </anchored>
+                <font>sheetnumber</font>
+                <frame name="fielddark" offset="7,5,7,5" />
+                <stateframe>
+                    <keyedit name="fieldfocus" offset="7,5,7,5" />
+                    <hover name="fieldfocus" offset="7,5,7,5" hidereadonly="true" />
+                    <drophilight name="fieldfocus" offset="7,5,7,5" hidereadonly="true" />
+                </stateframe>
                 <tooltip text="Heridas APTUS (0-7)" />
 
                 <script>
@@ -23,6 +60,17 @@
                     end
                 </script>
             </numberfield>
+
+            <string_ct_entry_name name="name">
+                <anchored>
+                    <right parent="wounds" anchor="left" relation="absolute" offset="-10" />
+                </anchored>
+            </string_ct_entry_name>
+            <string_ct_entry_name_nonid name="nonid_name">
+                <anchored>
+                    <right parent="wounds" anchor="left" relation="absolute" offset="-10" />
+                </anchored>
+            </string_ct_entry_name_nonid>
 
         </sheetdata>
     </windowclass>
