@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Prueba de composición a escala 1:1; los recursos tienen 653 px de ancho. -->
+    <windowclass name="aptus_char_header">
+        <margins control="0,0,0,0" />
+        <sizelimits><minimum width="653" height="280" /></sizelimits>
+        <script>
+            function onInit()
+                name.setReadOnly(true);
+                -- Orden explícito de fondo a primer plano, también de anclajes.
+                header_background.bringToFront();
+                character_illustration.bringToFront();
+                header_divider.bringToFront();
+                navigation_background.bringToFront();
+                name.bringToFront();
+                test_character_details.bringToFront();
+                test_conflicts_title.bringToFront();
+                test_conflict_1.bringToFront();
+                test_conflict_2.bringToFront();
+                test_conflict_3.bringToFront();
+                aptus_minimize_button.bringToFront();
+                aptus_close_button.bringToFront();
+            end
+            function onLockModeChanged(bReadOnly)
+                name.setReadOnly(true);
+            end
+        </script>
+        <sheetdata>
+            <genericcontrol name="header_background">
+                <anchored width="653" height="238">
+                    <top />
+                    <left />
+                </anchored>
+                <icon>aptus_header_background</icon>
+                <disabled />
+                <skin_resource>aptus_header_background</skin_resource>
+                <script file="scripts/skin_icon_aptus.lua" />
+            </genericcontrol>
+            <genericcontrol name="character_illustration">
+                <anchored to="header_background" width="222" height="213">
+                    <top offset="30" />
+                    <right offset="-40" />
+                </anchored>
+                <icon>aptus_character_illustration</icon>
+                <script file="scripts/test_character_illustration.lua" />
+            </genericcontrol>
+            <genericcontrol name="header_divider">
+                <!-- Centro del separador en el borde inferior del fondo (238 - 82). -->
+                <anchored to="header_background" width="653" height="164">
+                    <top offset="156" />
+                    <left />
+                </anchored>
+                <icon>aptus_header_divider</icon>
+                <disabled />
+                <skin_resource>aptus_header_divider</skin_resource>
+                <script file="scripts/skin_icon_aptus.lua" />
+            </genericcontrol>
+            <genericcontrol name="navigation_background">
+                <anchored to="header_background" width="653" height="50">
+                    <top offset="230" />
+                    <left />
+                </anchored>
+                <icon>aptus_navigation_background</icon>
+                <disabled />
+                <skin_resource>aptus_navigation_background</skin_resource>
+                <script file="scripts/skin_icon_aptus.lua" />
+            </genericcontrol>
+            <!-- ================================================= -->
+            <!-- TEXTOS PROVISIONALES DE CABECERA                   -->
+            <!-- ================================================= -->
+
+            <!-- Sólo lectura. El futuro editor de Identidad se vinculará al mismo name. -->
+            <stringfield name="name">
+                <readonly />
+                <anchored width="350" height="60">
+                    <top offset="15" />
+                    <left offset="45" />
+                </anchored>
+                <font>aptus_font_character_name</font>
+                <script>
+                    function onValueChanged()
+                        setReadOnly(true);
+                    end
+                </script>
+            </stringfield>
+
+            <stringcontrol name="test_character_details">
+                <anchored width="350" height="30">
+                    <top offset="60" />
+                    <left offset="45" />
+                </anchored>
+                <font>aptus_font_character_details</font>
+                <script file="scripts/header_dedication_aptus.lua" />
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="test_conflicts_title">
+                <anchored width="300" height="30">
+                    <top offset="85" />
+                    <left offset="45" />
+                </anchored>
+                <font>aptus_font_section_title</font>
+                <static>CONFLICTOS</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="test_conflict_1">
+                <anchored width="320" height="30">
+                    <top offset="105" />
+                    <left offset="65" />
+                </anchored>
+                <font>aptus_font_conflict</font>
+                <conflict_index>1</conflict_index>
+                <script file="scripts/header_conflict_aptus.lua" />
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="test_conflict_2">
+                <anchored width="320" height="30">
+                    <top offset="130" />
+                    <left offset="65" />
+                </anchored>
+                <font>aptus_font_conflict</font>
+                <conflict_index>2</conflict_index>
+                <script file="scripts/header_conflict_aptus.lua" />
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="test_conflict_3">
+                <anchored width="320" height="30">
+                    <top offset="155" />
+                    <left offset="65" />
+                </anchored>
+                <font>aptus_font_conflict</font>
+                <conflict_index>3</conflict_index>
+                <script file="scripts/header_conflict_aptus.lua" />
+                <disabled />
+            </stringcontrol>
+
+
+            <!-- Acciones propias, siempre visibles en la cabecera permanente. -->
+            <buttoncontrol name="aptus_minimize_button">
+                <bounds>558,0,51,48</bounds>
+                <icon normal="aptus_min_black" pressed="aptus_min_black" />
+                <tooltip text="Minimizar ficha" />
+                <script>
+                    function onButtonPress()
+                        WindowManager.getTopWindow(window).minimize();
+                    end
+                </script>
+            </buttoncontrol>
+            <buttoncontrol name="aptus_close_button">
+                <bounds>594,0,51,48</bounds>
+                <icon normal="aptus_close_black" pressed="aptus_close_black" />
+                <tooltip text="Cerrar ficha" />
+                <script>
+                    function onButtonPress()
+                        WindowManager.getTopWindow(window).close();
+                    end
+                </script>
+            </buttoncontrol>
+        </sheetdata>
+    </windowclass>
+</root>

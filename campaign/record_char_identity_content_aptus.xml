@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <windowclass name="aptus_identity_datos">
+        <margins control="0,0,0,0" />
+        <script file="scripts/char_identity_data_aptus.lua" />
+        <sheetdata>
+            <!-- Bounds relativos al origen de Datos: (158,14) dentro de Identidad. -->
+            <stringcontrol name="label_name">
+                <bounds>6,8,280,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>NOMBRE</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="label_type">
+                <bounds>6,51,280,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>TIPO DE PERSONAJE</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="label_age">
+                <bounds>10,100,65,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>EDAD</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="label_sex">
+                <bounds>90,100,70,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>SEXO</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="label_height">
+                <bounds>173,100,70,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>ALTURA</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="label_weight">
+                <bounds>250,100,70,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>PESO</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="label_years">
+                <bounds>49,118,32,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>años</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="label_metres">
+                <bounds>212,118,20,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>m</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="label_kilograms">
+                <bounds>288,118,24,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>kg</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="label_description">
+                <bounds>6,144,440,28</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>DESCRIPCIÓN FÍSICA</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="label_other_notes">
+                <bounds>6,230,440,28</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>OTRAS NOTAS</static>
+                <disabled />
+            </stringcontrol>
+
+            <!-- Referencia al catálogo: sólo el director puede asignarla por arrastre. -->
+            <stringcontrol name="character_type">
+                <bounds>45,72,290,18</bounds>
+                <font>aptus_font_navigation_white</font><readonly /><nodrag />
+                <tooltip text="Tipo de personaje: arrastrar desde el catálogo (sólo director)" />
+                <script file="scripts/char_character_type_aptus.lua" />
+            </stringcontrol>
+            <!-- Campos nuevos: bounds relativos a Datos. Sin marcos ni fondos. -->
+            <stringfield name="name">
+                <bounds>10,32,294,18</bounds>
+                <font>aptus_font_navigation_black</font><nodrag />
+            </stringfield>
+            <!-- age: valor numérico editable, conservando el tipo del nodo existente. -->
+            <stringcontrol name="age">
+                <bounds>10,118,30,18</bounds>
+                <font>aptus_font_navigation_black</font>
+                <center /><nodrag /><nodrop />
+                <tooltip text="Número entero; sin unidades" />
+                <integeronly />
+                <script file="scripts/identity_numeric_aptus.lua" />
+            </stringcontrol>
+            <stringfield name="gender">
+                <bounds>95,118,56,18</bounds>
+                <font>aptus_font_navigation_black</font><nodrag />
+            </stringfield>
+            <!-- height: valor numérico editable, conservando el tipo del nodo existente. -->
+            <stringcontrol name="height">
+                <bounds>174,118,30,18</bounds>
+                <font>aptus_font_navigation_black</font>
+                <center /><nodrag /><nodrop />
+                <tooltip text="Número decimal (punto o coma); sin unidades" />
+                
+                <script file="scripts/identity_numeric_aptus.lua" />
+            </stringcontrol>
+            <!-- weight: valor numérico editable, conservando el tipo del nodo existente. -->
+            <stringcontrol name="weight">
+                <bounds>250,118,30,18</bounds>
+                <font>aptus_font_navigation_black</font>
+                <center /><nodrag /><nodrop />
+                <tooltip text="Número decimal (punto o coma); sin unidades" />
+                
+                <script file="scripts/identity_numeric_aptus.lua" />
+            </stringcontrol>
+            <stringfield name="appearance">
+                <bounds>12,174,426,48</bounds>
+                <font>aptus_font_navigation_black</font>
+                <multilinespacing>14</multilinespacing><nodrag />
+            </stringfield>
+            <!-- Barra nativa: ocupa el margen derecho reservado dentro del recuadro. -->
+            <scrollbar name="appearance_scrollbar">
+                <anchored merge="delete" />
+                <bounds>453,176,20,48</bounds>
+                <frame name="scrollbar_base" offset="0,0,0,0" />
+                <target>appearance</target>
+            </scrollbar>
+            <stringfield name="notes">
+                <bounds>12,260,426,48</bounds>
+                <font>aptus_font_navigation_black</font>
+                <multilinespacing>14</multilinespacing><nodrag />
+            </stringfield>
+            <!-- Barra nativa: ocupa el margen derecho reservado dentro del recuadro. -->
+            <scrollbar name="notes_scrollbar">
+                <anchored merge="delete" />
+                <bounds>453,264,20,48</bounds>
+                <frame name="scrollbar_base" offset="0,0,0,0" />
+                <target>notes</target>
+            </scrollbar>
+            <!-- Vista de prueba: comparte nodo, no sustituye portrait/token activos. -->
+            <subwindow name="symbiote_appearances">
+                <bounds>314,3,148,136</bounds>
+                <noscroll /><invisible />
+            </subwindow>
+            <!-- Control nativo: portrait, token y token3Dflat; independiente de illustration. -->
+            <picture_charsheet_v2 name="portrait">
+                <anchored merge="delete" />
+                <bounds>350,32,75,50</bounds>
+                <script>
+                    function onDrop(x, y, draginfo)
+                        if WindowManager.getWindowReadOnlyState(window) then return false; end
+                        return super.onDrop(x, y, draginfo);
+                    end
+                </script>
+            </picture_charsheet_v2>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_identity_historia">
+        <margins control="0,0,0,0" />
+        <script file="scripts/char_identity_history_aptus.lua" />
+        <sheetdata>
+            <!-- Bounds relativos a Historia (158,14 dentro de Identidad). -->
+            <stringcontrol name="label_past">
+                <bounds>75,35,360,22</bounds>
+                <font>aptus_font_navigation_black</font>
+                <static>LO QUE FUI</static><disabled />
+            </stringcontrol>
+            <stringfield name="aptus.identity.history.past">
+                <bounds>12,78,440,80</bounds>
+                <font>aptus_font_navigation_black</font>
+                <multilinespacing>14</multilinespacing><nodrag />
+            </stringfield>
+            <scrollbar name="past_scrollbar">
+                <anchored merge="delete" />
+                <bounds>455,78,20,80</bounds>
+                <frame name="scrollbar_base" offset="0,0,0,0" />
+                <target>aptus.identity.history.past</target>
+            </scrollbar>
+            <stringcontrol name="label_present">
+                <bounds>75,190,360,22</bounds>
+                <font>aptus_font_navigation_black</font>
+                <static>LO QUE SOY</static><disabled />
+            </stringcontrol>
+            <stringfield name="aptus.identity.history.present">
+                <bounds>12,232,440,72</bounds>
+                <font>aptus_font_navigation_black</font>
+                <multilinespacing>14</multilinespacing><nodrag />
+            </stringfield>
+            <scrollbar name="present_scrollbar">
+                <anchored merge="delete" />
+                <bounds>455,232,20,72</bounds>
+                <frame name="scrollbar_base" offset="0,0,0,0" />
+                <target>aptus.identity.history.present</target>
+            </scrollbar>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_identity_dedicacion">
+        <margins control="0,0,0,0" />
+        <script file="scripts/char_identity_dedication_aptus.lua" />
+        <sheetdata>
+            <!-- Bounds relativos a Dedicación: origen (158,14) en Identidad. -->
+            <stringcontrol name="label_dedication">
+                <bounds>62,0,392,14</bounds><font>aptus_font_navigation_white</font>
+                <static>DEDICACIÓN</static><disabled />
+            </stringcontrol>
+            <stringcontrol name="dedication">
+                <bounds>62,15,392,24</bounds><font>aptus_font_navigation_white</font><nodrag />
+                <script>
+                    function onValueChanged() window.onDedicationEdited(getValue()); end
+                    function onDrop(x, y, draginfo) return window.onDedicationDrop(draginfo); end
+                </script>
+            </stringcontrol>
+            <stringcontrol name="label_description">
+                <bounds>6,60,290,18</bounds><font>aptus_font_navigation_white</font>
+                <static>DESCRIPCIÓN</static><disabled />
+            </stringcontrol>
+            <stringcontrol name="description">
+                <bounds>10,88,280,130</bounds><font>aptus_font_navigation_black</font>
+                <multilinespacing>14</multilinespacing><readonly /><nodrag /><nodrop />
+            </stringcontrol>
+            <scrollbar name="description_scrollbar">
+                <anchored merge="delete" /><bounds>300,88,20,130</bounds>
+                <frame name="scrollbar_base" offset="0,0,0,0" /><target>description</target>
+            </scrollbar>
+            <stringcontrol name="label_special">
+                <bounds>6,244,290,18</bounds><font>aptus_font_navigation_white</font>
+                <static>ESPECIAL</static><disabled />
+            </stringcontrol>
+            <stringcontrol name="special">
+                <bounds>10,270,280,38</bounds><font>aptus_font_navigation_black</font>
+                <multilinespacing>14</multilinespacing><readonly /><nodrag /><nodrop />
+            </stringcontrol>
+            <scrollbar name="special_scrollbar">
+                <anchored merge="delete" /><bounds>300,270,20,38</bounds>
+                <frame name="scrollbar_base" offset="0,0,0,0" />
+                <normal name="scrollbutton_normal"><minimum height="20" /></normal>
+                <target>special</target>
+            </scrollbar>
+            <stringcontrol name="label_illustration">
+                <bounds>344,60,116,18</bounds><font>aptus_font_navigation_white</font>
+                <static>ILUSTRACIÓN</static><disabled />
+            </stringcontrol>
+            <genericcontrol name="illustration">
+                <bounds>344,80,116,232</bounds><disabled />
+            </genericcontrol>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_identity_conflictos">
+        <margins control="0,0,0,0" />
+        <script file="scripts/char_identity_conflicts_aptus.lua" />
+        <sheetdata>
+            <!-- El signo + ya está dibujado en el fondo. -->
+            <buttoncontrol name="add_conflict">
+                <bounds>438,12,26,24</bounds><tooltip text="Añadir conflicto" />
+                <script>function onButtonPress() window.addConflict(); end</script>
+            </buttoncontrol>
+            <button_iedit name="conflicts_iedit">
+                <anchored merge="delete" /><bounds>412,14,20,20</bounds><edittarget>conflicts</edittarget>
+            </button_iedit>
+            <windowlist name="conflicts">
+                <bounds>0,44,451,252</bounds>
+                <class>aptus_conflict_row</class><datasource>.aptus.identity.conflicts</datasource>
+                <sortby><field>order</field></sortby>
+            </windowlist>
+            <scrollbar name="conflicts_scrollbar">
+                <anchored merge="delete" /><bounds>451,44,18,252</bounds>
+                <frame name="scrollbar_base" offset="0,0,0,0" /><target>conflicts</target>
+            </scrollbar>
+        </sheetdata>
+    </windowclass>
+</root>

@@ -17,6 +17,10 @@
     <icon name="aptus_close"
         file="graphics/icons/aptus_close.png" />
 
+    <!-- Acciones de cabecera APTUS sobre fondo claro -->
+    <icon name="aptus_close_black" file="graphics/icons/aptus_close_black.png" />
+    <icon name="aptus_min_black" file="graphics/icons/aptus_min_black.png" />
+
     <!-- ANADIR -->
     <icon name="aptus_add" file="graphics/icons/aptus_add.png" />
 

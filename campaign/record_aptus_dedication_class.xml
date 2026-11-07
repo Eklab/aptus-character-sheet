@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <windowclass name="aptus_dedication_class" copy="record_window">
+        <placement><size width="560" height="600" /></placement>
+        <sizelimits><minimum width="520" height="560" /><dynamic /></sizelimits>
+    </windowclass>
+    <windowclass name="aptus_dedication_class_main">
+        <margins control="0,0,0,2" />
+        <script file="scripts/record_dedication_class_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="label_id">
+                <bounds>10,0,430,18</bounds><font>sheetlabel</font>
+                <static>Identificador interno</static><disabled />
+            </stringcontrol>
+            <stringfield name="id">
+                <bounds>10,22,430,22</bounds><font>sheettext</font><readonly /><nodrag />
+            </stringfield>
+            <stringcontrol name="label_description">
+                <bounds>10,55,280,20</bounds><font>sheetlabel</font>
+                <static>Descripción</static><disabled />
+            </stringcontrol>
+            <stringfield name="description">
+                <bounds>10,80,280,180</bounds><font>sheettext</font>
+                <multilinespacing>20</multilinespacing><nodrag />
+            </stringfield>
+            <scrollbar name="description_scrollbar">
+                <anchored to="description" /><target>description</target>
+            </scrollbar>
+            <stringcontrol name="label_special">
+                <bounds>10,275,280,20</bounds><font>sheetlabel</font>
+                <static>Especial</static><disabled />
+            </stringcontrol>
+            <stringfield name="special">
+                <bounds>10,300,280,70</bounds><font>sheettext</font>
+                <multilinespacing>20</multilinespacing><nodrag />
+            </stringfield>
+            <scrollbar name="special_scrollbar">
+                <anchored to="special" /><target>special</target>
+            </scrollbar>
+            <stringcontrol name="label_picture">
+                <bounds>330,55,130,20</bounds><font>sheetlabel</font>
+                <static>Ilustración</static><disabled />
+            </stringcontrol>
+            <asset_picture name="picture">
+                <bounds>330,80,130,150</bounds>
+                <script>
+                    function onDrop(x, y, draginfo)
+                        if not Session.IsHost or isReadOnly() then return false; end
+                        local sType = draginfo.getType();
+                        if sType == "image" or sType == "portrait" or sType == "token" then
+                            local sAsset = draginfo.getTokenData();
+                            if (sAsset or "") == "" then return false; end
+                            setValue(sAsset);
+                            return true;
+                        end
+                        return super.onDrop(x, y, draginfo);
+                    end
+                </script>
+            </asset_picture>
+            <button_picture_idelete name="picture_idelete">
+                <anchored merge="delete" /><bounds>440,240,20,20</bounds><target>picture</target>
+            </button_picture_idelete>
+        </sheetdata>
+    </windowclass>
+</root>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <template name="aptus_symbiote_stored_asset">
+        <genericcontrol>
+            <script file="scripts/symbiote_appearance_asset_aptus.lua" />
+        </genericcontrol>
+    </template>
+    <windowclass name="aptus_symbiote_appearance_grid">
+        <margins control="0,0,0,0" />
+        <script file="scripts/symbiote_appearance_grid_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="latente_highlight">
+                <bounds>8,16,60,50</bounds><disabled />
+            </genericcontrol>
+            <aptus_symbiote_stored_asset name="latente_portrait">
+                <bounds>22,18,44,44</bounds>
+                <appearance_mode>latente</appearance_mode><appearance_kind>portrait</appearance_kind>
+                <tooltip text="LATENTE: arrastrar Portrait almacenado" />
+            </aptus_symbiote_stored_asset>
+            <aptus_symbiote_stored_asset name="latente_token">
+                <bounds>54,46,20,20</bounds>
+                <appearance_mode>latente</appearance_mode><appearance_kind>token</appearance_kind>
+                <tooltip text="LATENTE: arrastrar Token almacenado" />
+            </aptus_symbiote_stored_asset>
+            <stringcontrol name="latente_label">
+                <bounds>10,0,68,16</bounds>
+                <font>aptus_font_navigation_white</font><center />
+                <static>LATENTE</static><disabled />
+            </stringcontrol>
+            <genericcontrol name="vinculado_highlight">
+                <bounds>80,16,60,50</bounds><disabled />
+            </genericcontrol>
+            <aptus_symbiote_stored_asset name="vinculado_portrait">
+                <bounds>84,18,44,44</bounds>
+                <appearance_mode>vinculado</appearance_mode><appearance_kind>portrait</appearance_kind>
+                <tooltip text="VINCULADO: arrastrar Portrait almacenado" />
+            </aptus_symbiote_stored_asset>
+            <aptus_symbiote_stored_asset name="vinculado_token">
+                <bounds>116,46,20,20</bounds>
+                <appearance_mode>vinculado</appearance_mode><appearance_kind>token</appearance_kind>
+                <tooltip text="VINCULADO: arrastrar Token almacenado" />
+            </aptus_symbiote_stored_asset>
+            <stringcontrol name="vinculado_label">
+                <bounds>72,0,68,16</bounds>
+                <font>aptus_font_navigation_white</font><center />
+                <static>VINCULADO</static><disabled />
+            </stringcontrol>
+            <genericcontrol name="liberado_highlight">
+                <bounds>8,84,60,50</bounds><disabled />
+            </genericcontrol>
+            <aptus_symbiote_stored_asset name="liberado_portrait">
+                <bounds>12,86,44,44</bounds>
+                <appearance_mode>liberado</appearance_mode><appearance_kind>portrait</appearance_kind>
+                <tooltip text="LIBERADO: arrastrar Portrait almacenado" />
+            </aptus_symbiote_stored_asset>
+            <aptus_symbiote_stored_asset name="liberado_token">
+                <bounds>44,114,20,20</bounds>
+                <appearance_mode>liberado</appearance_mode><appearance_kind>token</appearance_kind>
+                <tooltip text="LIBERADO: arrastrar Token almacenado" />
+            </aptus_symbiote_stored_asset>
+            <stringcontrol name="liberado_label">
+                <bounds>0,68,68,16</bounds>
+                <font>aptus_font_navigation_white</font><center />
+                <static>LIBERADO</static><disabled />
+            </stringcontrol>
+            <genericcontrol name="avatar_highlight">
+                <bounds>80,84,60,50</bounds><disabled />
+            </genericcontrol>
+            <aptus_symbiote_stored_asset name="avatar_portrait">
+                <bounds>84,86,44,44</bounds>
+                <appearance_mode>avatar</appearance_mode><appearance_kind>portrait</appearance_kind>
+                <tooltip text="AVATAR: arrastrar Portrait almacenado" />
+            </aptus_symbiote_stored_asset>
+            <aptus_symbiote_stored_asset name="avatar_token">
+                <bounds>116,114,20,20</bounds>
+                <appearance_mode>avatar</appearance_mode><appearance_kind>token</appearance_kind>
+                <tooltip text="AVATAR: arrastrar Token almacenado" />
+            </aptus_symbiote_stored_asset>
+            <stringcontrol name="avatar_label">
+                <bounds>72,68,68,16</bounds>
+                <font>aptus_font_navigation_white</font><center />
+                <static>AVATAR</static><disabled />
+            </stringcontrol>
+        </sheetdata>
+    </windowclass>
+</root>

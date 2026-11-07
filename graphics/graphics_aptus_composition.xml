@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <icon name="aptus_header_background" file="graphics/themes/default/aptus_header_background_default.png" />
+    <icon name="aptus_character_illustration" file="graphics/themes/default/aptus_character_illustration_default.png" />
+    <icon name="aptus_header_divider" file="graphics/themes/default/aptus_header_divider_default.png" />
+    <icon name="aptus_navigation_background" file="graphics/themes/default/aptus_navigation_background_defaultt.png" />
+    <icon name="aptus_combat_background"
+      file="graphics/themes/default/aptus_combat_background_default.png" />
+    <icon name="aptus_navigation_active_main" file="graphics/themes/default/aptus_navigation_active_main.png" />
+    <icon name="aptus_navigation_active_combat" file="graphics/themes/default/aptus_navigation_active_combat.png" />
+    <icon name="aptus_navigation_active_cualidades" file="graphics/themes/default/aptus_navigation_active_cualidades.png" />
+    <icon name="aptus_navigation_active_equipo" file="graphics/themes/default/aptus_navigation_active_equipo.png" />
+    <icon name="aptus_navigation_active_identificacion" file="graphics/themes/default/aptus_navigation_active_identificacion.png" />
+    <icon name="aptus_navigation_active_simbionte" file="graphics/themes/default/aptus_navigation_active_simbionte.png" />
+    <!-- Identidad: recursos separados de la estructura y del controlador. -->
+    <icon name="aptus_identidad_background_default" file="graphics/themes/default/aptus_identidad_background_default.png" />
+    <icon name="aptus_identidad_navigation_active_datos" file="graphics/themes/default/aptus_identidad_navigation_active_datos.png" />
+    <icon name="aptus_identidad_navigation_active_historia" file="graphics/themes/default/aptus_identidad_navigation_active_historia.png" />
+    <icon name="aptus_identidad_navigation_active_dedicacion" file="graphics/themes/default/aptus_identidad_navigation_active_dedicacion.png" />
+    <icon name="aptus_identidad_navigation_active_conflictos" file="graphics/themes/default/aptus_identidad_navigation_active_conflictos.png" />
+    <!-- Variantes registradas: no sustituyen las referencias de default. -->
+    <icon name="aptus_header_background_cazador" file="graphics/themes/cazador/aptus_header_background_default.png" />
+    <icon name="aptus_character_illustration_cazador" file="graphics/themes/cazador/aptus_character_illustration_default.png" />
+    <icon name="aptus_header_divider_cazador" file="graphics/themes/cazador/aptus_header_divider_default.png" />
+    <icon name="aptus_navigation_background_cazador" file="graphics/themes/cazador/aptus_navigation_background_defaultt.png" />
+    <icon name="aptus_combat_background_cazador" file="graphics/themes/cazador/aptus_combat_background_default.png" />
+    <icon name="aptus_navigation_active_main_cazador" file="graphics/themes/cazador/aptus_navigation_active_main.png" />
+    <icon name="aptus_navigation_active_combat_cazador" file="graphics/themes/cazador/aptus_navigation_active_combat.png" />
+    <icon name="aptus_navigation_active_cualidades_cazador" file="graphics/themes/cazador/aptus_navigation_active_cualidades.png" />
+    <icon name="aptus_navigation_active_equipo_cazador" file="graphics/themes/cazador/aptus_navigation_active_equipo.png" />
+    <icon name="aptus_navigation_active_identificacion_cazador" file="graphics/themes/cazador/aptus_navigation_active_identificacion.png" />
+    <icon name="aptus_navigation_active_simbionte_cazador" file="graphics/themes/cazador/aptus_navigation_active_simbionte.png" />
+    <icon name="aptus_identidad_background_default_cazador" file="graphics/themes/cazador/aptus_identidad_background_default.png" />
+    <icon name="aptus_identidad_navigation_active_datos_cazador" file="graphics/themes/cazador/aptus_identidad_navigation_active_datos.png" />
+    <icon name="aptus_identidad_navigation_active_historia_cazador" file="graphics/themes/cazador/aptus_identidad_navigation_active_historia.png" />
+    <icon name="aptus_identidad_navigation_active_dedicacion_cazador" file="graphics/themes/cazador/aptus_identidad_navigation_active_dedicacion.png" />
+    <icon name="aptus_identidad_navigation_active_conflictos_cazador" file="graphics/themes/cazador/aptus_identidad_navigation_active_conflictos.png" />
+    <!-- Historia: la variante de una SKIN es opcional; fallback nativo del gestor. -->
+    <icon name="aptus_identidad_background_historia" file="graphics/themes/default/aptus_identidad_background_historia.png" />
+    <icon name="aptus_identidad_background_dedicacion" file="graphics/themes/default/aptus_identidad_background_dedicacion.png" />
+    <icon name="aptus_identidad_background_conflictos" file="graphics/themes/default/aptus_identidad_background_conflictos.png" />
+    <icon name="aptus_identidad_conflicto" file="graphics/themes/default/aptus_identidad_conflicto.png" />
+</root>

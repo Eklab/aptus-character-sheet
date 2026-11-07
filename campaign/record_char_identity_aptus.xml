@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Un único área de contenido compartida por los cuatro contenedores. -->
+    <template name="aptus_identity_content">
+        <subwindow>
+            <bounds>158,14,470,323</bounds>
+            <noscroll /><invisible />
+        </subwindow>
+    </template>
+    <windowclass name="aptus_char_identity">
+        <margins control="0,0,0,0" />
+        <script file="scripts/char_identity_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="identity_background">
+                <bounds>0,0,652,359</bounds>
+                <icon>aptus_identidad_background_default</icon><disabled />
+                <skin_resource>aptus_identidad_background_default</skin_resource>
+                <script file="scripts/skin_icon_aptus.lua" />
+            </genericcontrol>
+            <genericcontrol name="identity_active">
+                <anchored width="117" height="36"><left offset="20" /><top offset="36" /></anchored>
+                <icon>aptus_identidad_navigation_active_datos</icon><disabled />
+            </genericcontrol>
+            <!-- Capa de etiquetas; cada posición se ajusta desde sus bounds. -->
+            <stringcontrol name="label_datos">
+                <bounds>48,45,88,18</bounds>
+                <font>aptus_font_navigation_black</font>
+                <center /><static>DATOS</static><disabled />
+            </stringcontrol>
+            <stringcontrol name="label_historia">
+                <bounds>48,89,88,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <center /><static>HISTORIA</static><disabled />
+            </stringcontrol>
+            <stringcontrol name="label_dedicacion">
+                <bounds>48,133,88,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <center /><static>DEDICACIÓN</static><disabled />
+            </stringcontrol>
+            <stringcontrol name="label_conflictos">
+                <bounds>48,179,88,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <center /><static>CONFLICTOS</static><disabled />
+            </stringcontrol>
+            <!-- Capa superior: zonas transparentes de clic. -->
+            <buttoncontrol name="button_datos">
+                <bounds>20,36,117,36</bounds>
+                <script>function onButtonPress() window.selectSection("datos"); end</script>
+            </buttoncontrol>
+            <buttoncontrol name="button_historia">
+                <bounds>20,80,117,36</bounds>
+                <script>function onButtonPress() window.selectSection("historia"); end</script>
+            </buttoncontrol>
+            <buttoncontrol name="button_dedicacion">
+                <bounds>20,124,117,36</bounds>
+                <script>function onButtonPress() window.selectSection("dedicacion"); end</script>
+            </buttoncontrol>
+            <buttoncontrol name="button_conflictos">
+                <bounds>20,170,117,36</bounds>
+                <script>function onButtonPress() window.selectSection("conflictos"); end</script>
+            </buttoncontrol>
+            <aptus_identity_content name="content_datos" />
+            <aptus_identity_content name="content_historia" />
+            <aptus_identity_content name="content_dedicacion" />
+            <aptus_identity_content name="content_conflictos" />
+            <!-- Contenedores heredados conservados e inactivos; sin acceso desde Identidad. -->
+            <subwindow name="legacy_content">
+                <bounds>158,14,470,323</bounds>
+                <invisible />
+            </subwindow>
+            <scrollbar name="legacy_scrollbar">
+                <anchored to="legacy_content" />
+                <target>legacy_content</target><invisible />
+            </scrollbar>
+        </sheetdata>
+    </windowclass>
+</root>

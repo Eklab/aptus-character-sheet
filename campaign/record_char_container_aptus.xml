@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Conserva charsheet_base, char.lua y las pestañas existentes. -->
+    <windowclass name="charsheet" merge="join">
+        <frame merge="delete" />
+        <margins control="0,0,0,0" />
+        <placement><size width="653" height="629" /></placement>
+        <sizelimits merge="replace">
+            <minimum width="653" height="629" />
+            <maximum width="653" height="629" />
+        </sizelimits>
+        <script file="scripts/char_container_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="contentanchor" merge="replace">
+                <anchored height="0">
+                    <top offset="278" /><left /><right offset="-20" />
+                </anchored>
+                <disabled />
+            </genericcontrol>
+            <genericcontrol name="bottomanchor" merge="replace">
+                <anchored to="contentanchor" height="0">
+                    <bottom parent="" /><left /><right />
+                </anchored>
+                <disabled />
+            </genericcontrol>
+            <subwindow name="overview" merge="replace">
+                <bounds>0,0,653,230</bounds>
+                <class>aptus_char_header</class>
+                <activate /><fastinit /><noscroll />
+            </subwindow>
+            <subwindow name="combat_background">
+                <anchored><top offset="278" /><left /><right /><bottom /></anchored>
+                <class>aptus_char_content_background</class>
+                <activate /><fastinit /><noscroll />
+            </subwindow>
+            <subwindow name="navigation">
+                <bounds>0,230,653,48</bounds>
+                <class>aptus_char_navigation</class>
+                <activate /><fastinit /><noscroll />
+            </subwindow>
+            <windowmenubar_charsheet name="menubar" merge="delete" />
+            <resize_charsheet name="resize" merge="delete" />
+        </sheetdata>
+    </windowclass>
+</root>

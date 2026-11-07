@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Prueba de composición a escala 1:1; los recursos tienen 653 px de ancho. -->
+    <windowclass name="aptus_test_charactersheet">
+        <margins control="0,0,0,0" />
+        <placement>
+            <size width="653" height="629" />
+        </placement>
+        <sizelimits>
+            <minimum width="653" height="629" />
+            <maximum width="653" height="629" />
+        </sizelimits>
+        <script>
+            function onInit()
+                -- Orden explícito de fondo a primer plano, también de anclajes.
+                header_background.bringToFront();
+                character_illustration.bringToFront();
+                header_divider.bringToFront();
+                navigation_background.bringToFront();
+                test_character_name.bringToFront();
+                test_character_details.bringToFront();
+                test_conflicts_title.bringToFront();
+                test_conflict_1.bringToFront();
+                test_conflict_2.bringToFront();
+                test_conflict_3.bringToFront();
+            end
+        </script>
+        <sheetdata>
+            <genericcontrol name="header_background">
+                <anchored width="653" height="238">
+                    <top />
+                    <left />
+                </anchored>
+                <icon>aptus_header_background</icon>
+                <disabled />
+            </genericcontrol>
+            <genericcontrol name="character_illustration">
+                <anchored to="header_background" width="222" height="213">
+                    <top offset="30" />
+                    <right offset="-40" />
+                </anchored>
+                <icon>aptus_character_illustration</icon>
+                <script file="scripts/test_character_illustration.lua" />
+            </genericcontrol>
+            <genericcontrol name="header_divider">
+                <!-- Centro del separador en el borde inferior del fondo (238 - 82). -->
+                <anchored to="header_background" width="653" height="164">
+                    <top offset="156" />
+                    <left />
+                </anchored>
+                <icon>aptus_header_divider</icon>
+                <disabled />
+            </genericcontrol>
+            <genericcontrol name="navigation_background">
+                <anchored to="header_background" width="653" height="50">
+                    <top offset="230" />
+                    <left />
+                </anchored>
+                <icon>aptus_navigation_background</icon>
+                <disabled />
+            </genericcontrol>
+            <!-- ================================================= -->
+            <!-- TEXTOS PROVISIONALES DE CABECERA                   -->
+            <!-- ================================================= -->
+
+            <stringcontrol name="test_character_name">
+                <anchored width="350" height="60">
+                    <top offset="15" />
+                    <left offset="45" />
+                </anchored>
+                <font>aptus_font_character_name</font>
+                <static>MIGUEL GARCÍA</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="test_character_details">
+                <anchored width="350" height="30">
+                    <top offset="60" />
+                    <left offset="45" />
+                </anchored>
+                <font>aptus_font_character_details</font>
+                <static>Repartidor - 29 años - Novato</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="test_conflicts_title">
+                <anchored width="300" height="30">
+                    <top offset="85" />
+                    <left offset="45" />
+                </anchored>
+                <font>aptus_font_section_title</font>
+                <static>CONFLICTOS</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="test_conflict_1">
+                <anchored width="320" height="30">
+                    <top offset="105" />
+                    <left offset="65" />
+                </anchored>
+                <font>aptus_font_conflict</font>
+                <static>Cuenta pendiente</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="test_conflict_2">
+                <anchored width="320" height="30">
+                    <top offset="130" />
+                    <left offset="65" />
+                </anchored>
+                <font>aptus_font_conflict</font>
+                <static>Protección de los suyos</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="test_conflict_3">
+                <anchored width="320" height="30">
+                    <top offset="155" />
+                    <left offset="65" />
+                </anchored>
+                <font>aptus_font_conflict</font>
+                <static>Verdad a cualquier precio</static>
+                <disabled />
+            </stringcontrol>
+
+            <genericcontrol name="combat_background">
+                <anchored width="659" height="365">
+                    <top offset="278" />
+                    <left />
+                </anchored>
+                <icon>aptus_combat_background</icon>
+                <disabled />
+            </genericcontrol>
+        </sheetdata>
+    </windowclass>
+</root>

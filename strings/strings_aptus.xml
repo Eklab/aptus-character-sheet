@@ -21,4 +21,11 @@
     <!-- Catálogo de armas -->
     <string name="library_recordtype_label_aptus_weapon">Armas</string>
     <string name="library_recordtype_single_aptus_weapon">Arma</string>
+    <!-- Catálogo de tipos de personaje -->
+    <string name="library_recordtype_label_aptus_character_type">Tipos de personaje</string>
+    <string name="library_recordtype_single_aptus_character_type">Tipo de personaje</string>
+    <string name="library_recordtype_empty_aptus_character_type">Nuevo tipo de personaje</string>
+    <string name="library_recordtype_label_aptus_dedication_class">Clases de dedicación</string>
+    <string name="library_recordtype_single_aptus_dedication_class">Clase de dedicación</string>
+    <string name="library_recordtype_empty_aptus_dedication_class">Nueva clase de dedicación</string>
 </root>

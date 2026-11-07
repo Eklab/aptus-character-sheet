@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <windowclass name="aptus_conflict_row">
+        <margins control="0,0,0,0" />
+        <script file="scripts/char_conflict_row_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="row_height"><bounds>0,0,1,123</bounds><disabled /></genericcontrol>
+            <genericcontrol name="background">
+                <bounds>0,0,451,117</bounds><icon>aptus_identidad_conflicto</icon><disabled />
+                <skin_resource>aptus_identidad_conflicto</skin_resource>
+                <script file="scripts/skin_icon_aptus.lua" />
+            </genericcontrol>
+            <stringfield name="title">
+                <bounds>55,13,365,22</bounds><font>aptus_font_navigation_black</font><nodrag />
+            </stringfield>
+            <stringfield name="description">
+                <bounds>12,46,400,60</bounds><font>aptus_font_navigation_black</font>
+                <multilinespacing>14</multilinespacing><nodrag />
+            </stringfield>
+            <scrollbar name="description_scrollbar">
+                <anchored merge="delete" /><bounds>421,46,18,60</bounds>
+                <frame name="scrollbar_base" offset="0,0,0,0" /><target>description</target>
+            </scrollbar>
+            <button_idelete name="idelete">
+                <anchored merge="delete" /><bounds>425,13,20,20</bounds>
+                <editmode>conflicts_iedit</editmode>
+            </button_idelete>
+        </sheetdata>
+    </windowclass>
+</root>

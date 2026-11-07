@@ -14,10 +14,29 @@
 
     <base>
         <!-- Gestores globales -->
+        <script name="APTUSDedication" file="scripts/manager_aptus_dedication.lua" />
+        <script name="APTUSSkin" file="scripts/manager_aptus_skin.lua" />
+        <script name="APTUSCharacterTypes" file="scripts/manager_aptus_character_types.lua" />
+        <script name="APTUSSymbioteAppearance" file="scripts/manager_aptus_symbiote_appearance.lua" />
+        <!-- Temporal: prueba manual de assets en el chat, sin alterar avisos de modo. -->
+        <script name="APTUSAppearanceChatTest" file="scripts/test_appearance_chat_assets.lua" />
+        <script name="APTUSCharacterManager" file="scripts/manager_aptus_character.lua" />
+        <script name="APTUSConflicts" file="scripts/manager_aptus_conflicts.lua" />
         <script name="APTUSSkillsManager" file="scripts/manager_aptus_skills.lua" />
 
         <!-- Textos traducibles -->
         <includefile source="strings/strings_aptus.xml" />
+
+        <includefile source="campaign/record_char_header_aptus.xml" />
+        <includefile source="campaign/record_char_navigation_aptus.xml" />
+        <includefile source="campaign/record_symbiote_appearance_aptus.xml" />
+        <includefile source="campaign/record_conflict_row_aptus.xml" />
+        <includefile source="campaign/record_char_identity_content_aptus.xml" />
+        <includefile source="campaign/record_char_identity_aptus.xml" />
+        <includefile source="campaign/record_char_container_aptus.xml" />
+
+        <includefile source="campaign/record_aptus_character_type.xml" />
+        <includefile source="campaign/record_aptus_dedication_class.xml" />
 
         <!-- Ficha de personaje -->
         <includefile source="campaign/record_char_aptus.xml" />
@@ -157,6 +176,13 @@
         <includefile source="campaign/record_aptus_weapon.xml" />
 
         <includefile source="campaign/record_aptus_weapon_row.xml" />
+
+        <!-- Prueba visual temporal: retirar estas dos referencias para desactivarla. -->
+        <includefile source="graphics/graphics_aptus_composition.xml" />
+        <includefile source="utility/test_charactersheet.xml" />
+        <script name="APTUSVisualTest" file="scripts/test_charactersheet.lua" />
+
+        <includefile source="fonts/fonts_aptus.xml" />
 
         <!-- TESTS-->
         <!--script

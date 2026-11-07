@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Nombre del personaje -->
+    <font name="aptus_font_character_name">
+         <ttf file="fonts/Kalam-Regular.ttf" name="Kalam" size="48" />
+    </font>
+
+    <!-- Títulos de los conflictos -->
+    <font name="aptus_font_conflict">
+        <ttf file="fonts/jr!ha___.ttf" name="jr!hand" size="23" />
+    </font>
+
+    <!-- Dedicación, edad y rango -->
+    <font name="aptus_font_character_details">
+        <ttf file="fonts/RobotoCondensed-Regular.ttf" name="Roboto Condensed" size="20" />
+    </font>
+
+    <!-- Encabezados de sección -->
+    <font name="aptus_font_section_title">
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed SemiBold" size="22" />
+    </font>
+    <!-- Navegación: misma tipografía y tamaño; sólo cambia el color. -->
+    <font name="aptus_font_navigation_white">
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="14" />
+        <color value="#FFFFFF" />
+    </font>
+    <font name="aptus_font_navigation_black">
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="14" />
+        <color value="#000000" />
+    </font>
+</root>

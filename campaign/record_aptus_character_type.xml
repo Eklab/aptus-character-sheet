@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Cabecera, enlace arrastrable, barra, bloqueo y exportación nativos. -->
+    <windowclass name="aptus_character_type" copy="record_window" />
+    <windowclass name="aptus_character_type_main">
+        <margins control="0,0,0,2" />
+        <script file="scripts/record_character_type_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="label_id">
+                <bounds>10,0,300,20</bounds>
+                <font>sheetlabel</font><static>Identificador interno</static><disabled />
+            </stringcontrol>
+            <stringfield name="id">
+                <bounds>10,25,300,20</bounds>
+                <font>sheettext</font><readonly /><nodrag />
+            </stringfield>
+            <stringcontrol name="label_description">
+                <bounds>10,60,300,20</bounds>
+                <font>sheetlabel</font><static>Descripción</static><disabled />
+            </stringcontrol>
+            <formattedtextfield name="description">
+                <anchored><top offset="85" /><left offset="10" /><right offset="-20" /><bottom offset="-10" /></anchored>
+            </formattedtextfield>
+            <scrollbar name="description_scrollbar">
+                <anchored to="description" /><target>description</target>
+            </scrollbar>
+        </sheetdata>
+    </windowclass>
+</root>
