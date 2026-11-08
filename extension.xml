@@ -22,6 +22,7 @@
         <script name="APTUSAppearanceChatTest" file="scripts/test_appearance_chat_assets.lua" />
         <script name="APTUSCharacterManager" file="scripts/manager_aptus_character.lua" />
         <script name="APTUSConflicts" file="scripts/manager_aptus_conflicts.lua" />
+        <script name="APTUSRank" file="scripts/manager_aptus_rank.lua" />
         <script name="APTUSSkillsManager" file="scripts/manager_aptus_skills.lua" />
 
         <!-- Textos traducibles -->
@@ -42,6 +43,7 @@
         <includefile source="campaign/record_char_aptus.xml" />
         <!-- Ficha de personaje - Template - Fila de Atributos -->
         <includefile source="campaign/record_attribute_row_aptus.xml" />
+        <includefile source="campaign/record_char_principal_aptus.xml" />
         <!-- Ficha de personaje - Configuracion de Atributos -->
         <includefile source="campaign/record_attributes_editor_aptus.xml" />
 
@@ -49,6 +51,7 @@
         <includefile source="campaign/record_char_abilities_aptus.xml" />
         <!-- Ficha de personaje - Template - Fila de Habilidades -->
         <includefile source="campaign/record_skill_row_aptus.xml" />
+        <includefile source="campaign/record_principal_skills_aptus.xml" />
         <!-- Ficha de personaje - Configuracion de Habilidades -->
         <includefile source="campaign/record_skills_editor_aptus.xml" />
         <!-- Ficha de personaje - Template - Edicion de Habilidades -->

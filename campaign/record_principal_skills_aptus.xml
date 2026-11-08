@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Misma lógica y mismos nodos que aptus_skill_row; sólo cambia la presentación. -->
+    <windowclass name="aptus_principal_skill_row">
+        <script file="scripts/char_skill_row_aptus.lua" />
+        <margins control="0,0,0,0" />
+        <sheetdata>
+            <genericcontrol name="skill_attribute_artwork"><bounds>187,2,48,19</bounds><icon>aptus_skill_attribute</icon><disabled /></genericcontrol>
+            <genericcontrol name="skill_formula_artwork"><bounds>239,0,91,23</bounds><icon>aptus_skill_formula</icon><disabled /></genericcontrol>
+            <genericcontrol name="training_artwork"><bounds>0,2,16,19</bounds><icon>aptus_skill_untrained</icon><disabled /></genericcontrol>
+            <stringcontrol name="progression_indicator"><bounds>0,0,1,1</bounds><invisible /><disabled /></stringcontrol>
+            <stringfield name="name"><bounds>20,2,164,20</bounds><font>aptus_font_navigation_white</font><readonly /><nodrag /><nodrop /></stringfield>
+            <stringcontrol name="attribute_display"><bounds>189,2,27,19</bounds><font>aptus_font_navigation_white</font><center /><disabled /></stringcontrol>
+            <numberfield name="level"><bounds>0,0,1,1</bounds><readonly /><invisible /><disabled /></numberfield>
+            <stringcontrol name="roll_reserve"><bounds>246,2,22,19</bounds><font>aptus_font_skill_formula</font><center /><disabled /></stringcontrol>
+            <genericcontrol name="roll_separator"><bounds>0,0,1,1</bounds><invisible /><disabled /></genericcontrol>
+            <stringcontrol name="roll_collect"><bounds>275,2,22,19</bounds><font>aptus_font_skill_formula</font><center /><disabled /></stringcontrol>
+            <genericcontrol name="roll_roto"><bounds>0,0,1,1</bounds><invisible /><disabled /></genericcontrol>
+            <genericcontrol name="row_height"><bounds>0,0,1,25</bounds><disabled /></genericcontrol>
+            <!-- Los PNG ya incluyen dado y separador: toda la fórmula es interactiva. -->
+            <buttoncontrol name="roll_button">
+                <bounds>239,0,91,23</bounds><tooltip text="Tirada de habilidad: clic o arrastre al chat" />
+                <script>
+                    function onButtonPress() window.performSkillRoll(); end
+                    function onDragStart(button, x, y, draginfo) return window.performSkillDrag(draginfo); end
+                </script>
+            </buttoncontrol>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_principal_skills" copy="charsheet_abilities">
+        <margins control="0,0,0,0" />
+        <script file="scripts/char_principal_skills_aptus.lua" />
+        <sheetdata>
+            <frame_char name="skillsframe" merge="delete" />
+            <label_frametop name="skills_title" merge="delete" />
+            <stringcontrol name="skills_header_name" merge="delete" />
+            <stringcontrol name="skills_header_attribute" merge="delete" />
+            <stringcontrol name="skills_header_level" merge="delete" />
+            <stringcontrol name="skills_header_roll" merge="delete" />
+            <stringcontrol name="title"><bounds>0,2,210,24</bounds><font>aptus_font_navigation_white</font><static>HABILIDADES</static><disabled /></stringcontrol>
+            <stringcontrol name="skill_filter">
+                <bounds>232,8,80,18</bounds><font>aptus_font_navigation_white</font><readonly /><nodrag /><nodrop />
+                <tooltip text="Clic: cambiar filtro. Clic derecho: elegir filtro." />
+                <script>
+                    function onInit()
+                        setValue("Todas");
+                        registerMenuItem("Todas", "button_edit", 1);
+                        registerMenuItem("Mis habilidades", "button_edit", 2);
+                    end
+                    function onClickDown() return true; end
+                    function onClickRelease() window.toggleSkillFilter(); return true; end
+                    function onMenuSelection(selection)
+                        if selection == 1 or selection == 2 then window.setSkillFilter(selection == 2); end
+                    end
+                </script>
+            </stringcontrol>
+            <!-- El engranaje y el recuadro del selector están en el fondo principal. -->
+            <buttoncontrol name="skills_editor_button" merge="replace">
+                <bounds>326,5,24,24</bounds><tooltip text="Editar habilidades" />
+                <script>function onButtonPress() window.openSkillsEditor(); end</script>
+            </buttoncontrol>
+            <windowlist name="aptus_skills_list" merge="replace">
+                <bounds>0,46,334,278</bounds><datasource>.skills</datasource><class>aptus_principal_skill_row</class>
+                <columns width="330" filldown="true" />
+                <script>
+                    function onFilter(w) return window.filterSkills(w); end
+                    function onSortCompare(w1, w2) return window.sortSkills(w1, w2); end
+                </script>
+            </windowlist>
+            <scrollbar name="skills_scrollbar"><bounds>334,46,20,278</bounds><frame name="scrollbar_base" offset="0,0,0,0" /><target>aptus_skills_list</target></scrollbar>
+        </sheetdata>
+    </windowclass>
+</root>

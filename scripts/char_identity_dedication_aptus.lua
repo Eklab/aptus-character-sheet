@@ -23,10 +23,10 @@ function refreshView()
     bRefreshing = true;
     dedication.setReadOnly(not APTUSDedication.canEdit(nodeChar));
     if not bEditing then
-        local sName = APTUSDedication.getDisplayName(nodeChar, tSubscription);
+        local sName = APTUSDedication.getDisplayName(nodeChar);
         if dedication.getValue() ~= sName then dedication.setValue(sName); end
     end
-    local nodeClass = APTUSDedication.getClassRecord(nodeChar, tSubscription);
+    local nodeClass = APTUSDedication.getClassRecord(nodeChar);
     description.setValue(nodeClass and DB.getValue(nodeClass, "description", "") or "");
     special.setValue(nodeClass and DB.getValue(nodeClass, "special", "") or "");
     illustration.setAsset("");

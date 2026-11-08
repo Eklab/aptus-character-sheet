@@ -3,77 +3,7 @@
 --------------------------------------------------
 
 function getSkillRollParams()
-
-    local nodeSkill = getDatabaseNode()
-
-    if not nodeSkill then
-        return nil
-    end
-
-    --------------------------------------------------
-    -- PERSONAJE
-    --------------------------------------------------
-
-    local nodeSkills = DB.getParent(nodeSkill)
-    local nodeChar = DB.getParent(nodeSkills)
-
-    if not nodeChar then
-        return nil
-    end
-
-    --------------------------------------------------
-    -- DATOS DE LA HABILIDAD
-    --------------------------------------------------
-
-    local sId = DB.getValue(nodeSkill, "id", "")
-    local sName = DB.getValue(nodeSkill, "name", "Habilidad")
-    local sAttribute = DB.getValue(nodeSkill, "attribute", "")
-    local nLevel = DB.getValue(nodeSkill, "level", 0)
-
-    local nReserve = 0
-    local nCollect = 0
-
-    --------------------------------------------------
-    -- OTRAS HABILIDADES
-    --------------------------------------------------
-
-    if sId == "generic_skill" then
-
-        sName = "Otras habilidades"
-        sAttribute = ""
-        nLevel = 0
-
-    end
-
-    --------------------------------------------------
-    -- CÁLCULO DE DADOS
-    --------------------------------------------------
-
-    if nLevel > 0 then
-
-        local nEffective = DB.getValue(
-            nodeChar,
-            "attributes." .. sAttribute .. ".effective",
-            0
-        )
-
-        nReserve = nEffective + nLevel
-        nCollect = nLevel
-
-    end
-
-    --------------------------------------------------
-    -- PARÁMETROS DE LA TIRADA
-    --------------------------------------------------
-
-    return {
-        sRollMode = "SKILL",
-        sLabel = sName,
-        sAttribute = sAttribute,
-        nReserve = nReserve,
-        nCollect = nCollect
-    }
-
+    return APTUSSkillsManager.getSkillRollParams(getDatabaseNode());
 end
 
 --------------------------------------------------
@@ -141,6 +71,9 @@ function onInit()
         return
     end
 
+    DB.addHandler(DB.getPath(nodeSkill, "special"), "onUpdate", updateRollFormula);
+    DB.addHandler(DB.getPath(nodeSkill, "special"), "onDelete", updateRollFormula);
+
     -- Actualizar nombre de Otras habilidades
     local sId = DB.getValue(nodeSkill, "id", "")
 
@@ -152,22 +85,6 @@ function onInit()
             "Otras habilidades"
         )
     end
-
-    --------------------------------------------------
-    -- ESCUCHAR CAMBIOS EN LA HABILIDAD
-    --------------------------------------------------
-
-    DB.addHandler(
-        DB.getPath(nodeSkill, "pack"),
-        "onUpdate",
-        updateProgressionIndicator
-    )
-
-    DB.addHandler(
-        DB.getPath(nodeSkill, "profession"),
-        "onUpdate",
-        updateProgressionIndicator
-    )
 
     --------------------------------------------------
     -- ESCUCHAR CAMBIOS EN NIVEL Y ATRIBUTO
@@ -219,6 +136,9 @@ function onInit()
     updateRollFormula()
     updateProgressionIndicator()
     updateAttributeDisplay()
+    if skill_formula_artwork then
+        APTUSSkin.subscribe(self, updateSkillPresentation);
+    end
 
 end
 
@@ -227,6 +147,8 @@ end
 --------------------------------------------------
 
 function updateRollFormula()
+
+    updateProgressionIndicator();
 
     local nodeSkill = getDatabaseNode()
 
@@ -248,7 +170,8 @@ function updateRollFormula()
         roll_separator.setVisible(false)
         roll_collect.setVisible(false)
 
-        roll_roto.setVisible(true)
+        roll_roto.setVisible(not skill_formula_artwork)
+        updateSkillPresentation()
 
         return
     end
@@ -260,7 +183,7 @@ function updateRollFormula()
     roll_roto.setVisible(false)
 
     roll_reserve.setVisible(true)
-    roll_separator.setVisible(true)
+    roll_separator.setVisible(not skill_formula_artwork)
     roll_collect.setVisible(true)
 
     local nodeChar = DB.getParent(DB.getParent(nodeSkill))
@@ -269,26 +192,27 @@ function updateRollFormula()
         return
     end
 
-    local nEffective = DB.getValue(
-        nodeChar,
-        "attributes." .. sAttribute .. ".effective",
-        0
-    )
-
-    local nReserve = nEffective + nLevel
-
-    roll_reserve.setValue(tostring(nReserve))
-    roll_collect.setValue(tostring(nLevel))
+    local rParams = getSkillRollParams()
+    roll_reserve.setValue(tostring(rParams.nReserve))
+    roll_collect.setValue(tostring(rParams.nCollect))
+    updateSkillPresentation()
 
 end
 
 function onClose()
+
+    if skill_formula_artwork then
+        APTUSSkin.unsubscribe(self, updateSkillPresentation);
+    end
 
     local nodeSkill = getDatabaseNode()
 
     if not nodeSkill then
         return
     end
+
+    DB.removeHandler(DB.getPath(nodeSkill, "special"), "onUpdate", updateRollFormula);
+    DB.removeHandler(DB.getPath(nodeSkill, "special"), "onDelete", updateRollFormula);
 
     DB.removeHandler(
         DB.getPath(nodeSkill, "level"),
@@ -329,17 +253,7 @@ function onClose()
 
     end
 
-    DB.removeHandler(
-        DB.getPath(nodeSkill, "pack"),
-        "onUpdate",
-        updateProgressionIndicator
-    )
 
-    DB.removeHandler(
-        DB.getPath(nodeSkill, "profession"),
-        "onUpdate",
-        updateProgressionIndicator
-    )
 
 end
 
@@ -359,18 +273,21 @@ function updateProgressionIndicator()
 
     -- Otras habilidades nunca puede progresar
     if sId == "generic_skill" then
+        if training_artwork then
+            training_artwork.setVisible(true);
+            training_artwork.setIcon(APTUSSkin.getIcon(self, "aptus_skill_untrained"));
+        end
         progression_indicator.setValue("")
         return
     end
 
-    local nPack = DB.getValue(nodeSkill, "pack", 0)
-    local nProfession = DB.getValue(nodeSkill, "profession", 0)
-
-    if nPack == 1 or nProfession == 1 then
-        progression_indicator.setValue("●")
-    else
-        progression_indicator.setValue("○")
+    local bTrained = APTUSSkillsManager.isTrained(nodeSkill);
+    if training_artwork then
+        training_artwork.setVisible(true);
+        training_artwork.setIcon(APTUSSkin.getIcon(self,
+            bTrained and "aptus_skill_trained" or "aptus_skill_untrained"));
     end
+    progression_indicator.setValue(bTrained and "●" or "○");
 
 end
 
@@ -393,7 +310,24 @@ function updateAttributeDisplay()
     )
 
     attribute_display.setValue(
-        string.upper(sAttribute)
+        (DB.getValue(nodeSkill, "id", "") == "generic_skill") and "-" or string.upper(sAttribute)
     )
 
+end
+
+-- Sólo apariencia de Principal. Los parámetros de tirada siguen en getSkillRollParams.
+function updateSkillPresentation()
+    if not skill_formula_artwork then return; end
+    local nodeSkill = getDatabaseNode();
+    if not nodeSkill then return; end
+    local bBroken = DB.getValue(nodeSkill, "id", "") == "generic_skill"
+        or DB.getValue(nodeSkill, "level", 0) == 0;
+    local sTextFont = bBroken and "aptus_font_skill_inactive" or "aptus_font_navigation_white";
+    name.setFont(sTextFont);
+    attribute_display.setFont(sTextFont);
+    skill_attribute_artwork.setIcon(APTUSSkin.getIcon(self, bBroken and "aptus_skill_attribute_broken" or "aptus_skill_attribute"));
+    skill_formula_artwork.setIcon(APTUSSkin.getIcon(self, bBroken and "aptus_skill_formula_broken" or "aptus_skill_formula"));
+    roll_separator.setVisible(false);
+    roll_roto.setVisible(false);
+    updateProgressionIndicator();
 end

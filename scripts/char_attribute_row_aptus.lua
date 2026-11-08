@@ -25,8 +25,9 @@ function onInit()
 
     local sAttribute = DB.getName(nodeAttribute)
     attribute_name.setValue(
-        aAttributeNames[sAttribute] or sAttribute
+        scale and sAttribute:upper() or (aAttributeNames[sAttribute] or sAttribute)
     )
+    if scale then APTUSSkin.subscribe(self, updateScale); end
 
 end
 
@@ -34,7 +35,7 @@ end
 -- TIRADA DE ATRIBUTO
 --------------------------------------------------
 
-function rollAttribute()
+function rollAttribute(draginfo)
 
     local nodeAttribute = getDatabaseNode()
 
@@ -53,13 +54,20 @@ function rollAttribute()
 
     local rActor = ActorManager.resolveActor(nodeChar)
 
-    APTUSDice.performRoll(rActor, {
+    local rParams = {
         sRollMode = "ATTRIBUTE",
         sLabel = aAttributeNames[sAttribute] or sAttribute,
         sAttribute = sAttribute,
         nReserve = nEffective,
         nCollect = nEffective
-    })
+    }
+    if draginfo then
+        local rRoll = APTUSDice.buildRoll(rParams)
+        if not rRoll then return false; end
+        ActionsManager.performAction(draginfo, rActor, rRoll)
+        return true;
+    end
+    APTUSDice.performRoll(rActor, rParams)
 
 end
 
@@ -100,4 +108,19 @@ function rollInitiative()
         nCollect = nEffective * 2
     })
 
+end
+
+-- Presentación opcional de la fila nueva; el cálculo sigue en char_main_aptus.lua.
+function updateScale()
+    if not scale then return; end
+    local nValue = DB.getValue(getDatabaseNode(), "effective", 0);
+    local nLevel = math.max(0, math.min(6, math.floor(nValue)));
+    scale.setIcon(APTUSSkin.getIcon(self, "aptus_attribute_level_" .. nLevel));
+    if initiative_button then
+        initiative_button.setIcons(APTUSSkin.getIcon(self, "aptus_attribute_initiative"));
+    end
+end
+
+function onClose()
+    if scale then APTUSSkin.unsubscribe(self, updateScale); end
 end

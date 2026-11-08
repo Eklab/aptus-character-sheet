@@ -10,6 +10,9 @@ function onInit()
         return
     end
 
+    DB.addHandler(DB.getPath(nodeSkill, "special"), "onUpdate", updateRollFormula);
+    DB.addHandler(DB.getPath(nodeSkill, "special"), "onDelete", updateRollFormula);
+
     DB.addHandler(
         DB.getPath(nodeSkill, "level"),
         "onUpdate",
@@ -102,16 +105,9 @@ function updateRollFormula()
         return
     end
 
-    local nEffective = DB.getValue(
-        nodeChar,
-        "attributes." .. sAttribute .. ".effective",
-        0
-    )
-
-    local nReserve = nEffective + nLevel
-
-    roll_reserve.setValue(tostring(nReserve))
-    roll_collect.setValue(tostring(nLevel))
+    local rParams = APTUSSkillsManager.getSkillRollParams(nodeSkill);
+    roll_reserve.setValue(tostring(rParams.nReserve));
+    roll_collect.setValue(tostring(rParams.nCollect));
 
 end
 
@@ -127,6 +123,9 @@ function onClose()
     if not nodeSkill then
         return
     end
+
+    DB.removeHandler(DB.getPath(nodeSkill, "special"), "onUpdate", updateRollFormula);
+    DB.removeHandler(DB.getPath(nodeSkill, "special"), "onDelete", updateRollFormula);
 
     DB.removeHandler(
         DB.getPath(nodeSkill, "level"),

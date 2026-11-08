@@ -81,39 +81,15 @@ function getAttackRollParams()
         "Arma"
     )
 
-    local nLevel = 0
-    local sAttribute = ""
-
-    if nodeSkill then
-
-        nLevel = DB.getValue(nodeSkill, "level", 0)
-        sAttribute = DB.getValue(nodeSkill, "attribute", "")
-
+    -- Sin habilidad asociada se conserva la tirada ROTA anterior.
+    local rParams = APTUSSkillsManager.getSkillRollParams(nodeSkill) or {
+        sRollMode = "SKILL", sAttribute = "", nReserve = 0, nCollect = 0,
+    };
+    if not nodeSkill or DB.getValue(nodeSkill, "attribute", "") == "" then
+        rParams.nReserve, rParams.nCollect = 0, 0;
     end
-
-    local nReserve = 0
-    local nCollect = 0
-
-    if nLevel > 0 and sAttribute ~= "" then
-
-        local nEffective = DB.getValue(
-            nodeChar,
-            "attributes." .. sAttribute .. ".effective",
-            0
-        )
-
-        nReserve = nEffective + nLevel
-        nCollect = nLevel
-
-    end
-
-    return {
-        sRollMode = "SKILL",
-        sLabel = sWeaponName,
-        sAttribute = sAttribute,
-        nReserve = nReserve,
-        nCollect = nCollect
-    }
+    rParams.sLabel = sWeaponName;
+    return rParams;
 
 end
 
@@ -180,50 +156,17 @@ function updateAttackFormula()
         return
     end
 
-    local nLevel = 0
-    local sAttribute = ""
-
-    if nodeSkill then
-
-        nLevel = DB.getValue(nodeSkill, "level", 0)
-        sAttribute = DB.getValue(nodeSkill, "attribute", "")
-
+    local rParams = getAttackRollParams();
+    if not rParams then return; end
+    local bBroken = rParams.nCollect == 0;
+    roll_reserve.setVisible(not bBroken);
+    roll_separator.setVisible(not bBroken);
+    roll_collect.setVisible(not bBroken);
+    roll_roto.setVisible(bBroken);
+    if not bBroken then
+        roll_reserve.setValue(tostring(rParams.nReserve));
+        roll_collect.setValue(tostring(rParams.nCollect));
     end
-
-    --------------------------------------------------
-    -- DADO ROTO
-    --------------------------------------------------
-
-    if nLevel == 0 or sAttribute == "" then
-
-        roll_reserve.setVisible(false)
-        roll_separator.setVisible(false)
-        roll_collect.setVisible(false)
-
-        roll_roto.setVisible(true)
-
-        return
-
-    end
-
-    --------------------------------------------------
-    -- TIRADA NORMAL
-    --------------------------------------------------
-
-    roll_roto.setVisible(false)
-
-    roll_reserve.setVisible(true)
-    roll_separator.setVisible(true)
-    roll_collect.setVisible(true)
-
-    local nEffective = DB.getValue(
-        nodeChar,
-        "attributes." .. sAttribute .. ".effective",
-        0
-    )
-
-    roll_reserve.setValue(tostring(nEffective + nLevel))
-    roll_collect.setValue(tostring(nLevel))
 
 end
 
@@ -287,21 +230,10 @@ function onInit()
     -- CAMBIOS EN HABILIDADES
     --------------------------------------------------
 
-    if nodeSkill then
+    DB.addHandler(DB.getPath(nodeChar, "skills"), "onChildUpdate", updateAttackFormula);
+    DB.addHandler(DB.getPath(nodeChar, "skills"), "onChildAdded", updateAttackFormula);
+    DB.addHandler(DB.getPath(nodeChar, "skills"), "onChildDeleted", updateAttackFormula);
 
-        DB.addHandler(
-            DB.getPath(nodeSkill, "level"),
-            "onUpdate",
-            updateAttackFormula
-        )
-
-        DB.addHandler(
-            DB.getPath(nodeSkill, "attribute"),
-            "onUpdate",
-            updateAttackFormula
-        )
-
-    end
 
     --------------------------------------------------
     -- CAMBIOS EN LA HABILIDAD ASOCIADA AL ARMA
@@ -357,21 +289,10 @@ function onClose()
 
     local nodeSkill = getAttackSkillNode()
 
-    if nodeSkill then
+    DB.removeHandler(DB.getPath(nodeChar, "skills"), "onChildUpdate", updateAttackFormula);
+    DB.removeHandler(DB.getPath(nodeChar, "skills"), "onChildAdded", updateAttackFormula);
+    DB.removeHandler(DB.getPath(nodeChar, "skills"), "onChildDeleted", updateAttackFormula);
 
-        DB.removeHandler(
-            DB.getPath(nodeSkill, "level"),
-            "onUpdate",
-            updateAttackFormula
-        )
-
-        DB.removeHandler(
-            DB.getPath(nodeSkill, "attribute"),
-            "onUpdate",
-            updateAttackFormula
-        )
-
-    end
 
     --------------------------------------------------
     -- CAMBIOS EN LA HABILIDAD ASOCIADA AL ARMA
@@ -381,7 +302,7 @@ function onClose()
 
     if nodeWeapon then
 
-        DB.addHandler(
+        DB.removeHandler(
             DB.getPath(nodeWeapon, "attack_skill_id"),
             "onUpdate",
             updateAttackFormula

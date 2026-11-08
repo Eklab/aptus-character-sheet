@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <windowclass name="aptus_principal_attribute_row" copy="aptus_attribute_row">
+        <margins control="0,0,0,0" />
+        <sheetdata>
+            <genericcontrol name="row_height" merge="replace"><bounds>0,0,1,43</bounds><disabled /></genericcontrol>
+            <genericcontrol name="base_artwork">
+                <bounds>0,0,34,34</bounds><icon>aptus_attribute_value</icon><disabled />
+                <skin_resource>aptus_attribute_value</skin_resource><script file="scripts/skin_icon_aptus.lua" />
+            </genericcontrol>
+            <numberfield name="base"><bounds>4,7,30,20</bounds><font>aptus_font_attribute_base</font><center /><readonly /><nodrag /><nodrop /></numberfield>
+            <stringcontrol name="attribute_name" merge="replace">
+                <bounds>40,0,30,20</bounds><font>aptus_font_attribute_name</font><center /><disabled />
+            </stringcontrol>
+            <genericcontrol name="scale"><bounds>40,3,78,28</bounds><icon>aptus_attribute_level_0</icon><disabled /></genericcontrol>
+            <numberfield name="effective" merge="replace">
+                <bounds>153,0,30,34</bounds><font>aptus_font_attribute_current</font><center /><readonly /><disabled />
+                <script>function onValueChanged() window.updateScale(); end</script>
+            </numberfield>
+            <!-- Dado visual: conserva proporción y deja pasar el ratón al botón. -->
+            <genericcontrol name="attribute_dice">
+                <bounds>184,4,26,26</bounds><disabled />
+                <script file="scripts/attribute_dice_visual_aptus.lua" />
+            </genericcontrol>
+            <!-- Recuadro en el fondo; botón transparente para clic y arrastre. -->
+            <buttoncontrol name="roll_button" merge="replace">
+                <bounds>148,0,66,34</bounds><tooltip text="Tirada de atributo: clic o arrastre al chat" />
+                <script>
+                    function onButtonPress() window.rollAttribute(); end
+                    function onDragStart(button, x, y, draginfo) return window.rollAttribute(draginfo); end
+                </script>
+            </buttoncontrol>
+            <buttoncontrol name="initiative_button" merge="replace">
+                <bounds>128,8,10,18</bounds><icon normal="aptus_attribute_initiative" pressed="aptus_attribute_initiative" />
+                <tooltip text="Iniciativa: cuantificación con este atributo" />
+                <script>function onButtonPress() window.rollInitiative(); end</script>
+            </buttoncontrol>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_char_principal">
+        <margins control="0,0,0,0" />
+        <script file="scripts/char_principal_aptus.lua" />
+        <sheetdata>
+            <!-- 643 - 278 = 365 px: recorta sólo el desbordamiento decorativo. -->
+            <subwindow name="background">
+                <bounds>0,0,659,365</bounds><class>aptus_principal_background_view</class>
+                <activate /><fastinit /><noscroll />
+            </subwindow>
+            <stringcontrol name="attributes_title"><bounds>28,16,175,24</bounds><font>aptus_font_navigation_white</font><static>ATRIBUTOS</static><disabled /></stringcontrol>
+            <stringcontrol name="base_title"><bounds>26,51,34,18</bounds><font>aptus_font_navigation_white</font><center /><static>BASE</static><disabled /></stringcontrol>
+            <stringcontrol name="initiative_title"><bounds>144,51,30,18</bounds><font>aptus_font_navigation_white</font><center /><static>INI</static><disabled /></stringcontrol>
+            <stringcontrol name="initiative_title"><bounds>184,51,50,18</bounds><font>aptus_font_navigation_white</font><center /><static>ACTUAL</static><disabled /></stringcontrol>
+            <!-- Engranaje ya dibujado: zona de clic transparente. -->
+            <buttoncontrol name="attributes_editor_button">
+                <bounds>219,19,24,24</bounds><tooltip text="Editar atributos" />
+                <script>function onButtonPress() window.openAttributesEditor(); end</script>
+            </buttoncontrol>
+            <subwindow name="attribute_fue"><bounds>26,70,214,43</bounds><noscroll /></subwindow>
+            <subwindow name="attribute_agi"><bounds>26,113,214,43</bounds><noscroll /></subwindow>
+            <subwindow name="attribute_con"><bounds>26,156,214,43</bounds><noscroll /></subwindow>
+            <subwindow name="attribute_per"><bounds>26,199,214,43</bounds><noscroll /></subwindow>
+            <subwindow name="attribute_int"><bounds>26,242,214,43</bounds><noscroll /></subwindow>
+            <subwindow name="attribute_esp"><bounds>26,287,214,43</bounds><noscroll /></subwindow>
+            <subwindow name="skills_content"><bounds>280,14,354,324</bounds><noscroll /></subwindow>
+        </sheetdata>
+    </windowclass>
+    <!-- Bitmap intacto y en (0,0); su viewport limita la extensión del padre. -->
+    <windowclass name="aptus_principal_background_view">
+        <margins control="0,0,0,0" />
+        <sheetdata>
+            <genericcontrol name="artwork">
+                <bounds>0,0,659,372</bounds><icon>aptus_principal_background</icon><disabled />
+                <skin_resource>aptus_principal_background</skin_resource><script file="scripts/skin_icon_aptus.lua" />
+            </genericcontrol>
+        </sheetdata>
+    </windowclass>
+</root>

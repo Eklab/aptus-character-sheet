@@ -74,10 +74,22 @@
 
             <!-- Referencia al catálogo: sólo el director puede asignarla por arrastre. -->
             <stringcontrol name="character_type">
-                <bounds>45,72,290,18</bounds>
+                <bounds>45,72,200,18</bounds>
                 <font>aptus_font_navigation_white</font><readonly /><nodrag />
                 <tooltip text="Tipo de personaje: arrastrar desde el catálogo (sólo director)" />
                 <script file="scripts/char_character_type_aptus.lua" />
+            </stringcontrol>
+            <!-- Rango: menú contextual nativo; posiciones relativas a Datos. -->
+            <stringcontrol name="label_rank">
+                <bounds>222,51,85,18</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>RANGO</static><disabled />
+            </stringcontrol>
+            <stringcontrol name="rank_selector">
+                <bounds>225,72,75,18</bounds>
+                <font>aptus_font_navigation_black</font>
+                <readonly /><nodrag /><nodrop />
+                <script file="scripts/rank_selector_aptus.lua" />
             </stringcontrol>
             <!-- Campos nuevos: bounds relativos a Datos. Sin marcos ni fondos. -->
             <stringfield name="name">
@@ -202,11 +214,11 @@
         <sheetdata>
             <!-- Bounds relativos a Dedicación: origen (158,14) en Identidad. -->
             <stringcontrol name="label_dedication">
-                <bounds>62,0,392,14</bounds><font>aptus_font_navigation_white</font>
+                <bounds>6,0,392,14</bounds><font>aptus_font_navigation_white</font>
                 <static>DEDICACIÓN</static><disabled />
             </stringcontrol>
             <stringcontrol name="dedication">
-                <bounds>62,15,392,24</bounds><font>aptus_font_navigation_white</font><nodrag />
+                <bounds>62,25,392,24</bounds><font>aptus_font_navigation_white</font><nodrag />
                 <script>
                     function onValueChanged() window.onDedicationEdited(getValue()); end
                     function onDrop(x, y, draginfo) return window.onDedicationDrop(draginfo); end
@@ -225,11 +237,11 @@
                 <frame name="scrollbar_base" offset="0,0,0,0" /><target>description</target>
             </scrollbar>
             <stringcontrol name="label_special">
-                <bounds>6,244,290,18</bounds><font>aptus_font_navigation_white</font>
+                <bounds>6,234,290,18</bounds><font>aptus_font_navigation_white</font>
                 <static>ESPECIAL</static><disabled />
             </stringcontrol>
             <stringcontrol name="special">
-                <bounds>10,270,280,38</bounds><font>aptus_font_navigation_black</font>
+                <bounds>10,262,290,48</bounds><font>aptus_font_navigation_black</font>
                 <multilinespacing>14</multilinespacing><readonly /><nodrag /><nodrop />
             </stringcontrol>
             <scrollbar name="special_scrollbar">
@@ -251,6 +263,12 @@
         <margins control="0,0,0,0" />
         <script file="scripts/char_identity_conflicts_aptus.lua" />
         <sheetdata>
+            <stringcontrol name="label_conflicts">
+                <bounds>6,12,280,20</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>CONFLICTOS</static>
+                <disabled />
+            </stringcontrol>
             <!-- El signo + ya está dibujado en el fondo. -->
             <buttoncontrol name="add_conflict">
                 <bounds>438,12,26,24</bounds><tooltip text="Añadir conflicto" />

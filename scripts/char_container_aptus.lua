@@ -64,7 +64,7 @@ function prepareTabViewport(tTab)
     c.setAnchor("bottom", "", "bottom", "absolute", 0);
     c.setAnchor("left", "", "left", "absolute", 0);
     -- Identidad no necesita barra exterior: su fondo ocupa el ancho completo.
-    local nRightOffset = (tTab.sName == "notes") and 0 or -20;
+    local nRightOffset = (tTab.sName == "notes" or tTab.sName == "aptus_principal") and 0 or -20;
     c.setAnchor("right", "", "right", "absolute", nRightOffset);
     local cScroll = WindowTabManager.getTabScrollbar(self, tTab);
     if cScroll then

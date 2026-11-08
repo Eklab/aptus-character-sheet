@@ -4,10 +4,10 @@
     <windowclass name="charsheet" merge="join">
         <frame merge="delete" />
         <margins control="0,0,0,0" />
-        <placement><size width="653" height="629" /></placement>
+        <placement><size width="653" height="643" /></placement>
         <sizelimits merge="replace">
-            <minimum width="653" height="629" />
-            <maximum width="653" height="629" />
+            <minimum width="653" height="643" />
+            <maximum width="653" height="643" />
         </sizelimits>
         <script file="scripts/char_container_aptus.lua" />
         <sheetdata>

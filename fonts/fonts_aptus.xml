@@ -28,4 +28,25 @@
         <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="14" />
         <color value="#000000" />
     </font>
+    <!-- Principal: fuentes específicas de atributos, independientes de navegación. -->
+    <font name="aptus_font_attribute_base">
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="16" />
+        <color value="#FFFFFF" />
+    </font>
+    <font name="aptus_font_attribute_name">
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="16" />
+        <color value="#FFFFFF" />
+    </font>
+    <font name="aptus_font_attribute_current">
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="28" />
+        <color value="#000000" />
+    </font>
+    <font name="aptus_font_skill_inactive">
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="14" />
+        <color value="#909090" />
+    </font>
+    <font name="aptus_font_skill_formula">
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="16" />
+        <color value="#000000" />
+    </font>
 </root>

@@ -3,6 +3,8 @@ local sType = "aptus_dedication_class";
 local sCatalog = "aptus_dedication_classes";
 local sText = "aptus.identity.dedication.text";
 local sClass = "aptus.identity.dedication.class";
+-- Un único observador por personaje; las vistas no mantienen estados separados.
+local tSubscriptions = {};
 
 function onInit()
     RecordDataManager.setRecordTypeData(sType, {
@@ -29,17 +31,18 @@ function canEdit(nodeChar)
     return nodeChar and not WindowManager.getReadOnlyState(nodeChar);
 end
 
-function getClassRecord(nodeChar, tSubscription)
-    if tSubscription and tSubscription.sourceDeleted then return nil; end
+function getClassRecord(nodeChar)
     local sRecordClass, sRecord = DB.getValue(nodeChar, sClass, "", "");
+    local tState = tSubscriptions[DB.getPath(nodeChar)];
+    if tState and tState.sourceDeleted and tState.recordClass == sRecordClass and tState.record == sRecord then return nil; end
     if sRecordClass ~= sType or (sRecord or "") == "" then return nil; end
     return DB.findNode(sRecord);
 end
 
-function getDisplayName(nodeChar, tSubscription)
+function getDisplayName(nodeChar)
     local sRecordClass, sRecord = DB.getValue(nodeChar, sClass, "", "");
     if (sRecord or "") ~= "" then
-        local nodeRecord = getClassRecord(nodeChar, tSubscription);
+        local nodeRecord = getClassRecord(nodeChar);
         return nodeRecord and DB.getValue(nodeRecord, "name", "") or "";
     end
     return DB.getValue(nodeChar, sText, "");
@@ -54,6 +57,7 @@ function setFreeText(nodeChar, sValue)
     if DB.getValue(nodeChar, sText, "") ~= sValue then
         DB.setValue(nodeChar, sText, "string", sValue);
     end
+    refresh(nodeChar);
     return true;
 end
 
@@ -66,6 +70,8 @@ function assignFromDrop(nodeChar, draginfo)
         DB.setValue(nodeChar, sText, "string", "");
     end
     DB.setValue(nodeChar, sClass, "windowreference", sRecordClass, sRecord);
+    -- También reconcilia una asignación idéntica, aunque DB no emita onUpdate.
+    refresh(nodeChar);
     return true;
 end
 
@@ -80,43 +86,76 @@ local function listen(tHandlers, sPath, sEvent, fn)
     table.insert(tHandlers, { path = sPath, event = sEvent, callback = fn });
 end
 
--- Los consumidores reciben cambios del personaje y del original sin duplicar DB.
-function subscribe(nodeChar, fn)
-    local tSubscription = { characterHandlers = {}, sourceHandlers = {}, sourceDeleted = false };
-    local function sourceChanged()
-        tSubscription.sourceDeleted = false;
-        fn();
+-- El fan-out se hace en Lua sobre una copia: rebind sólo cambia los handlers
+-- de la fuente una vez y después actualiza explícitamente a todos los consumidores.
+local function notify(tState)
+    local tCallbacks = {};
+    for tHandle, fn in pairs(tState.consumers) do
+        table.insert(tCallbacks, { handle = tHandle, callback = fn });
     end
-    local function rebind()
-        removeHandlers(tSubscription.sourceHandlers);
-        tSubscription.sourceHandlers = {};
-        tSubscription.sourceDeleted = false;
-        local sRecordClass, sRecord = DB.getValue(nodeChar, sClass, "", "");
-        if sRecordClass == sType and (sRecord or "") ~= "" then
-            for _, sField in ipairs({ "name", "description", "special", "picture" }) do
-                local sPath = DB.getPath(sRecord, sField);
-                listen(tSubscription.sourceHandlers, sPath, "onUpdate", sourceChanged);
-                listen(tSubscription.sourceHandlers, sPath, "onDelete", fn);
-            end
-            listen(tSubscription.sourceHandlers, sRecord, "onDelete", function()
-                tSubscription.sourceDeleted = true;
-                fn();
-            end);
-        end
-        fn();
+    for _, tEntry in ipairs(tCallbacks) do
+        if not tEntry.handle.closed then tEntry.callback(); end
     end
-    local sReferencePath = DB.getPath(nodeChar, sClass);
-    listen(tSubscription.characterHandlers, sReferencePath, "onUpdate", rebind);
-    listen(tSubscription.characterHandlers, sReferencePath, "onDelete", rebind);
-    listen(tSubscription.characterHandlers, DB.getPath(nodeChar, sText), "onUpdate", fn);
-    listen(tSubscription.characterHandlers, DB.getPath(nodeChar, sText), "onDelete", fn);
-    -- El consumidor refresca después de guardar el handle, para detectar borrados.
-    rebind();
-    return tSubscription;
 end
 
-function unsubscribe(tSubscription)
-    if not tSubscription then return; end
-    removeHandlers(tSubscription.characterHandlers);
-    removeHandlers(tSubscription.sourceHandlers);
+local function rebind(tState)
+    local sRecordClass, sRecord = DB.getValue(tState.node, sClass, "", "");
+    if tState.recordClass ~= sRecordClass or tState.record ~= sRecord then
+        removeHandlers(tState.sourceHandlers);
+        tState.sourceHandlers = {};
+        tState.recordClass, tState.record = sRecordClass, sRecord;
+        tState.sourceDeleted = false;
+        if sRecordClass == sType and (sRecord or "") ~= "" then
+            local function sourceChanged()
+                tState.sourceDeleted = false;
+                notify(tState);
+            end
+            for _, sField in ipairs({ "name", "description", "special", "picture" }) do
+                local sPath = DB.getPath(sRecord, sField);
+                listen(tState.sourceHandlers, sPath, "onUpdate", sourceChanged);
+                listen(tState.sourceHandlers, sPath, "onDelete", function() notify(tState); end);
+            end
+            listen(tState.sourceHandlers, sRecord, "onDelete", function()
+                tState.sourceDeleted = true;
+                notify(tState);
+            end);
+        end
+    end
+    notify(tState);
+end
+
+function refresh(nodeChar)
+    local tState = tSubscriptions[DB.getPath(nodeChar)];
+    if tState then rebind(tState); end
+end
+
+function subscribe(nodeChar, fn)
+    local sCharPath = DB.getPath(nodeChar);
+    local tState = tSubscriptions[sCharPath];
+    if not tState then
+        tState = { node = nodeChar, characterHandlers = {}, sourceHandlers = {}, consumers = {} };
+        tSubscriptions[sCharPath] = tState;
+        local function referenceChanged() rebind(tState); end
+        local sReferencePath = DB.getPath(nodeChar, sClass);
+        listen(tState.characterHandlers, sReferencePath, "onUpdate", referenceChanged);
+        listen(tState.characterHandlers, sReferencePath, "onDelete", referenceChanged);
+        local function textChanged() notify(tState); end
+        listen(tState.characterHandlers, DB.getPath(nodeChar, sText), "onUpdate", textChanged);
+        listen(tState.characterHandlers, DB.getPath(nodeChar, sText), "onDelete", textChanged);
+    end
+    local tHandle = { state = tState, characterPath = sCharPath, closed = false };
+    tState.consumers[tHandle] = fn;
+    rebind(tState);
+    return tHandle;
+end
+
+function unsubscribe(tHandle)
+    if not tHandle or tHandle.closed then return; end
+    tHandle.closed = true;
+    local tState = tHandle.state;
+    tState.consumers[tHandle] = nil;
+    if next(tState.consumers) then return; end
+    removeHandlers(tState.characterHandlers);
+    removeHandlers(tState.sourceHandlers);
+    tSubscriptions[tHandle.characterPath] = nil;
 end

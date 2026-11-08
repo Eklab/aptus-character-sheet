@@ -111,29 +111,6 @@
             </stringcontrol>
         </sheetdata>
     </windowclass>
-    <windowclass name="aptus_char_principal">
-        <margins control="0,0,0,0" />
-        <sheetdata>
-            <stringcontrol name="title">
-                <bounds>20,12,570,30</bounds>
-                <font>aptus_font_character_details</font>
-                <static>Accesos provisionales a los controles actuales</static>
-                <disabled />
-            </stringcontrol>
-            <buttoncontrol name="legacy">
-                <bounds>20,60,540,30</bounds>
-                <font>aptus_font_character_details</font>
-                <state text="Atributos y combate actuales" />
-                <script>function onButtonPress() WindowManager.getTopWindow(window).activateSection("main"); end</script>
-            </buttoncontrol>
-            <buttoncontrol name="skills">
-                <bounds>20,110,540,30</bounds>
-                <font>aptus_font_character_details</font>
-                <state text="Habilidades" />
-                <script>function onButtonPress() WindowManager.getTopWindow(window).activateSection("abilities"); end</script>
-            </buttoncontrol>
-        </sheetdata>
-    </windowclass>
     <!-- El recorte pertenece a la subventana, no cambia el bitmap ni su escala. -->
     <windowclass name="aptus_char_content_background">
         <margins control="0,0,0,0" />

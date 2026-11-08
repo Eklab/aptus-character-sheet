@@ -161,3 +161,36 @@ function onInit()
     initializeCommonSkills()
 
 end
+
+-- Única fuente de verdad: «Especial» es entrenamiento, sin relación con paquetes.
+function isTrained(nodeSkill)
+    return nodeSkill and DB.getValue(nodeSkill, "id", "") ~= "generic_skill"
+        and DB.getValue(nodeSkill, "special", 0) == 1 or false;
+end
+
+function getSkillRollParams(nodeSkill)
+    if not nodeSkill then return nil; end
+    local nodeSkills = DB.getParent(nodeSkill);
+    local nodeChar = nodeSkills and DB.getParent(nodeSkills);
+    if not nodeChar then return nil; end
+    local sName = DB.getValue(nodeSkill, "name", "Habilidad");
+    local sAttribute = DB.getValue(nodeSkill, "attribute", "");
+    local nLevel = DB.getValue(nodeSkill, "level", 0);
+    if DB.getValue(nodeSkill, "id", "") == "generic_skill" then
+        sName = "Otras habilidades";
+        sAttribute = "";
+        nLevel = 0;
+    end
+    -- El motor existente interpreta recogida 0 como un dado ROTO y recoge 1.
+    -- No enviar (1,1): eso produciría una tirada normal, no ROTA.
+    local nReserve, nCollect = 0, 0;
+    if nLevel > 0 then
+        nReserve = DB.getValue(nodeChar, "attributes." .. sAttribute .. ".effective", 0);
+        if isTrained(nodeSkill) then nReserve = nReserve + nLevel; end
+        nCollect = nLevel;
+    end
+    return {
+        sRollMode = "SKILL", sLabel = sName, sAttribute = sAttribute,
+        nReserve = nReserve, nCollect = nCollect,
+    };
+end
