@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Recursos locales; no se sustituyen los iconos globales de CoreRPG. -->
+    <icon name="aptus_location_link" file="graphics/icons/Aptus_drag.png" />
+    <icon name="aptus_location_unlocked" file="graphics/icons/aptus_candado_open.png" />
+    <icon name="aptus_location_locked" file="graphics/icons/aptus_candado.png" />
+    <icon name="aptus_location_share_off" file="graphics/icons/aptus_compartir_no.png" />
+    <icon name="aptus_location_share_on" file="graphics/icons/aptus_compartir.png" />
+    <icon name="aptus_location_minimize" file="graphics/icons/aptus_minimizar.png" />
+    <icon name="aptus_location_close" file="graphics/icons/aptus_cerrar.png" />
+    <icon name="aptus_location_settings" file="graphics/icons/aptus_config.png" />
+    <icon name="aptus_location_default" file="graphics/themes/default/aptus_localizaciones_image_default.png" />
+    <icon name="aptus_location_gradient" file="graphics/themes/default/aptus_localizaciones_degradado_imagen.png" />
+    <icon name="aptus_location_panel" file="graphics/themes/default/aptus_localizaciones_panel.png" />
+    <icon name="aptus_location_section" file="graphics/themes/default/aptus_localizaciones_titulo_backgroundl.png" />
+    <!-- Muestra negra opaca del degradado existente, sin generar otro PNG. -->
+    <framedef name="aptus_location_black">
+        <bitmap file="graphics/themes/default/aptus_localizaciones_degradado_imagen.png" />
+        <middle rect="244,323,1,1" />
+    </framedef>
+</root>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Skin auxiliar LANE: geometría original de CoreRPG, identificadores locales. -->
+    <framedef name="aptus_lane_aux_recordsheet">
+        <bitmap file="graphics/themes/lane/auxiliary/frames/recordsheet.png" />
+        <offset>50,50,50,50</offset>
+        <insideoffset>0,0,0,0</insideoffset>
+    </framedef>
+    <framedef name="aptus_lane_aux_groupbox">
+        <bitmap file="graphics/themes/lane/auxiliary/frames/groupbox.png" />
+        <offset>24,12,24,12</offset>
+    </framedef>
+
+    <!-- Sólo apariencia de esta ventana; conserva herencia, anclajes y scripts. -->
+    <windowclass name="aptus_location_configuration" merge="join">
+        <frame merge="replace">aptus_lane_aux_recordsheet</frame>
+        <sheetdata>
+            <sub_content_framed_groupbox_top name="header">
+                <frame merge="replace" name="aptus_lane_aux_groupbox" offset="10,10,10,10" />
+            </sub_content_framed_groupbox_top>
+            <sub_content_framed_groupbox name="content">
+                <frame merge="replace" name="aptus_lane_aux_groupbox" offset="15,15,15,15" />
+            </sub_content_framed_groupbox>
+        </sheetdata>
+    </windowclass>
+</root>

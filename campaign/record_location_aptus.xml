@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- El controlador de CoreRPG conserva la activación y el scroll de pestañas. -->
+    <template name="aptus_location_tabs_hidden">
+        <buttongroup_tabs>
+            <frame merge="delete" /><bounds>0,0,1,1</bounds><invisible /><disabled />
+            <script>
+                function updateDisplay() end
+                function onVisibilityChanged() end
+                function activateTabEntry(n)
+                    local tTab = self.getTabData(n);
+                    if tTab then window.prepareTabViewport(tTab); end
+                    super.activateTabEntry(n);
+                end
+            </script>
+        </buttongroup_tabs>
+    </template>
+    <windowclass name="aptus_location" copy="record_window_tabbed">
+        <frame>aptus_location_black</frame>
+        <margins control="0,0,0,0" />
+        <!-- Composición a 1:1: degradado 0–325 (incluye cabecera, imagen, nombre y navegación); panel 325–566. -->
+        <placement><size width="488" height="566" /></placement>
+        <sizelimits merge="replace">
+            <minimum width="488" height="566" /><maximum width="488" height="566" />
+        </sizelimits>
+        <script file="scripts/record_location_aptus.lua" />
+        <sheetdata>
+            <windowmenubar_recordsheet name="menubar" merge="delete" />
+            <resize_recordsheet name="resize" merge="delete" />
+            <sub_content_framed_groupbox_top name="header" merge="delete" />
+            <genericcontrol name="contentanchor" merge="replace">
+                <bounds>18,343,440,0</bounds><disabled />
+            </genericcontrol>
+            <genericcontrol name="bottomanchor" merge="replace">
+                <bounds>18,548,440,0</bounds><disabled />
+            </genericcontrol>
+            <genericcontrol name="picture_default">
+                <bounds>0,0,488,245</bounds><icon>aptus_location_default</icon><disabled />
+            </genericcontrol>
+            <asset_picture name="picture">
+                <bounds>0,32,488,245</bounds><frame merge="delete" />
+                <script>
+                    -- La imagen también cubre la cabecera (y=0..35).
+                    -- false omite su acción y deja el gesto al fondo de la ventana.
+                    -- Referencia y botones, por encima de picture, no pasan por aquí.
+                    function onClickDown(button, x, y)
+                        if y &lt; 36 then return false; end
+                        return super.onClickDown(button, x, y);
+                    end
+                    function onClickRelease(button, x, y)
+                        if y &lt; 36 then return false; end
+                        return super.onClickRelease(button, x, y);
+                    end
+                    -- Toda la ilustración deja pasar el arrastre al movimiento nativo.
+                    -- Clic, recepción de imágenes y menú contextual siguen independientes.
+                    function onDragStart(button, x, y, draginfo)
+                        return false;
+                    end
+                    function onValueChanged()
+                        super.onValueChanged();
+                        setReadOnly(not APTUSStructureManager.canEdit(window.getDatabaseNode()));
+                        window.updatePictureFallback();
+                        if APTUSStructureManager.canEdit(window.getDatabaseNode()) then
+                            registerMenuItem(Interface.getString("aptus_location_remove_picture"), "delete", 6);
+                        end
+                    end
+                    function onMenuSelection(selection)
+                        if selection == 6 then
+                            local node = window.getDatabaseNode();
+                            if not APTUSStructureManager.canEdit(node) then return; end
+                            -- picture sigue siendo el campo token del registro existente.
+                            DB.setValue(node, "picture", "token", "");
+                            window.updatePictureFallback();
+                        else
+                            super.onMenuSelection(selection);
+                        end
+                    end
+                </script>
+            </asset_picture>
+            <!-- El PNG completo conserva su tamaño: el negro inferior continúa bajo el título. -->
+            <genericcontrol name="picture_gradient">
+                <bounds>0,0,488,325</bounds><icon>aptus_location_gradient</icon><disabled />
+            </genericcontrol>
+            <genericcontrol name="parchment">
+                <bounds>0,325,488,241</bounds><icon>aptus_location_panel</icon><disabled />
+            </genericcontrol>
+            <genericcontrol name="link">
+                <anchored width="27" height="27">
+                    <top offset="10" /><left offset="10" />
+                </anchored>
+                <tooltip textres="button_toolbar_link" />
+                <script>
+                    function onDragStart(_, _, _, draginfo)
+                        return WindowMenuManager.onMenuLinkDrag(self, draginfo);
+                    end
+                </script>
+            </genericcontrol>
+            <buttoncontrol name="settings">
+                <anchored width="27" height="27">
+                    <top offset="10" /><left offset="42" />
+                </anchored>
+                <tooltip textres="aptus_structure_tab_configuration" />
+                <script>
+                    function onInit() setVisible(Session.IsHost); end
+                    function onButtonPress() window.openConfiguration(); end
+                </script>
+            </buttoncontrol>
+            <toolbar_field_step name="locked">
+                <anchored width="27" height="27">
+                    <top offset="10" /><right offset="-136" />
+                </anchored><initbyname />
+                <state />
+                <state merge="add" />
+                <script>
+                    function onInit()
+                        super.onInit();
+                        setColor("FFFFFFFF");
+                        setStateIcons(0, "", "", "");
+                        setStateIcons(1, "", "", "");
+                        setVisible(Session.IsHost and not DB.isReadOnly(window.getDatabaseNode()));
+                    end
+                </script>
+            </toolbar_field_step>
+            <buttoncontrol name="button_share">
+                <anchored width="27" height="27">
+                    <top offset="10" /><right offset="-104" />
+                </anchored>
+                <script>
+                    function onButtonPress()
+                        if DB.isOwner(window.getDatabaseNode()) then
+                            WindowMenuManager.performMenuShare(self);
+                            window.updateShare();
+                        end
+                    end
+                </script>
+            </buttoncontrol>
+            <buttoncontrol name="button_minimize">
+                <anchored width="27" height="27">
+                    <top offset="10" /><right offset="-42" />
+                </anchored>
+                <tooltip textres="button_toolbar_window_minimize" />
+                <script>function onButtonPress() WindowMenuManager.performMenuMinimize(self); end</script>
+            </buttoncontrol>
+            <buttoncontrol name="button_close">
+                <anchored width="27" height="27">
+                    <top offset="10" /><right offset="-10" />
+                </anchored>
+                <tooltip textres="button_toolbar_window_close" />
+                <script>function onButtonPress() WindowMenuManager.performMenuClose(self); end</script>
+            </buttoncontrol>
+            <stringfield name="name">
+                <bounds>18,245,452,42</bounds><font>aptus_font_location_name</font><center /><nodrag />
+                <script>
+                    function onValueChanged() window.onNameUpdated(); end
+                </script>
+            </stringfield>
+            <buttoncontrol name="navigation_main">
+                <anchored width="120" height="24"><left offset="184" /><top offset="288" /></anchored><font>aptus_font_location_navigation</font>
+                <state textres="aptus_structure_tab_main" />
+                <script>function onButtonPress() window.tabs.activateTabByName("main"); end</script>
+            </buttoncontrol>
+            <buttoncontrol name="navigation_storage">
+                <anchored width="120" height="24"><left offset="260" /><top offset="288" /></anchored>
+                <font>aptus_font_location_navigation</font><state text="Almacenaje" /><invisible />
+                <script>function onButtonPress() if window.canShowStorage() then window.tabs.activateTabByName("storage"); end end</script>
+            </buttoncontrol>
+            <!-- Línea tipográfica fina: no requiere una imagen decorativa adicional. -->
+            <stringcontrol name="navigation_active">
+                <anchored width="80" height="12"><left offset="204" /><top offset="313" /></anchored><font>aptus_font_location_underline</font>
+                <center /><static>____________</static><disabled />
+            </stringcontrol>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_location_storage">
+        <margins control="0,0,0,0" />
+        <script file="scripts/location_storage_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="title"><bounds>12,12,400,28</bounds><font>sheetlabel</font><static>ALMACENAJE</static><disabled /></stringcontrol>
+            <stringcontrol name="hint"><bounds>12,52,400,60</bounds><font>sheettext</font><multilinespacing>20</multilinespacing><static>Dispones de acceso al almacenaje de esta localización</static><disabled /></stringcontrol>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_location_main">
+        <margins control="0,0,0,0" />
+        <script file="scripts/location_main_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="location_heading">
+                <bounds>0,0,197,28</bounds><icon>aptus_location_section</icon><disabled />
+            </genericcontrol>
+            <stringcontrol name="location_label">
+                <bounds>12,4,177,21</bounds><font>aptus_font_location_section</font>
+                <static textres="aptus_location_location" /><disabled />
+            </stringcontrol>
+            <stringfield name="location">
+                <anchored><top offset="40" /><left offset="6" /><right offset="-6" />
+                    <sizelimits><minimum height="32" /></sizelimits>
+                </anchored>
+                <font>sheettext</font><multilinespacing>18</multilinespacing><nodrag />
+            </stringfield>
+            <genericcontrol name="description_heading">
+                <anchored to="location" width="197" height="28">
+                    <top anchor="bottom" offset="12" /><left parent="" />
+                </anchored>
+                <icon>aptus_location_section</icon><disabled />
+            </genericcontrol>
+            <stringcontrol name="description_label">
+                <anchored to="description_heading" width="177" height="21"><top offset="4" /><left offset="12" /></anchored>
+                <font>aptus_font_location_section</font><static textres="aptus_structure_description" /><disabled />
+            </stringcontrol>
+            <formattedtextfield name="description">
+                <anchored><top parent="description_heading" anchor="bottom" offset="8" />
+                    <left offset="6" /><right offset="-6" />
+                    <sizelimits><minimum height="20" /></sizelimits>
+                </anchored>
+                <font>sheettext</font>
+            </formattedtextfield>
+        </sheetdata>
+    </windowclass>
+    <!-- Envuelve la configuración existente; no añade funcionalidades ni datos. -->
+    <windowclass name="aptus_location_configuration" copy="record_window">
+        <placement><size width="650" height="550" /></placement>
+        <sizelimits merge="replace"><minimum width="650" height="550" /><dynamic /></sizelimits>
+        <script>
+            function onInit()
+                if not Session.IsHost then close(); return; end
+                super.onInit();
+            end
+        </script>
+        <sheetdata>
+            <sub_content_framed_groupbox name="content"><class>aptus_location_configuration_content</class></sub_content_framed_groupbox>
+        </sheetdata>
+    </windowclass>
+</root>

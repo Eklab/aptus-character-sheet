@@ -49,4 +49,16 @@
         <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="16" />
         <color value="#000000" />
     </font>
+    <font name="aptus_font_location_name">
+        <ttf file="fonts/Kalam-Regular.ttf" name="Kalam" size="30" /><color value="#E9D5AF" />
+    </font>
+    <font name="aptus_font_location_section">
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="16" /><color value="#E9D5AF" />
+    </font>
+    <font name="aptus_font_location_navigation">
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="15" /><color value="#E9D5AF" />
+    </font>
+    <font name="aptus_font_location_underline">
+        <ttf file="fonts/RobotoCondensed-Regular.ttf" name="Roboto Condensed" size="12" /><color value="#A32C28" />
+    </font>
 </root>

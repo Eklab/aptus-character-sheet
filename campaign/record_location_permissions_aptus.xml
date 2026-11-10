@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Contenedor local: las páginas comparten el nodo original y permanecen cargadas. -->
+    <windowclass name="aptus_location_configuration_content">
+        <margins control="0,0,0,0" />
+        <script file="scripts/location_configuration_aptus.lua" />
+        <sheetdata>
+            <buttoncontrol name="tab_general">
+                <bounds>15,0,110,26</bounds><font>sheetlabel</font><state text="General" />
+                <script>function onButtonPress() window.selectTab("general"); end</script>
+            </buttoncontrol>
+            <buttoncontrol name="tab_permissions">
+                <bounds>140,0,110,26</bounds><font>sheetlabel</font><state text="Permisos" />
+                <script>function onButtonPress() window.selectTab("permissions"); end</script>
+            </buttoncontrol>
+            <stringcontrol name="active_general">
+                <bounds>30,24,80,12</bounds><font>aptus_font_location_underline</font>
+                <center /><static>____________</static><disabled />
+            </stringcontrol>
+            <stringcontrol name="active_permissions">
+                <bounds>155,24,80,12</bounds><font>aptus_font_location_underline</font>
+                <center /><static>____________</static><disabled /><invisible />
+            </stringcontrol>
+            <subwindow name="general_page">
+                <anchored><top offset="42" /><left /><right /><bottom /></anchored>
+                <class>aptus_location_configuration_general</class><activate /><fastinit /><noscroll />
+            </subwindow>
+            <subwindow name="permissions_page">
+                <anchored><top offset="42" /><left /><right /><bottom /></anchored>
+                <class>aptus_location_configuration_permissions</class><activate /><fastinit /><noscroll /><invisible />
+            </subwindow>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_location_configuration_general" copy="aptus_structure_configuration">
+        <script file="scripts/location_configuration_general_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="label_features"><bounds>15,75,490,22</bounds></stringcontrol>
+            <stringcontrol name="feature_name_heading"><bounds>15,105,170,22</bounds><font>sheetlabel</font><static>Funcionalidad</static><disabled /></stringcontrol>
+            <stringcontrol name="feature_enabled_heading"><bounds>205,105,100,22</bounds><font>sheetlabel</font><center /><static>Activada</static><disabled /></stringcontrol>
+            <stringcontrol name="feature_status_heading"><bounds>315,105,200,22</bounds><font>sheetlabel</font><static>Estado</static><disabled /></stringcontrol>
+            <windowlist name="feature_list">
+                <bounds merge="delete" />
+                <anchored><top offset="135" /><left offset="15" /><right offset="-15" /><bottom offset="-15" /></anchored>
+                <class>aptus_location_feature_row</class>
+            </windowlist>
+        </sheetdata>
+    </windowclass>
+    <!-- Fila local: evita heredar el botón y la visibilidad global de Vehículos. -->
+    <windowclass name="aptus_location_feature_row">
+        <margins control="0,0,0,0" />
+        <script file="scripts/location_feature_row_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="feature_name"><bounds>0,5,170,25</bounds><font>sheetlabel</font><disabled /></stringcontrol>
+            <buttonc_checkbox name="toggle">
+                <bounds>230,3,20,20</bounds>
+                <script>function onButtonPress() window.toggleFeature(); end</script>
+            </buttonc_checkbox>
+            <stringcontrol name="activation_pending"><bounds>190,5,100,25</bounds><font>sheettext</font><center /><static>—</static><disabled /></stringcontrol>
+            <stringcontrol name="feature_status"><bounds>300,5,200,25</bounds><font>sheettext</font><disabled /></stringcontrol>
+            <genericcontrol name="row_height"><bounds>0,0,1,40</bounds><disabled /></genericcontrol>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_location_configuration_permissions">
+        <script file="scripts/location_configuration_permissions_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="permissions_heading">
+                <bounds>15,0,510,25</bounds><font>sheetlabel</font>
+                <static>Permisos de jugadores</static><disabled />
+            </stringcontrol>
+            <stringcontrol name="permissions_pending">
+                <bounds>15,32,510,36</bounds><font>sheettext</font><multilinespacing>16</multilinespacing>
+                <static>Visibilidad y Acceso habilitados para pruebas. El anfitrión verifica los estados. Sin autorización de inventario implementada.</static><disabled />
+            </stringcontrol>
+            <stringcontrol name="permission_state">
+                <bounds>15,74,510,48</bounds><font>sheettext</font><multilinespacing>16</multilinespacing><disabled />
+            </stringcontrol>
+            <buttoncontrol name="grant_visibility">
+                <bounds>15,130,245,26</bounds><font>sheettext</font><state text="Dar visibilidad a todos" />
+                <tooltip text="Conceder Visibilidad a los usuarios conectados ahora, sin conceder Acceso ni hacer pública la localización." />
+                <script>function onButtonPress() window.grantVisibilityToConnected(); end</script>
+            </buttoncontrol>
+            <buttoncontrol name="grant_access">
+                <bounds>275,130,245,26</bounds><font>sheettext</font><state text="Dar acceso a todos" />
+                <tooltip text="Conceder Visibilidad y Acceso a los usuarios conectados ahora." />
+                <script>function onButtonPress() window.grantAccessToConnected(); end</script>
+            </buttoncontrol>
+            <stringcontrol name="player_label"><bounds>15,168,210,20</bounds><font>sheetlabel</font><static>Jugador</static><disabled /></stringcontrol>
+            <stringcontrol name="connection_label"><bounds>235,168,105,20</bounds><font>sheetlabel</font><static>Conexión</static><disabled /></stringcontrol>
+            <stringcontrol name="visibility_label"><bounds>350,168,85,20</bounds><font>sheetlabel</font><static>Visibilidad</static><disabled /></stringcontrol>
+            <stringcontrol name="access_label"><bounds>455,168,65,20</bounds><font>sheetlabel</font><static>Acceso</static><disabled /></stringcontrol>
+            <!-- Lista de presentación sin datasource: no escribe permisos al pintar. -->
+            <windowlist name="players">
+                <anchored><left offset="15" /><right offset="-25" /><top offset="195" /><bottom offset="-15" /></anchored>
+                <class>aptus_location_permission_row</class>
+                <script>
+                    function onSortCompare(w1, w2) return w1.getSortKey() &lt; w2.getSortKey(); end
+                </script>
+            </windowlist>
+            <scrollbar name="players_scroll"><anchored to="players" /><target>players</target></scrollbar>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_location_permission_row">
+        <margins control="0,0,0,0" />
+        <script file="scripts/location_permission_row_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="height"><bounds>0,0,1,30</bounds><disabled /></genericcontrol>
+            <stringcontrol name="username"><bounds>0,4,210,22</bounds><font>sheettext</font><readonly /><nodrag /><nodrop /></stringcontrol>
+            <stringcontrol name="connection"><bounds>220,4,105,22</bounds><font>sheettext</font><readonly /><nodrag /><nodrop /></stringcontrol>
+            <buttonc_checkbox name="visibility">
+                <anchored merge="delete" /><bounds>360,3,20,20</bounds>
+                <tooltip text="Conceder o retirar Visibilidad a este usuario. El estado se verifica en el anfitrión." />
+                <script>function onButtonPress() window.onVisibilityPressed(); end</script>
+            </buttonc_checkbox>
+            <buttonc_checkbox name="access">
+                <anchored merge="delete" /><bounds>455,3,20,20</bounds>
+                <tooltip text="Conceder Acceso implica Visibilidad. Retirarlo conserva Visibilidad." />
+                <script>function onButtonPress() window.onAccessPressed(); end</script>
+            </buttonc_checkbox>
+        </sheetdata>
+    </windowclass>
+</root>

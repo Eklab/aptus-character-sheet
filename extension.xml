@@ -14,6 +14,11 @@
 
     <base>
         <!-- Gestores globales -->
+        <script name="APTUSStructureManager" file="scripts/manager_aptus_structure.lua" />
+        <script name="APTUSStructureNotesManager" file="scripts/manager_aptus_structure_notes.lua" />
+        <script name="APTUSLocationPermissions" file="scripts/manager_aptus_location_permissions.lua" />
+        <!-- Temporal: prueba local del DJ; retirar esta línea para desactivarla. -->
+        <script name="APTUSLocationVisibilityTest" file="scripts/test_location_visibility_aptus.lua" />
         <script name="APTUSDedication" file="scripts/manager_aptus_dedication.lua" />
         <script name="APTUSSkin" file="scripts/manager_aptus_skin.lua" />
         <script name="APTUSCharacterTypes" file="scripts/manager_aptus_character_types.lua" />
@@ -24,6 +29,14 @@
         <script name="APTUSConflicts" file="scripts/manager_aptus_conflicts.lua" />
         <script name="APTUSRank" file="scripts/manager_aptus_rank.lua" />
         <script name="APTUSSkillsManager" file="scripts/manager_aptus_skills.lua" />
+
+        <includefile source="campaign/record_structure_index_aptus.xml" />
+        <includefile source="graphics/graphics_aptus_locations.xml" />
+        <includefile source="campaign/record_location_aptus.xml" />
+        <includefile source="campaign/record_structure_aptus.xml" />
+        <includefile source="campaign/record_location_permissions_aptus.xml" />
+        <includefile source="graphics/graphics_aptus_lane.xml" />
+        <includefile source="campaign/record_structure_notes_aptus.xml" />
 
         <!-- Textos traducibles -->
         <includefile source="strings/strings_aptus.xml" />

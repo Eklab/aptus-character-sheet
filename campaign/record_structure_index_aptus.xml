@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <windowclass name="sidebar_dock_category" merge="join">
+        <script file="scripts/sidebar_structure_aptus.lua" />
+    </windowclass>
+    <template name="aptus_button_native_vehicles">
+        <button_masterindex_option>
+            <anchored width="180" />
+            <state textres="aptus_structure_native_vehicles" />
+            <script>function onButtonPress() Interface.openWindow("masterindex", "vehicle"); end</script>
+        </button_masterindex_option>
+    </template>
+    <windowclass name="aptus_structure_index_base" copy="masterindex">
+        <script file="scripts/structure_index_aptus.lua" />
+        <sheetdata>
+            <button_iadd_list_content_controls name="list_iadd">
+                <script>function onButtonPress() window.beginCreate(); end</script>
+            </button_iadd_list_content_controls>
+            <!-- No permitir copias/importaciones que eviten la selección previa del tipo. -->
+            <masterindex_list name="list">
+                <script>function onDrop() return false; end</script>
+            </masterindex_list>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_locations_index" copy="aptus_structure_index_base" />
+    <windowclass name="aptus_vehicles_index" copy="aptus_structure_index_base" />
+    <windowclass name="aptus_structure_type_selector_base">
+        <frame>recordsheet</frame>
+        <placement><size width="400" height="180" /></placement>
+        <sizelimits><minimum width="400" height="180" /><maximum width="400" height="180" /></sizelimits>
+        <script file="scripts/structure_type_selector_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="prompt"><bounds>20,15,360,24</bounds><font>sheetlabel</font><static textres="aptus_structure_choose_type" /><disabled /></stringcontrol>
+            <comboboxc name="type_choice"><bounds>30,55,330,24</bounds></comboboxc>
+            <stringcontrol name="status"><bounds>20,90,360,22</bounds><font>sheettext</font><disabled /></stringcontrol>
+            <buttoncontrol name="confirm"><bounds>185,125,90,25</bounds><font>sheettext</font><state textres="aptus_structure_create" /><script>function onButtonPress() window.confirmCreate(); end</script></buttoncontrol>
+            <buttoncontrol name="cancel"><bounds>285,125,90,25</bounds><font>sheettext</font><state textres="aptus_structure_cancel" /><script>function onButtonPress() window.close(); end</script></buttoncontrol>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_structure_type_locations" copy="aptus_structure_type_selector_base" />
+    <windowclass name="aptus_structure_type_vehicles" copy="aptus_structure_type_selector_base" />
+</root>

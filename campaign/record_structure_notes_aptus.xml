@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Tarjeta de Conflictos reutilizada visualmente, sin su lógica de personaje. -->
+    <windowclass name="aptus_structure_note_row">
+        <margins control="0,0,0,0" />
+        <script file="scripts/structure_note_row_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="row_height"><bounds>0,0,1,123</bounds><disabled /></genericcontrol>
+            <genericcontrol name="background"><bounds>0,0,451,117</bounds><icon>aptus_identidad_conflicto</icon><disabled /></genericcontrol>
+            <stringcontrol name="author"><bounds>55,13,330,22</bounds><font>aptus_font_navigation_black</font><readonly /><nodrag /><nodrop /></stringcontrol>
+            <!-- stringcontrol: sólo visualiza DB; nunca escribe en el nodo de la nota. -->
+            <stringcontrol name="content_display"><bounds>12,46,400,60</bounds><font>aptus_font_navigation_black</font><multilinespacing>14</multilinespacing><readonly /><nodrag /><nodrop /></stringcontrol>
+            <scrollbar name="content_scrollbar"><bounds>421,46,18,60</bounds><frame name="scrollbar_base" offset="0,0,0,0" /><target>content_display</target></scrollbar>
+            <buttoncontrol name="edit_note"><bounds>400,13,20,20</bounds><icon normal="button_edit" pressed="button_edit" /><tooltip textres="aptus_structure_note_edit" /><script>function onButtonPress() window.editNote(); end</script></buttoncontrol>
+            <button_idelete name="idelete"><anchored merge="delete" /><bounds>425,13,20,20</bounds></button_idelete>
+        </sheetdata>
+    </windowclass>
+    <!-- El nodo de contexto se usa para validar, pero el borrador no está vinculado. -->
+    <windowclass name="aptus_structure_note_editor">
+        <frame>recordsheet</frame>
+        <placement><size width="500" height="330" /></placement>
+        <sizelimits><minimum width="500" height="330" /><maximum width="500" height="330" /></sizelimits>
+        <script file="scripts/structure_note_editor_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="label"><bounds>20,15,440,20</bounds><font>sheetlabel</font><static textres="aptus_structure_note_edit" /><disabled /></stringcontrol>
+            <stringcontrol name="author"><bounds>20,40,440,22</bounds><font>sheetlabel</font><readonly /></stringcontrol>
+            <stringcontrol name="draft"><bounds>20,75,425,170</bounds><font>sheettext</font><multilinespacing>20</multilinespacing><nodrag /><nodrop /><frame name="fieldlight" offset="4,4,4,4" /></stringcontrol>
+            <scrollbar name="draft_scroll"><bounds>450,75,20,170</bounds><frame name="scrollbar_base" offset="0,0,0,0" /><target>draft</target></scrollbar>
+            <stringcontrol name="status"><bounds>20,250,450,20</bounds><font>sheettext</font><disabled /></stringcontrol>
+            <buttoncontrol name="save"><bounds>270,285,90,25</bounds><font>sheettext</font><state textres="aptus_structure_note_save" /><script>function onButtonPress() window.saveNote(); end</script></buttoncontrol>
+            <buttoncontrol name="cancel"><bounds>370,285,100,25</bounds><font>sheettext</font><state textres="aptus_structure_cancel" /><script>function onButtonPress() window.close(); end</script></buttoncontrol>
+        </sheetdata>
+    </windowclass>
+</root>

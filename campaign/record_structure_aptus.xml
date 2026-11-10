@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <windowclass name="aptus_structure" copy="record_window_tabbed">
+        <script file="scripts/structure_window_aptus.lua" />
+        <placement><size width="600" height="590" /></placement>
+        <sizelimits><minimum width="600" height="590" /><dynamic /></sizelimits>
+        <tab><name>main</name><textres>aptus_structure_tab_main</textres><class>aptus_structure_main</class><activate /></tab>
+        <tab merge="add"><name>configuration</name><textres>aptus_structure_tab_configuration</textres><class>aptus_structure_configuration</class><mode>host</mode></tab>
+    </windowclass>
+    <windowclass name="aptus_structure_header" copy="record_header" />
+    <windowclass name="aptus_structure_main">
+        <margins control="0,0,0,0" />
+        <script file="scripts/record_structure_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="label_type"><bounds>15,10,300,20</bounds><font>sheetlabel</font><static textres="aptus_structure_type" /><disabled /></stringcontrol>
+            <stringcontrol name="type_display"><bounds>15,35,280,22</bounds><font>sheettext</font><readonly /><nodrag /></stringcontrol>
+            <asset_picture name="picture"><bounds>325,10,180,170</bounds></asset_picture>
+            <button_picture_idelete name="picture_idelete"><anchored merge="delete" /><bounds>510,150,20,20</bounds><target>picture</target></button_picture_idelete>
+            <stringcontrol name="label_description"><bounds>15,190,300,22</bounds><font>sheetlabel</font><static textres="aptus_structure_description" /><disabled /></stringcontrol>
+            <formattedtextfield name="description"><bounds>15,220,490,90</bounds><font>sheettext</font></formattedtextfield>
+            <scrollbar name="description_scroll"><anchored to="description" /><target>description</target></scrollbar>
+            <stringcontrol name="label_notes"><bounds>15,320,300,22</bounds><font>sheetlabel</font><static textres="aptus_structure_notes" /><disabled /></stringcontrol>
+            <buttoncontrol name="add_note"><bounds>470,320,24,22</bounds><icon normal="button_add" pressed="button_add" /><tooltip textres="aptus_structure_note_add" /><script>function onButtonPress() window.addNote(); end</script></buttoncontrol>
+            <stringcontrol name="notes_permission_hint"><bounds>15,344,490,28</bounds><font>sheettext</font><static textres="aptus_structure_notes_player_pending" /><disabled /></stringcontrol>
+            <windowlist name="notes"><anchored width="451"><left offset="15" /><top offset="375" /><bottom offset="-10" /></anchored><class>aptus_structure_note_row</class><datasource>.notes</datasource><sortby><field>order</field></sortby></windowlist>
+            <scrollbar name="notes_scrollbar"><anchored to="notes" /><target>notes</target></scrollbar>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_structure_configuration">
+        <margins control="0,0,0,0" />
+        <script file="scripts/record_structure_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="label_type"><bounds>15,10,400,20</bounds><font>sheetlabel</font><static textres="aptus_structure_type" /><disabled /></stringcontrol>
+            <stringcontrol name="type_display"><bounds>15,35,490,22</bounds><font>sheettext</font><readonly /></stringcontrol>
+            <stringcontrol name="label_features"><bounds>15,100,490,22</bounds><font>sheetlabel</font><static textres="aptus_structure_features" /><disabled /></stringcontrol>
+            <windowlist name="feature_list"><bounds>15,135,510,250</bounds><class>aptus_structure_feature_row</class><columns width="500" filldown="true" /><noscroll /></windowlist>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_structure_feature_row">
+        <margins control="0,0,0,0" /><script file="scripts/structure_feature_row_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="feature_name"><bounds>0,5,170,25</bounds><font>sheetlabel</font><disabled /></stringcontrol>
+            <stringcontrol name="feature_status"><bounds>180,5,200,25</bounds><font>sheettext</font><disabled /></stringcontrol>
+            <buttoncontrol name="toggle"><bounds>385,3,100,25</bounds><font>sheettext</font><state textres="aptus_structure_toggle" /><script>function onButtonPress() window.toggleFeature(); end</script></buttoncontrol>
+            <genericcontrol name="row_height"><bounds>0,0,1,40</bounds><disabled /></genericcontrol>
+        </sheetdata>
+    </windowclass>
+</root>

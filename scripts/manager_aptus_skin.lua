@@ -103,7 +103,12 @@ end
 
 function getSkin(w)
     local nodeChar = getWindowNode(w);
-    local sSkin = nodeChar and DB.getValue(nodeChar, sVisualPath, "default") or "default";
+    local sSkin;
+    if APTUSStructureManager.isStructure(nodeChar) then
+        sSkin = APTUSStructureManager.getSkin(nodeChar);
+    else
+        sSkin = nodeChar and DB.getValue(nodeChar, sVisualPath, "default") or "default";
+    end
     return tSkinSuffixes[sSkin] ~= nil and sSkin or "default";
 end
 
@@ -123,7 +128,7 @@ end
 function subscribe(w, fn)
     local nodeChar = getWindowNode(w);
     if nodeChar then
-        local sPath = DB.getPath(nodeChar, sVisualPath);
+        local sPath = DB.getPath(nodeChar, APTUSStructureManager.isStructure(nodeChar) and "type" or sVisualPath);
         DB.addHandler(sPath, "onUpdate", fn);
         DB.addHandler(sPath, "onDelete", fn);
     end
@@ -133,7 +138,7 @@ end
 function unsubscribe(w, fn)
     local nodeChar = getWindowNode(w);
     if not nodeChar then return; end
-    local sPath = DB.getPath(nodeChar, sVisualPath);
+    local sPath = DB.getPath(nodeChar, APTUSStructureManager.isStructure(nodeChar) and "type" or sVisualPath);
     DB.removeHandler(sPath, "onUpdate", fn);
     DB.removeHandler(sPath, "onDelete", fn);
 end
