@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <icon name="aptus_equipo_background" file="graphics/themes/default/aptus_equipo_background.png" />
+    <icon name="aptus_equipo_equipada" file="graphics/themes/default/aptus_equipo_equipada.png" />
+    <icon name="aptus_equipo_transportado" file="graphics/themes/default/aptus_equipo_transportado.png" />
+    <icon name="aptus_equipo_ver" file="graphics/themes/default/aptus_equipo_ver.png" />
+    <icon name="aptus_equipo_selector" file="graphics/themes/default/aptus_equipo_selector.png" />
+    <icon name="aptus_utilidad_item" file="graphics/icons/aptus_utilidad_item.png" />
+    <icon name="aptus_arma_cc_item" file="graphics/icons/aptus_arma_cc_item.png" />
+    <icon name="aptus_arma_proy_item" file="graphics/icons/aptus_arma_proy_item.png" />
+    <icon name="aptus_contenedor_item" file="graphics/icons/aptus_contenedor_item.png" />
+    <icon name="aptus_contenido_item" file="graphics/icons/aptus_contenido_item.png" />
+    <icon name="aptus_electrico_item" file="graphics/icons/aptus_electrico_item.png" />
+    <icon name="aptus_mecanico_electrico_item" file="graphics/icons/aptus_mecanico_electrico_item.png" />
+    <icon name="aptus_proteccion_item" file="graphics/icons/aptus_proteccion_item.png" />
+    <icon name="aptus_vehicle_item" file="graphics/icons/aptus_vehicle_item.png" />
+    <icon name="aptus_localizacion_item" file="graphics/icons/aptus_localizacion_item.png" />
+    <icon name="aptus_load_male_0" file="graphics/themes/lane/auxiliary/icons/Carga/hombre/carga_skins_0.png" />
+    <icon name="aptus_load_male_50" file="graphics/themes/lane/auxiliary/icons/Carga/hombre/carga_skins_50.png" />
+    <icon name="aptus_load_male_100" file="graphics/themes/lane/auxiliary/icons/Carga/hombre/carga_skins_100.png" />
+    <icon name="aptus_load_male_150" file="graphics/themes/lane/auxiliary/icons/Carga/hombre/carga_skins_150.png" />
+    <icon name="aptus_load_male_200" file="graphics/themes/lane/auxiliary/icons/Carga/hombre/carga_skins_200.png" />
+    <icon name="aptus_load_female_0" file="graphics/themes/lane/auxiliary/icons/Carga/Mujer/carga_skins_0.png" />
+    <icon name="aptus_load_female_50" file="graphics/themes/lane/auxiliary/icons/Carga/Mujer/carga_skins_50.png" />
+    <icon name="aptus_load_female_100" file="graphics/themes/lane/auxiliary/icons/Carga/Mujer/carga_skins_100.png" />
+    <icon name="aptus_load_female_150" file="graphics/themes/lane/auxiliary/icons/Carga/Mujer/carga_skins_150.png" />
+    <icon name="aptus_load_female_200" file="graphics/themes/lane/auxiliary/icons/Carga/Mujer/carga_skins_200.png" />
+    <font name="aptus_inventory_text">
+        <ttf file="fonts/RobotoCondensed-Regular.ttf" name="Roboto Condensed" size="12" />
+        <color value="#E9D5AF" />
+    </font>
+    <!-- Exclusivas del indicador de CARGA. -->
+    <font name="aptus_load_penalty">
+        <ttf file="fonts/RobotoCondensed-Regular.ttf" name="Roboto Condensed" size="19" />
+        <color value="#E9D5AF" />
+    </font>
+    <font name="aptus_load_state">
+        <ttf file="fonts/RobotoCondensed-Regular.ttf" name="Roboto Condensed" size="14" />
+        <color value="#E9D5AF" />
+    </font>
+    <font name="aptus_load_value">
+        <ttf file="fonts/RobotoCondensed-Regular.ttf" name="Roboto Condensed" size="24" />
+        <color value="#E9D5AF" />
+    </font>
+    <!-- Sólo textos de las filas de EQUIPO; cabeceras y filtros conservan 12 px. -->
+    <font name="aptus_inventory_row_text">
+        <ttf file="fonts/RobotoCondensed-Regular.ttf" name="Roboto Condensed" size="14" />
+        <color value="#E9D5AF" />
+    </font>
+</root>
+

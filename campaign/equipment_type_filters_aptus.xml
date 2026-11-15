@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Reserva de espacio, no subventana: el menú nativo debe vivir en la ventana principal. -->
+    <template name="aptus_equipment_filter_spacer">
+        <genericcontrol>
+            <anchored to="contentanchor" height="64"><left /><right /><top relation="relative" offset="0" postoffset="0" /></anchored>
+            <disabled />
+        </genericcontrol>
+    </template>
+    <template name="aptus_equipment_index_type_filter">
+        <aptus_equipment_filter_spacer insertbefore="area_controls" />
+    </template>
+    <template name="aptus_equipment_type_label">
+        <stringcontrol>
+            <anchored to="aptus_type_filter" height="22"><left offset="10" /><right offset="-12" /><top offset="4" /></anchored>
+            <font>reference-header</font><static>Tipo de equipo</static><disabled />
+        </stringcontrol>
+    </template>
+    <template name="aptus_equipment_type_combo">
+        <comboboxc>
+            <anchored to="aptus_type_filter" height="20"><left offset="15" /><right offset="-10" /><top offset="34" /></anchored>
+            <listmaxsize>9</listmaxsize><unsorted />
+            <script>
+                function onInit()
+                    super.onInit();
+                    add("", "Todos");
+                    local types = APTUSEquipmentManager.getTypes();
+                    for i = 1, #types do add(types[i].id, types[i].name); end
+                    setValue("");
+                end
+                function onValueChanged()
+                    WindowManager.callOuterWindowFunction(window, "onEquipmentTypeFilterChanged", getValue());
+                end
+            </script>
+        </comboboxc>
+    </template>
+    <windowclass name="masterindex" merge="join">
+        <script file="scripts/equipment_index_type_filter_aptus.lua" />
+    </windowclass>
+    <windowclass name="aptus_equipment_select_dialog" copy="select_dialog">
+        <script file="scripts/equipment_select_type_filter_aptus.lua" />
+        <sheetdata>
+            <aptus_equipment_filter_spacer name="aptus_type_filter" insertbefore="list" />
+            <aptus_equipment_type_label name="aptus_type_label" />
+            <aptus_equipment_type_combo name="aptus_type_combo" />
+            <list_content_framed_groupbox name="list">
+                <script>
+                    function onFilter(row) return window.matchesEquipmentRow(row); end
+                </script>
+            </list_content_framed_groupbox>
+        </sheetdata>
+    </windowclass>
+</root>

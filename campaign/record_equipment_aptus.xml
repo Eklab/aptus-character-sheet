@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Ventana nativa funcional con composición local fija: el fondo ya contiene marcos. -->
+
+    <!-- Estructura principal: ventana EQUIPO -->
+    <windowclass name="aptus_equipment">
+        <frame>aptus_equipment_background</frame>
+        <margins control="0,0,0,0" />
+        <placement>
+            <size width="650" height="433" />
+        </placement>
+        <sizelimits>
+            <minimum width="650" height="433" />
+            <maximum width="650" height="433" />
+        </sizelimits>
+        <minimize>minimized_reference</minimize>
+        <sharable />
+        <tooltip field="name" />
+        <script file="common/scripts/record_window.lua" />
+        <sheetdata>
+            <subwindow name="content">
+                <bounds>0,0,650,433</bounds>
+                <class>aptus_equipment_main</class>
+                <activate />
+                <fastinit />
+                <noscroll />
+            </subwindow>
+
+            <windowmenubar_recordsheet name="menubar">
+                <anchored offset="-12,8" />
+            </windowmenubar_recordsheet>
+        </sheetdata>
+    </windowclass>
+
+    <!-- Estructura principal: contenido e ilustración -->
+    <windowclass name="aptus_equipment_main">
+        <margins control="0,0,0,0" />
+        <script file="scripts/record_equipment_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="metadata">
+                <bounds>0,0,1,1</bounds>
+                <font>sheettext</font>
+                <multilinespacing>16</multilinespacing>
+                <disabled />
+                <invisible />
+            </stringcontrol>
+
+            <tokencontrol name="preview">
+                <bounds>20,48,150,150</bounds>
+                <drawmode>fit</drawmode>
+                <disabled />
+            </tokencontrol>
+
+            <!-- Navegación -->
+            <genericcontrol name="tab_selected">
+                <anchored width="168" height="32">
+                    <left offset="14" />
+                    <top offset="214" />
+                </anchored>
+                <icon>aptus_equipment_tab_selected</icon>
+                <disabled />
+            </genericcontrol>
+
+            <genericcontrol name="nav_icon_data">
+                <bounds>22,218,20,23</bounds>
+                <icon>aptus_equipment_tab_data</icon>
+                <disabled />
+            </genericcontrol>
+
+            <stringcontrol name="nav_label_data">
+                <bounds>52,220,120,20</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>Datos comunes</static>
+                <disabled />
+            </stringcontrol>
+
+            <buttoncontrol name="nav_data">
+                <bounds>14,216,162,28</bounds>
+                <font>sheettext</font>
+                <state text="" />
+                <script>function onButtonPress() window.selectPage("data"); end</script>
+            </buttoncontrol>
+
+            <genericcontrol name="nav_icon_container">
+                <bounds>22,249,24,23</bounds>
+                <icon>aptus_equipment_tab_container</icon>
+                <disabled />
+            </genericcontrol>
+
+            <stringcontrol name="nav_label_container">
+                <bounds>52,251,120,20</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>Contenedor y Carga</static>
+                <disabled />
+            </stringcontrol>
+
+            <buttoncontrol name="nav_container">
+                <bounds>14,247,162,28</bounds>
+                <font>sheettext</font>
+                <state text="" />
+                <script>function onButtonPress() window.selectPage("container"); end</script>
+            </buttoncontrol>
+
+            <genericcontrol name="nav_icon_combat">
+                <bounds>22,280,24,23</bounds>
+                <icon>aptus_equipment_tab_combat</icon>
+                <disabled />
+            </genericcontrol>
+
+            <stringcontrol name="nav_label_combat">
+                <bounds>52,282,120,20</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>Combate</static>
+                <disabled />
+            </stringcontrol>
+
+            <buttoncontrol name="nav_combat">
+                <bounds>14,278,162,28</bounds>
+                <font>sheettext</font>
+                <state text="" />
+                <script>function onButtonPress() window.selectPage("combat"); end</script>
+            </buttoncontrol>
+
+            <genericcontrol name="nav_icon_qualities">
+                <bounds>22,311,23,22</bounds>
+                <icon>aptus_equipment_tab_qualities</icon>
+                <disabled />
+            </genericcontrol>
+
+            <stringcontrol name="nav_label_qualities">
+                <bounds>52,313,120,20</bounds>
+                <font>aptus_font_navigation_white</font>
+                <static>Cualidades</static>
+                <disabled />
+            </stringcontrol>
+
+            <buttoncontrol name="nav_qualities">
+                <bounds>14,309,162,28</bounds>
+                <font>sheettext</font>
+                <state text="" />
+                <script>function onButtonPress() window.selectPage("qualities"); end</script>
+            </buttoncontrol>
+
+            <stringcontrol name="page_title">
+                <bounds>224,57,418,22</bounds>
+                <font>aptus_equipment_page_title</font>
+                <disabled />
+            </stringcontrol>
+
+            <!-- Datos comunes -->
+            <stringcontrol name="label_name">
+                <bounds>204,90,280,20</bounds>
+                <font>sheetlabel</font>
+                <static>Nombre</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="label_is_wealth">
+                <bounds>490,90,85,20</bounds>
+                <font>sheetlabel</font><static>Riqueza</static><disabled />
+            </stringcontrol>
+            <buttonc_checkbox name="draft_is_wealth">
+                <bounds>584,88,24,24</bounds>
+                <tooltip text="Clasificar como Riqueza" />
+            </buttonc_checkbox>
+            <stringcontrol name="draft_name">
+                <bounds>204,115,410,24</bounds>
+                <font>sheettext</font>
+                <multilinespacing>16</multilinespacing>
+                <frame name="fieldlight" offset="12,10,4,3" />
+                <nodrag />
+            </stringcontrol>
+
+            <stringcontrol name="label_type">
+                <bounds>204,146,408,20</bounds>
+                <font>sheetlabel</font>
+                <static>Tipo</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="type_display">
+                <bounds>204,168,322,24</bounds>
+                <font>sheettext</font>
+                <multilinespacing>16</multilinespacing>
+                <disabled />
+            </stringcontrol>
+
+            <genericcontrol name="type_change_art">
+                <bounds>490,165,124,28</bounds>
+                <icon>aptus_equipment_button_secondary</icon>
+                <disabled />
+            </genericcontrol>
+
+            <buttoncontrol name="type_change">
+                <bounds>490,165,124,28</bounds>
+                <font>aptus_font_navigation_black</font>
+                <state text="Cambiar" />
+                <script>
+                    function onButtonPress()
+                        window.cycleType();
+                    end
+
+                    function onVisibilityChanged()
+                        window.type_change_art.setVisible(isVisible());
+                    end
+                </script>
+            </buttoncontrol>
+
+            <stringcontrol name="label_description">
+                <bounds>204,195,400,20</bounds>
+                <font>sheetlabel</font>
+                <static>Descripción</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="draft_description">
+                <bounds>204,223,408,78</bounds>
+                <font>sheettext</font>
+                <multilinespacing>16</multilinespacing>
+                <frame name="fieldlight" offset="12,10,4,3" />
+                <nodrag />
+            </stringcontrol>
+
+            <scrollbar name="description_scroll">
+                <anchored to="draft_description" />
+                <target>draft_description</target>
+            </scrollbar>
+
+            <stringcontrol name="label_picture">
+                <bounds>204,308,414,20</bounds>
+                <font>sheetlabel</font>
+                <static>Imagen: arrastrar recurso o introducir referencia</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="draft_picture">
+                <bounds>204,336,410,24</bounds>
+                <font>sheettext</font>
+                <multilinespacing>16</multilinespacing>
+                <frame name="fieldlight" offset="12,10,4,3" />
+                <nodrag />
+                <script>function onValueChanged() window.updatePreview(); end function onDrop(x,y,draginfo) return window.dropPicture(draginfo); end</script>
+            </stringcontrol>
+
+            <!-- Contenedor y Carga -->
+            <stringcontrol name="label_stackable">
+                <bounds>204,98,205,20</bounds>
+                <font>sheetlabel</font>
+                <static>Apilable</static>
+                <disabled />
+            </stringcontrol>
+
+            <buttonc_checkbox name="draft_stackable">
+                <bounds>340,95,24,24</bounds>
+                <script>function onValueChanged() window.updateDependentFields(); end</script>
+            </buttonc_checkbox>
+
+            <stringcontrol name="label_max_stack">
+                <bounds>204,134,205,20</bounds>
+                <font>sheetlabel</font>
+                <static>Máximo por pila</static>
+                <disabled />
+            </stringcontrol>
+
+            <numbercontrol name="draft_max_stack">
+                <bounds>340,130,72,24</bounds>
+                <font>sheettext</font>
+                <frame name="fieldlight" offset="4,3,4,3" />
+                <nodrag />
+            </numbercontrol>
+
+            <stringcontrol name="label_load_every">
+                <bounds>204,190,205,20</bounds>
+                <font>sheetlabel</font>
+                <static>CAR cada X unidades</static>
+                <disabled />
+            </stringcontrol>
+
+            <numbercontrol name="draft_load_every">
+                <bounds>340,186,72,24</bounds>
+                <font>sheettext</font>
+                <frame name="fieldlight" offset="4,3,4,3" />
+                <nodrag />
+            </numbercontrol>
+
+            <stringcontrol name="label_load_value">
+                <bounds>204,226,205,20</bounds>
+                <font>sheetlabel</font>
+                <static>CAR por tramo</static>
+                <disabled />
+            </stringcontrol>
+
+            <numbercontrol name="draft_load_value">
+                <bounds>340,222,72,24</bounds>
+                <font>sheettext</font>
+                <frame name="fieldlight" offset="4,3,4,3" />
+                <nodrag />
+            </numbercontrol>
+
+            <stringcontrol name="label_is_container">
+                <bounds>204,282,205,20</bounds>
+                <font>sheetlabel</font>
+                <static>Contenedor</static>
+                <disabled />
+            </stringcontrol>
+
+            <buttonc_checkbox name="draft_is_container">
+                <bounds>340,278,24,24</bounds>
+                <script>function onValueChanged() window.updateDependentFields(); end</script>
+            </buttonc_checkbox>
+
+            <stringcontrol name="label_capacity">
+                <bounds>204,318,205,20</bounds>
+                <font>sheetlabel</font>
+                <static>Capacidad (CAR)</static>
+                <disabled />
+            </stringcontrol>
+
+            <numbercontrol name="draft_capacity">
+                <bounds>340,314,72,24</bounds>
+                <font>sheettext</font>
+                <frame name="fieldlight" offset="4,3,4,3" />
+                <nodrag />
+            </numbercontrol>
+
+            <!-- Combate: propiedades defensivas -->
+            <stringcontrol name="label_pro">
+                <bounds>204,114,111,20</bounds>
+                <font>sheetlabel</font>
+                <static>Bonus PRO</static>
+                <disabled />
+            </stringcontrol>
+
+            <numbercontrol name="draft_pro">
+                <bounds>319,114,72,24</bounds>
+                <font>sheettext</font>
+                <frame name="fieldlight" offset="4,3,4,3" />
+                <nodrag />
+            </numbercontrol>
+
+            <stringcontrol name="label_def">
+                <bounds>420,114,111,20</bounds>
+                <font>sheetlabel</font>
+                <static>Bonus DEF</static>
+                <disabled />
+            </stringcontrol>
+
+            <numbercontrol name="draft_def">
+                <bounds>535,114,72,24</bounds>
+                <font>sheettext</font>
+                <frame name="fieldlight" offset="4,3,4,3" />
+                <nodrag />
+            </numbercontrol>
+
+            <stringcontrol name="label_agi">
+                <bounds>204,142,111,20</bounds>
+                <font>sheetlabel</font>
+                <static>Modificador AGI</static>
+                <disabled />
+            </stringcontrol>
+
+            <numbercontrol name="draft_agi">
+                <bounds>319,142,72,24</bounds>
+                <font>sheettext</font>
+                <frame name="fieldlight" offset="4,3,4,3" />
+                <nodrag />
+            </numbercontrol>
+
+            <stringcontrol name="label_per">
+                <bounds>420,142,111,20</bounds>
+                <font>sheetlabel</font>
+                <static>Modificador PER</static>
+                <disabled />
+            </stringcontrol>
+
+            <numbercontrol name="draft_per">
+                <bounds>535,142,72,24</bounds>
+                <font>sheettext</font>
+                <frame name="fieldlight" offset="4,3,4,3" />
+                <nodrag />
+            </numbercontrol>
+
+            <!-- Combate: lista de perfiles -->
+            <stringcontrol name="section_profiles">
+                <bounds>204,235,345,20</bounds>
+                <font>sheetlabel</font>
+                <static>Perfiles de combate</static>
+                <disabled />
+            </stringcontrol>
+
+            <buttoncontrol name="add_profile">
+                <bounds>579,232,32,28</bounds>
+                <font>sheettext</font>
+                <icon normal="aptus_add" pressed="aptus_add" />
+                <script>function onButtonPress() window.addCollectionEntry("profiles"); end</script>
+            </buttoncontrol>
+
+            <subwindow name="profile_headers"><bounds>204,263,411,18</bounds><class>aptus_profile_table_headers</class><activate /><fastinit /><noscroll /></subwindow>
+            <windowlist name="profile_list">
+                <bounds>204,282,426,78</bounds>
+                <class>aptus_equipment_profile_row</class>
+            </windowlist>
+
+            <scrollbar name="profile_list_scroll">
+                <anchored to="profile_list" />
+                <target>profile_list</target>
+            </scrollbar>
+
+            <!-- Cualidades -->
+            <stringcontrol name="section_qualities">
+                <bounds>204,96,345,20</bounds>
+                <font>sheetlabel</font>
+                <static>Cualidades generales</static>
+                <disabled />
+            </stringcontrol>
+
+            <buttoncontrol name="add_quality">
+                <bounds>579,93,32,28</bounds>
+                <font>sheettext</font>
+                <icon normal="aptus_add" pressed="aptus_add" />
+                <script>function onButtonPress() window.addCollectionEntry("qualities"); end</script>
+            </buttoncontrol>
+
+            <windowlist name="quality_list">
+                <bounds>204,130,408,230</bounds>
+                <class>aptus_quality_reference_row</class>
+                <script>function onDrop(x,y,draginfo) return window.dropGeneralQuality(draginfo); end</script>
+            </windowlist>
+
+            <scrollbar name="quality_list_scroll">
+                <anchored to="quality_list" />
+                <target>quality_list</target>
+            </scrollbar>
+
+            <!-- Acciones inferiores -->
+            <genericcontrol name="discard_art">
+                <bounds>354,383,124,28</bounds>
+                <icon>aptus_equipment_button_secondary</icon>
+                <disabled />
+            </genericcontrol>
+
+            <buttoncontrol name="discard_button">
+                <bounds>354,383,124,28</bounds>
+                <font>aptus_font_navigation_black</font>
+                <state text="Descartar" />
+                <script>function onButtonPress() window.reload(); end</script>
+            </buttoncontrol>
+
+            <genericcontrol name="save_art">
+                <bounds>493,383,119,28</bounds>
+                <icon>aptus_equipment_button_primary</icon>
+                <disabled />
+            </genericcontrol>
+
+            <buttoncontrol name="save_button">
+                <bounds>493,383,119,28</bounds>
+                <font>aptus_font_navigation_black</font>
+                <state text="Guardar" />
+                <script>function onButtonPress() window.save(); end</script>
+            </buttoncontrol>
+
+            <genericcontrol name="copy_art">
+                <bounds>34,373,124,28</bounds>
+                <icon>aptus_equipment_button_secondary</icon>
+                <disabled />
+            </genericcontrol>
+
+            <buttoncontrol name="copy_button">
+                <bounds>34,373,124,28</bounds>
+                <font>aptus_font_navigation_black</font>
+                <state text="Crear copia" />
+                <tooltip text="Crear una copia independiente de los datos guardados." />
+                <script>function onButtonPress() window.createCopy(); end</script>
+            </buttoncontrol>
+
+            <stringcontrol name="status">
+                <bounds>0,0,1,1</bounds>
+                <font>aptus_font_navigation_white</font>
+                <multilinespacing>12</multilinespacing>
+                <disabled />
+                <invisible />
+            </stringcontrol>
+
+            <!-- Combate: títulos, separadores y requisitos (continuación; orden original) -->
+            <stringcontrol name="section_protections">
+                <bounds>204,92,410,20</bounds>
+                <font>sheetlabel</font>
+                <static>Protecciones</static>
+                <disabled />
+            </stringcontrol>
+
+            <genericcontrol name="separator_protections">
+                <bounds>204,171,410,2</bounds>
+                <frame name="separatorline" />
+                <disabled />
+            </genericcontrol>
+
+            <stringcontrol name="section_requirements">
+                <bounds>204,178,190,20</bounds>
+                <font>sheetlabel</font>
+                <static>Requisitos</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="label_required_fue">
+                <bounds>204,201,110,20</bounds>
+                <font>sheetlabel</font>
+                <static>FUE mínima</static>
+                <disabled />
+            </stringcontrol>
+
+            <numbercontrol name="draft_required_fue">
+                <bounds>319,198,72,24</bounds>
+                <font>sheettext</font>
+                <frame name="fieldlight" offset="4,3,4,3" />
+                <nodrag />
+            </numbercontrol>
+
+            <stringcontrol name="label_required_agi">
+                <bounds>420,201,110,20</bounds>
+                <font>sheetlabel</font>
+                <static>AGI mínima</static>
+                <disabled />
+            </stringcontrol>
+
+            <numbercontrol name="draft_required_agi">
+                <bounds>535,198,72,24</bounds>
+                <font>sheettext</font>
+                <frame name="fieldlight" offset="4,3,4,3" />
+                <nodrag />
+            </numbercontrol>
+
+            <stringcontrol name="requirements_note">
+                <bounds>402,178,212,20</bounds>
+                <font>sheettext</font>
+                <disabled />
+                <invisible />
+            </stringcontrol>
+
+            <genericcontrol name="separator_requirements">
+                <bounds>204,229,410,2</bounds>
+                <frame name="separatorline" />
+                <disabled />
+            </genericcontrol>
+        </sheetdata>
+    </windowclass>
+
+    <!-- Perfiles de combate: controles existentes y tipos de daño descriptivos. -->
+    <!-- Casillas sin datasource: selección exclusivamente sobre el borrador local. -->
+    <template name="aptus_profile_damage_checkbox">
+        <buttonc_checkbox>
+            <script>
+                function onValueChanged()
+                    window.damageTypeChanged(getName():sub(13), getValue() == 1);
+                end
+            </script>
+        </buttonc_checkbox>
+    </template>
+    <template name="aptus_profile_damage_label">
+        <stringcontrol><font>aptus_profile_light</font><disabled /></stringcontrol>
+    </template>
+    <windowclass name="aptus_equipment_profile_form">
+        <margins control="0,0,0,0" />
+        <script file="scripts/equipment_profile_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="data_title"><bounds>2,0,440,22</bounds><font>aptus_profile_section</font><static>DATOS DEL PERFIL</static><disabled /></stringcontrol>
+            <genericcontrol name="qualities_separator"><bounds>2,185,478,2</bounds><frame name="separatorline" /><disabled /></genericcontrol>
+            <stringcontrol name="label_name">
+                <bounds>2,24,225,17</bounds>
+                <font>aptus_profile_light</font>
+                <static>Nombre</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="edit_name">
+                <bounds>2,42,225,22</bounds>
+                <font>aptus_equipment_compact</font>
+                <frame name="fieldlight" offset="10,2,2,2" />
+                <nodrag />
+                <nodrop />
+            </stringcontrol>
+
+            <stringcontrol name="label_skill">
+                <bounds>245,24,105,17</bounds>
+                <font>aptus_profile_light</font>
+                <static>Habilidad</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="skill_display">
+                <bounds>245,42,105,22</bounds>
+                <font>aptus_profile_light</font>
+                <center />
+                <disabled />
+            </stringcontrol>
+
+            <buttoncontrol name="skill_change">
+                <bounds>245,42,105,22</bounds>
+                <font>aptus_equipment_compact</font>
+                <state text="" />
+                <script>function onButtonPress() window.changeSkill(); end</script>
+            </buttoncontrol>
+
+            <stringcontrol name="label_range">
+                <bounds>2,76,60,17</bounds>
+                <font>aptus_profile_light</font>
+                <static>ALC</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="edit_range">
+                <bounds>2,94,60,22</bounds>
+                <font>aptus_equipment_compact</font>
+                <frame name="fieldlight" offset="2,2,2,2" />
+                <nodrag />
+                <center/>
+                <nodrop />
+            </stringcontrol>
+
+            <stringcontrol name="label_attack_modifier">
+                <bounds>370,24,70,17</bounds>
+                <font>aptus_profile_light</font>
+                <static>Modificador</static>
+                <disabled />
+            </stringcontrol>
+
+            <numbercontrol name="edit_attack_modifier">
+                <bounds>370,42,70,22</bounds>
+                <font>aptus_equipment_compact</font>
+                <frame name="fieldlight" offset="2,2,2,2" />
+                <nodrag />
+            </numbercontrol>
+
+            <stringcontrol name="label_damage">
+                <bounds>90,76,80,17</bounds>
+                <font>aptus_profile_light</font>
+                <static>Daño</static>
+                <center />
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="edit_damage">
+                <bounds>90,94,80,22</bounds>
+                <font>aptus_equipment_compact</font>
+                <frame name="fieldlight" offset="2,2,2,2" />
+                <center />
+                <nodrag />
+                <nodrop />
+            </stringcontrol>
+
+            <stringcontrol name="label_critical">
+                <bounds>190,76,80,17</bounds>
+                <font>aptus_profile_light</font>
+                <static>Crítico</static>
+                <center />
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="edit_critical">
+                <bounds>190,94,80,22</bounds>
+                <font>aptus_equipment_compact</font>
+                <frame name="fieldlight" offset="2,2,2,2" />
+                <nodrag />
+                <nodrop />
+                <center />
+            </stringcontrol>
+
+            <buttoncontrol name="delete_button">
+                <bounds>451,0,29,27</bounds>
+                <icon normal="aptus_delete" pressed="aptus_delete" />
+                <tooltip text="Eliminar perfil del borrador" />
+                <script>function onButtonPress() window.remove(); end</script>
+            </buttoncontrol>
+
+            <stringcontrol name="label_uses_ammunition">
+                <bounds>290,76,86,17</bounds>
+                <font>aptus_profile_light</font>
+                <static>Utiliza munición</static>
+                <disabled />
+            </stringcontrol>
+
+            <buttonc_checkbox name="edit_uses_ammunition">
+                <bounds>318,94,22,22</bounds>
+                <script>function onValueChanged() window.updateAmmo(); end</script>
+            </buttonc_checkbox>
+
+            <stringcontrol name="label_ammunition_max">
+                <bounds>390,76,80,17</bounds>
+                <font>aptus_profile_light</font>
+                <static>Cargador</static>
+                <disabled />
+            </stringcontrol>
+
+            <numbercontrol name="edit_ammunition_max">
+                <bounds>390,94,70,22</bounds>
+                <font>aptus_equipment_compact</font>
+                <frame name="fieldlight" offset="2,2,2,2" />
+                <nodrag />
+            </numbercontrol>
+
+            <stringcontrol name="label_qualities">
+                <bounds>2,193,478,20</bounds>
+                <font>aptus_profile_section</font>
+                <static>CUALIDADES</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="quality_names">
+                <bounds>2,217,280,22</bounds>
+                <font>aptus_profile_light</font>
+                <readonly />
+                <nodrag />
+                <script>function onDrop(x,y,draginfo) return window.dropQuality(draginfo); end</script>
+            </stringcontrol>
+
+            <genericcontrol name="quality_config_art">
+                <bounds>300,213,180,28</bounds>
+                <icon>aptus_equipment_button_secondary</icon>
+                <disabled />
+            </genericcontrol>
+
+            <buttoncontrol name="quality_config">
+                <bounds>300,213,180,28</bounds>
+                <font>aptus_equipment_compact</font>
+                <state text="Configurar cualidades" />
+                <script>function onButtonPress() window.configureQualities(); end</script>
+            </buttoncontrol>
+
+            <genericcontrol name="separator">
+                <bounds>2,248,478,2</bounds>
+                <frame name="separatorline" />
+                <disabled />
+            </genericcontrol>
+
+            <stringcontrol name="damage_types_title">
+                <bounds>2,256,478,20</bounds><font>aptus_profile_section</font>
+                <static>TIPOS DE DAÑO</static><disabled />
+            </stringcontrol>
+            <genericcontrol name="damage_types_separator">
+                <bounds>2,348,478,2</bounds><frame name="separatorline" /><disabled />
+            </genericcontrol>
+            <genericcontrol name="row_end">
+                <bounds>0,0,1,354</bounds>
+                <disabled />
+            </genericcontrol>
+            <stringcontrol name="label_ammunition_template"><bounds>2,128,260,18</bounds><font>aptus_profile_light</font><static>Tipo de munición</static><disabled /></stringcontrol>
+            <stringcontrol name="ammunition_name"><bounds>2,149,245,22</bounds><font>aptus_profile_light</font><disabled /></stringcontrol>
+            <buttoncontrol name="ammunition_select"><bounds>250,147,70,24</bounds><font>aptus_profile_light</font><state text="Elegir" /><script>function onButtonPress() window.selectAmmunition(); end</script></buttoncontrol>
+            <buttoncontrol name="ammunition_clear"><bounds>324,147,66,24</bounds><font>aptus_profile_light</font><state text="Quitar" /><script>function onButtonPress() window.clearAmmunition(); end</script></buttoncontrol>
+            <stringcontrol name="label_ammunition_consumption"><bounds>400,128,80,18</bounds><font>aptus_profile_light</font><static>Consumo</static><disabled /></stringcontrol>
+            <numbercontrol name="edit_ammunition_consumption"><bounds>400,149,60,22</bounds><font>aptus_equipment_compact</font><frame name="fieldlight" offset="2,2,2,2" /><nodrag /></numbercontrol>
+        </sheetdata>
+    </windowclass>
+    <!-- Filas y configuración sin datasource: pertenecen al borrador del editor. -->
+    <windowclass name="aptus_profile_table_headers"><sheetdata><stringcontrol name="header_profile_name"><bounds>2,0,68,18</bounds><font>aptus_equipment_compact</font><static>Nombre</static><disabled /></stringcontrol>
+<stringcontrol name="header_skill"><bounds>74,0,63,18</bounds><font>aptus_equipment_compact</font><static>Habilidad</static><center /><disabled /></stringcontrol>
+<stringcontrol name="header_range"><bounds>141,0,22,18</bounds><font>aptus_equipment_compact</font><static>ALC</static><center /><disabled /></stringcontrol>
+<stringcontrol name="header_damage"><bounds>167,0,46,18</bounds><font>aptus_equipment_compact</font><static>DAÑO</static><center /><disabled /></stringcontrol>
+<stringcontrol name="header_critical"><bounds>217,0,23,18</bounds><font>aptus_equipment_compact</font><static>CRI</static><center /><disabled /></stringcontrol>
+<stringcontrol name="header_ammo"><bounds>244,0,24,18</bounds><font>aptus_equipment_compact</font><static>MUN</static><center /><disabled /></stringcontrol>
+<stringcontrol name="header_capacity"><bounds>272,0,34,18</bounds><font>aptus_equipment_compact</font><static>N.MUN</static><center /><disabled /></stringcontrol>
+<stringcontrol name="header_qualities"><bounds>310,0,99,18</bounds><font>aptus_equipment_compact</font><static>Cualidades</static><disabled /></stringcontrol></sheetdata></windowclass>
+    <windowclass name="aptus_equipment_profile_row">
+        <margins control="0,0,0,0" />
+        <script file="scripts/equipment_profile_summary_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="row_art"><anchored width="421" height="36"><left anchor="left" offset="-10" /><top offset="0" /></anchored><frame name="fieldlight" /><disabled /></genericcontrol>
+            <stringcontrol name="cell_profile_name"><bounds>2,0,68,36</bounds><font>aptus_equipment_compact</font><multilinespacing>14</multilinespacing><disabled /></stringcontrol>
+<stringcontrol name="cell_skill"><bounds>74,0,63,36</bounds><font>aptus_equipment_compact</font><center /><disabled /></stringcontrol>
+<stringcontrol name="cell_range"><bounds>141,0,22,36</bounds><font>aptus_equipment_compact</font><center /><disabled /></stringcontrol>
+<stringcontrol name="cell_damage"><bounds>167,0,46,36</bounds><font>aptus_profile_damage</font><center /><disabled /></stringcontrol><stringcontrol name="cell_types"><bounds>167,0,46,36</bounds><font>aptus_equipment_compact</font><multilinespacing>14</multilinespacing><center /><disabled /></stringcontrol>
+<stringcontrol name="cell_critical"><bounds>217,0,23,36</bounds><font>aptus_equipment_compact</font><center /><disabled /></stringcontrol>
+<stringcontrol name="cell_ammo"><bounds>244,0,24,36</bounds><font>aptus_equipment_compact</font><center /><disabled /></stringcontrol>
+<stringcontrol name="cell_capacity"><bounds>272,0,34,36</bounds><font>aptus_equipment_compact</font><center /><disabled /></stringcontrol>
+<stringcontrol name="cell_qualities"><bounds>310,0,99,36</bounds><font>aptus_equipment_compact</font><multilinespacing>14</multilinespacing><disabled /></stringcontrol>
+            <stringcontrol name="ammunition_summary"><bounds>2,0,380,1</bounds><font>aptus_equipment_compact</font><disabled /><invisible /></stringcontrol>
+            <genericcontrol name="open_art"><bounds>0,0,12,12</bounds><icon>aptus_equipo_ver</icon><disabled /></genericcontrol>
+            <buttoncontrol name="open_profile"><anchored width="421" height="36"><left anchor="left" offset="-10" /><top offset="0" /></anchored><state text="" /><tooltip text="Configurar perfil de combate" /><script>function onButtonPress() window.openConfiguration(); end</script></buttoncontrol>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_equipment_profile_configuration">
+        <frame>aptus_lane_aux_recordsheet</frame>
+        <placement><size width="520" height="420" /><nosave /></placement>
+        <sizelimits><minimum width="520" height="420" /><maximum width="520" height="420" /></sizelimits>
+        <script file="scripts/equipment_profile_configuration_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="title"><bounds>16,7,450,22</bounds><font>aptus_profile_light</font><static>CONFIGURAR PERFIL · BORRADOR</static><disabled /></stringcontrol>
+            <buttoncontrol name="close_button"><bounds>481,3,29,27</bounds><icon normal="aptus_location_close" pressed="aptus_location_close" /><tooltip text="Cerrar y conservar en el borrador" /><script>function onButtonPress() window.close(); end</script></buttoncontrol>
+            <subwindow name="form"><bounds>16,40,488,354</bounds><class>aptus_equipment_profile_form</class><activate /><fastinit /><noscroll /></subwindow>
+        </sheetdata>
+    </windowclass>
+</root>

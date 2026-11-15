@@ -1,34 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <root>
-
     <windowclass name="charsheet_abilities">
         <script file="scripts/char_abilities_aptus.lua" />
         <sheetdata>
-
             <!-- Marco principal -->
+
             <frame_char name="skillsframe">
                 <anchored position="over" />
             </frame_char>
 
             <!-- Titulo -->
+
             <label_frametop name="skills_title">
                 <anchored to="skillsframe" />
                 <static text="Habilidades" />
             </label_frametop>
 
             <!-- CTA Edicion -->
+
             <buttoncontrol name="skills_editor_button">
                 <anchored to="skillsframe">
                     <top offset="0" />
                     <right offset="-30" />
                     <size width="25" height="25" />
                 </anchored>
-
                 <icon normal="aptus_settings" pressed="aptus_settings" />
-
                 <tooltip text="Editar habilidades" />
-
                 <script>
                     function onButtonPress()
                         window.openSkillsEditor()
@@ -37,6 +34,7 @@
             </buttoncontrol>
 
             <!-- Cabecera de columnas -->
+
             <stringcontrol name="skills_header_name">
                 <anchored to="skillsframe">
                     <top offset="40" />
@@ -74,6 +72,7 @@
             </stringcontrol>
 
             <!-- Lista unificada de habilidades -->
+
             <windowlist name="aptus_skills_list">
                 <anchored to="skillsframe">
                     <left offset="20" />
@@ -81,12 +80,9 @@
                     <right offset="-20" />
                     <bottom offset="-20" />
                 </anchored>
-
                 <datasource>.skills</datasource>
                 <class>aptus_skill_row</class>
-
                 <columns width="420" filldown="true" />
-
                 <script>
                     function onFilter(w)
                         return window.filterSkills(w)
@@ -97,8 +93,6 @@
                     end
                 </script>
             </windowlist>
-
         </sheetdata>
     </windowclass>
-
 </root>

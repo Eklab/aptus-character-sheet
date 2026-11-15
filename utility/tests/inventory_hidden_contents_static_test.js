@@ -1,0 +1,66 @@
+// Comprobaciones estáticas; no ejecutan Lua ni FGU.
+const fs=require('fs'),assert=require('assert'),read=p=>fs.readFileSync(p,'utf8');
+const manager=read('scripts/manager_aptus_inventory.lua'),view=read('scripts/char_equipment_aptus.lua');
+const row=read('scripts/char_equipment_row_aptus.lua'),editor=read('scripts/record_inventory_item_aptus.lua');
+const xml=read('campaign/record_inventory_item_aptus.xml'),outer=read('scripts/inventory_item_window_aptus.lua');
+assert(manager.includes('{ key="hide_contents", path="properties.hide_contents", kind="number", default=0 }'));
+assert(manager.includes('not Session.IsHost and draft.hide_contents ~= storedHidden'));
+assert(manager.includes('if draft.is_container == 0 then draft.hide_contents = 0; end'));
+assert(manager.includes('if ancestor.hide_contents then item.visible_to_user = false; break; end'));
+assert(manager.includes('and isInstance(node) and isItemVisible(node)'));
+assert(manager.includes('or not isInstance(node) or not isItemVisible(node)'));
+assert(manager.includes('internalContents and isInstance(node) or canViewInstance(node)'));
+assert(manager.includes('canDeleteInstance(current, true)'));
+assert(view.includes('if entry.item.children[i].visible_to_user then'));
+assert(view.includes('".*.properties.hide_contents", event, onContentsVisibilityChanged'));
+assert(view.includes('if Session.IsHost then return; end'));
+assert(editor.includes('draft_hide_contents.setValue(draft.hide_contents or 0)'));
+assert(editor.includes('Session.IsHost and sPage == "container" and draft_is_container.getValue() == 1'));
+assert(editor.includes('draft_hide_contents.setReadOnly(not visible or not canEditCurrentInstance())'));
+assert(outer.includes('if not APTUSInventoryManager.canViewInstance(getDatabaseNode()) then close(); return; end'));
+assert(outer.includes('"properties.hide_contents", "properties.is_container", "aptus.container"'));
+assert(row.includes('Session.IsHost and item.is_container and item.hide_contents'));
+assert(row.includes('icon="padlock_closed", w=12, h=12'));
+assert(row.includes('hiddenWidget.setVisible(hidden)'));
+const load=manager.slice(manager.indexOf('local function calculateContainerLoads('),manager.indexOf('function getBaseLoadCapacity('));
+assert(!/hide_contents|visible_to_user|isItemVisible/.test(load),'La ocultación no modifica carga/Almacenaje');
+assert(!read('scripts/manager_aptus_equipment.lua').includes('hide_contents'),'El catálogo no se modifica');
+const icon=read('/references/corerpg/graphics/graphics_icons.xml');
+assert(icon.includes('name="padlock_closed"'));
+const png=fs.readFileSync('/references/corerpg/graphics/icons/padlock_closed.png');
+assert.equal(png.readUInt32BE(16),20);assert.equal(png.readUInt32BE(20),20);
+assert(!xml.includes('<datasource>'));
+assert(xml.includes('name="label_hide_contents"')&&xml.includes('name="draft_hide_contents"'));
+const test=read('utility/tests/inventory_hidden_contents_test.lua');
+for(const call of ['m.saveInstance(','m.transfer(','m.setState(','m.setQuantity(','m.getLocationOptions(','m.canViewInstance('])assert(test.includes(call));
+assert(test.includes('session.IsHost=false')&&test.includes('originalLoad==9')&&test.includes('movedLoad==8'));
+assert(read('utility/tests/inventory_create_test.lua').includes('loadfile("utility/tests/inventory_hidden_contents_test.lua")'));
+assert(!read('extension.xml').includes('inventory_hidden_contents_test.lua'));
+console.log('OK estático: propiedad local 0/1, editor/candado sólo DJ, filtro de descendientes, guardas de interacción, movimiento de árboles, refresco y carga intacta.');
+
+const location=read('scripts/inventory_location_aptus.lua');
+assert(location.includes('super.activateNextSelection()'));
+assert(location.includes('closed or Session.IsHost'));
+assert(location.includes('DB.addHandler(watchedPath, event, onContentsVisibilityChanged)'));
+assert(location.includes('DB.removeHandler(watchedPath, event, onContentsVisibilityChanged)'));
+assert(!/DB\.(setValue|deleteNode|createChild)/.test(location));
+
+// El candado sigue al bloque medido de nombre + Almacenaje, no al borde derecho.
+assert(row.includes('local lockSpace = hidden and 15 or 0'));
+assert(row.includes('available = available - lockSpace'));
+assert(row.includes('nameWidget.setPosition("left", nameWidth / 2, 0)'));
+assert(row.includes('capacityWidget.setPosition("left", nameWidth + 3 + capacityWidth / 2, 0)'));
+assert(row.includes('hiddenWidget.setPosition("left", nameWidth + 3 + capacityWidth + 3 + 6, 0)'));
+assert(!row.includes('hiddenWidget.setPosition("left", 6, 0)'));
+assert(!row.includes('hiddenWidget.setPosition("right"'));
+assert(row.includes('renderItemName(tItem, nNameRight - nTextLeft)'));
+assert(row.includes('nNameLeft + (bDescendant and nStep or 0)'));
+console.log('OK estático: candado tras nombre/Almacenaje, separación 3 px, reserva 15 px, centrado vertical e indentación conservados.');
+
+assert(!row.includes("bDiagnoseHiddenLockTint") && !row.includes("FFFF0000"));
+assert(!row.includes("hiddenWidget.setColor"));
+assert(row.includes('nameWidget.setColor(item.hide_contents and "FFB8B8B8" or nil)'));
+assert(row.includes('capacityWidget.setColor(item.hide_contents and "FFB8B8B8" or (item.overloaded and "FFFF4040" or nil))'));
+assert(!row.includes("item_name.setColor"),"No tintar el control padre ni su icono");
+assert(row.indexOf("nameWidget.setColor")>row.indexOf('item_name.setValue("")'));
+console.log("OK estático: nombre y Almacenaje grises sólo por la propiedad propia, restauración de colores, candado original sin diagnóstico ni tintado.");

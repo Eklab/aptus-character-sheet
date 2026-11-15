@@ -1,0 +1,25 @@
+// Node estándar; no ejecuta la interacción nativa de FGU.
+const fs=require('fs'),assert=require('assert');
+const xml=fs.readFileSync('campaign/record_char_equipment_aptus.xml','utf8');
+const row=fs.readFileSync('scripts/char_equipment_row_aptus.lua','utf8');
+const manager=fs.readFileSync('scripts/manager_aptus_inventory.lua','utf8');
+const control=xml.match(/<stringcontrol name="count">([\s\S]*?)<\/stringcontrol>/)[1];
+assert(control.includes('<bounds>217,2,26,20</bounds>'));
+assert(control.includes('<font>aptus_inventory_row_text</font>'));
+assert(control.includes('<readonly />')&&control.includes('<center />'));
+assert(control.includes('if button == 1 then return window.editQuantity(); end'));
+assert(!control.includes('<datasource>'));
+const action=row.slice(row.indexOf('function editQuantity()'),row.indexOf('local nNameLeft'));
+assert(action.includes('DB.findNode(sInstancePath)'));
+assert(action.includes('APTUSInventoryManager.canViewInstance(node)'));
+assert(action.includes('DB.getType(stackable) ~= "number"'));
+assert(action.includes('DB.getValue(stackable) ~= 1'));
+assert(action.includes('DB.getValue(node, "properties.is_container", 1) ~= 0'));
+assert(action.includes('APTUSInventoryManager.requestSetQuantity(node)'));
+assert(action.indexOf('return false;')<action.indexOf('requestSetQuantity(node)'));
+assert(!/DB\.(setValue|deleteNode|createChild)|setQuantity\s*\(|openWindow\s*\(/.test(action));
+const existing=manager.slice(manager.indexOf('function requestSetQuantity('),manager.indexOf('-- Opciones exclusivamente'));
+assert(existing.includes('getInstanceEditToken(node) ~= expected'));
+assert(existing.includes('if quantity == 0 then')&&existing.includes('requestDeleteInstance(node,'));
+assert(existing.includes('setQuantity(node, quantity)'));
+console.log('OK estático: clic izquierdo en Cantidad, nodo de la fila, exclusión de no apilables/contenedores, solo lectura y delegación al editor existente.');

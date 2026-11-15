@@ -1,0 +1,172 @@
+[
+  {
+    "node": "ammo-9x19mm",
+    "template_id": "aptus.initial.ammunition.9x19mm",
+    "name": "9×19 mm",
+    "description": "Bala de pistola utilizada habitualmente en pistolas semiautomáticas y subfusiles.",
+    "max_stack": 50,
+    "load_every": 50,
+    "load_value": 1,
+    "image": "municion_9_19_mm.png"
+  },
+  {
+    "node": "ammo-45acp",
+    "template_id": "aptus.initial.ammunition.45acp",
+    "name": ".45 ACP",
+    "description": "Bala de pistola utilizada habitualmente en pistolas semiautomáticas de calibre .45.",
+    "max_stack": 50,
+    "load_every": 50,
+    "load_value": 1,
+    "image": "municion_45_ACP.png"
+  },
+  {
+    "node": "ammo-40sw",
+    "template_id": "aptus.initial.ammunition.40sw",
+    "name": ".40 S&W",
+    "description": "Bala de pistola utilizada habitualmente en pistolas semiautomáticas.",
+    "max_stack": 50,
+    "load_every": 50,
+    "load_value": 1,
+    "image": "municion_9_19_mm.png"
+  },
+  {
+    "node": "ammo-38special",
+    "template_id": "aptus.initial.ammunition.38special",
+    "name": ".38 Special",
+    "description": "Bala de revólver utilizada habitualmente en revólveres de calibre .38.",
+    "max_stack": 50,
+    "load_every": 50,
+    "load_value": 1,
+    "image": "municion_38_Special.png"
+  },
+  {
+    "node": "ammo-357magnum",
+    "template_id": "aptus.initial.ammunition.357magnum",
+    "name": ".357 Magnum",
+    "description": "Bala de revólver utilizada habitualmente en revólveres de calibre .357 Magnum.",
+    "max_stack": 50,
+    "load_every": 50,
+    "load_value": 1,
+    "image": "municion_38_Special.png"
+  },
+  {
+    "node": "ammo-44magnum",
+    "template_id": "aptus.initial.ammunition.44magnum",
+    "name": ".44 Magnum",
+    "description": "Bala de revólver utilizada habitualmente en revólveres de gran calibre.",
+    "max_stack": 20,
+    "load_every": 20,
+    "load_value": 1,
+    "image": "municion_balas_gordas.png"
+  },
+  {
+    "node": "ammo-556x45mm",
+    "template_id": "aptus.initial.ammunition.556x45mm",
+    "name": "5,56×45 mm",
+    "description": "Bala de fusil utilizada habitualmente en fusiles de asalto y carabinas.",
+    "max_stack": 20,
+    "load_every": 20,
+    "load_value": 1,
+    "image": "municion_por_defecto.png"
+  },
+  {
+    "node": "ammo-762x39mm",
+    "template_id": "aptus.initial.ammunition.762x39mm",
+    "name": "7,62×39 mm",
+    "description": "Bala de fusil utilizada habitualmente en fusiles de asalto y carabinas.",
+    "max_stack": 20,
+    "load_every": 20,
+    "load_value": 1,
+    "image": "municion_por_defecto.png"
+  },
+  {
+    "node": "ammo-762x51mm",
+    "template_id": "aptus.initial.ammunition.762x51mm",
+    "name": "7,62×51 mm",
+    "description": "Bala de fusil utilizada habitualmente en fusiles de combate y rifles de precisión.",
+    "max_stack": 20,
+    "load_every": 20,
+    "load_value": 1,
+    "image": "municion_por_defecto.png"
+  },
+  {
+    "node": "ammo-308winchester",
+    "template_id": "aptus.initial.ammunition.308winchester",
+    "name": ".308 Winchester",
+    "description": "Bala de rifle utilizada habitualmente en rifles de caza y rifles de precisión.",
+    "max_stack": 20,
+    "load_every": 20,
+    "load_value": 1,
+    "image": "municion_por_defecto.png"
+  },
+  {
+    "node": "ammo-3006springfield",
+    "template_id": "aptus.initial.ammunition.3006springfield",
+    "name": ".30-06 Springfield",
+    "description": "Bala de rifle utilizada habitualmente en rifles de caza.",
+    "max_stack": 20,
+    "load_every": 20,
+    "load_value": 1,
+    "image": "municion_por_defecto.png"
+  },
+  {
+    "node": "ammo-calibre12",
+    "template_id": "aptus.initial.ammunition.calibre12",
+    "name": "Calibre 12",
+    "description": "Cartucho de escopeta utilizado habitualmente en escopetas de calibre 12.",
+    "max_stack": 25,
+    "load_every": 25,
+    "load_value": 1,
+    "image": "municion_cartuchosl.png"
+  },
+  {
+    "node": "ammo-calibre20",
+    "template_id": "aptus.initial.ammunition.calibre20",
+    "name": "Calibre 20",
+    "description": "Cartucho de escopeta utilizado habitualmente en escopetas de calibre 20.",
+    "max_stack": 25,
+    "load_every": 25,
+    "load_value": 1,
+    "image": "municion_cartuchosl.png"
+  },
+  {
+    "node": "ammo-410",
+    "template_id": "aptus.initial.ammunition.410",
+    "name": ".410",
+    "description": "Cartucho de escopeta utilizado habitualmente en escopetas de calibre .410.",
+    "max_stack": 25,
+    "load_every": 25,
+    "load_value": 1,
+    "image": "municion_cartuchosl.png"
+  },
+  {
+    "node": "ammo-granada40mm",
+    "template_id": "aptus.initial.ammunition.granada40mm",
+    "name": "Granada 40 mm",
+    "description": "Granada utilizada habitualmente como munición de lanzagranadas de 40 mm.",
+    "max_stack": 6,
+    "load_every": 3,
+    "load_value": 1,
+    "image": "municion_por_defecto.png"
+  },
+  {
+    "node": "ammo-flecha",
+    "template_id": "aptus.initial.ammunition.flecha",
+    "name": "Flecha",
+    "description": "Proyectil utilizado habitualmente como munición de arcos.",
+    "max_stack": 12,
+    "load_every": 12,
+    "load_value": 1,
+    "image": "municion_por_defecto.png"
+  },
+  {
+    "node": "ammo-virote",
+    "template_id": "aptus.initial.ammunition.virote",
+    "name": "Virote",
+    "description": "Proyectil utilizado habitualmente como munición de ballestas.",
+    "max_stack": 12,
+    "load_every": 12,
+    "load_value": 1,
+    "image": "municion_por_defecto.png"
+  }
+]

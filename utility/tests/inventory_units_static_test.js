@@ -1,0 +1,34 @@
+// Estructura y conexiones; no ejecuta Lua ni sustituye las pruebas funcionales.
+const fs=require('fs'),assert=require('assert'),read=p=>fs.readFileSync(p,'utf8');
+const manager=read('scripts/manager_aptus_inventory.lua'),view=read('scripts/char_equipment_aptus.lua');
+const row=read('scripts/char_equipment_row_aptus.lua'),xml=read('campaign/inventory_quantity_aptus.xml');
+for(const name of ['setQuantity','removeUnits','mergeStacks','transfer','createFromTemplate','getStackLoad'])assert(manager.includes('function '+name+'('));
+const operations=manager.slice(manager.indexOf('-- Operaciones de unidades.'));
+assert(!operations.includes('"ammunition"'),'No se permiten reglas de apilamiento por tipo');
+assert(operations.includes('signature(a, carried) == signature(b)'));
+assert(operations.includes('item.parent_id == parentId'));
+assert(operations.includes('type(maximum) == "number"'));
+assert(manager.includes('math.ceil(count / every) * load'));
+assert(manager.includes('own_load = getStackLoad(node)'));
+assert(manager.includes('DB.copyNode(DB.getChild(nodeTemplate, "properties"), props)'));
+assert(manager.includes('field(created, "template_id", "string") ~= before.id'));
+assert(operations.includes('local sourcePath = DB.getPath(source)'));
+assert(operations.includes('DB.findNode(sourcePath)'));
+assert(operations.includes('if change.applied and DB.findNode'));
+assert(operations.includes('if cursor == source then'));
+assert(operations.includes('if not sameCharacter then return nil'));
+assert(view.includes('pcall(APTUSInventoryManager.createFromTemplate, getDatabaseNode(), DB.findNode(path), quantity, parent)'));
+assert(view.includes('APTUSInventoryManager.transfer(DB.findNode(path), getDatabaseNode(), nil, parent)'));
+assert(row.includes('requestSetQuantity(node)')&&row.includes('mergeStacks(node)'));
+assert(row.includes('draginfo.setShortcutData("aptus_inventory_item", sInstancePath)'));
+assert(read('extension.xml').includes('campaign/inventory_quantity_aptus.xml'));
+const stack=[];
+for(const tag of xml.replace(/<\?[\s\S]*?\?>|<!--[\s\S]*?-->/g,'').match(/<[^>]*>/g)||[]){
+ const name=tag.match(/^<\/?([\w.-]+)/)?.[1];assert(name);
+ if(tag.startsWith('</'))assert.equal(stack.pop(),name);else if(!tag.endsWith('/>'))stack.push(name);
+}assert.equal(stack.length,0);
+assert(!/DB\./.test(read('scripts/inventory_quantity_aptus.lua')));
+const test=read('utility/tests/inventory_units_test.lua');
+for(const operation of ['createFromTemplate','setQuantity','removeUnits','mergeStacks','transfer','getCharacterInventory','getStackLoad'])assert(test.includes('m.'+operation+'('));
+assert(read('utility/tests/inventory_create_test.lua').includes('loadfile("utility/tests/inventory_units_test.lua")'));
+console.log('OK: operaciones genéricas, permisos/contexto, protocolo de reparto/recuperación, carga por pila, conexiones UI y suite funcional real preparada.');

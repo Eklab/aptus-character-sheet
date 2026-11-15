@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
     <!-- La representación se oculta; el script nativo sigue gestionando pestañas. -->
+
     <template name="aptus_tabs_hidden">
         <buttongroup_tabs>
             <frame merge="delete" />
             <bounds>0,280,1,1</bounds>
-            <invisible /><disabled />
+            <invisible />
+            <disabled />
             <script>
                 -- El script nativo dimensiona la tira según el número de pestañas.
                 -- Aquí sólo sirve como controlador: no debe ampliar el lienzo.
@@ -21,52 +23,65 @@
             </script>
         </buttongroup_tabs>
     </template>
+
     <windowclass name="aptus_char_navigation">
         <margins control="0,0,0,0" />
         <script file="scripts/char_navigation_aptus.lua" />
         <sheetdata>
             <genericcontrol name="navigation_artwork">
                 <bounds>0,0,653,50</bounds>
-                <icon>aptus_navigation_background</icon><disabled />
+                <icon>aptus_navigation_background</icon>
+                <disabled />
                 <skin_resource>aptus_navigation_background</skin_resource>
                 <script file="scripts/skin_icon_aptus.lua" />
             </genericcontrol>
+
             <!-- Sólo dibuja; los clics pertenecen a los botones transparentes. -->
+
             <genericcontrol name="navigation_active">
                 <anchored width="112" height="36">
-                    <left offset="16" /><top offset="8" />
+                    <left offset="16" />
+                    <top offset="8" />
                 </anchored>
                 <icon>aptus_navigation_active_main</icon>
                 <disabled />
             </genericcontrol>
+
             <buttoncontrol name="principal">
                 <bounds>0,0,103,48</bounds>
                 <script>function onButtonPress() WindowManager.getTopWindow(window).activateSection("aptus_principal"); end</script>
             </buttoncontrol>
+
             <buttoncontrol name="combat">
                 <bounds>103,0,99,48</bounds>
                 <tooltip text="Pendiente de implementar o separar del contenido actual" />
                 <disabled />
             </buttoncontrol>
+
             <buttoncontrol name="qualities">
                 <bounds>202,0,124,48</bounds>
                 <tooltip text="Pendiente de implementar o separar del contenido actual" />
                 <disabled />
             </buttoncontrol>
+
             <buttoncontrol name="equipment">
                 <bounds>326,0,93,48</bounds>
                 <script>function onButtonPress() WindowManager.getTopWindow(window).activateSection("inventory"); end</script>
             </buttoncontrol>
+
             <buttoncontrol name="identity">
                 <bounds>419,0,113,48</bounds>
                 <script>function onButtonPress() WindowManager.getTopWindow(window).activateSection("notes"); end</script>
             </buttoncontrol>
+
             <buttoncontrol name="symbiote">
                 <bounds>532,0,121,48</bounds>
                 <tooltip text="Pendiente de implementar o separar del contenido actual" />
                 <disabled />
             </buttoncontrol>
+
             <!-- Textos independientes: ajustar aquí X,Y,ancho,alto (origen de navegación). -->
+
             <stringcontrol name="navigation_label_main">
                 <bounds>40,18,103,17</bounds>
                 <font>aptus_font_navigation_black</font>
@@ -74,6 +89,7 @@
                 <static>Principal</static>
                 <disabled />
             </stringcontrol>
+
             <stringcontrol name="navigation_label_combat">
                 <bounds>145,18,99,17</bounds>
                 <font>aptus_font_navigation_white</font>
@@ -81,6 +97,7 @@
                 <static>Combate</static>
                 <disabled />
             </stringcontrol>
+
             <stringcontrol name="navigation_label_cualidades">
                 <bounds>235,18,124,17</bounds>
                 <font>aptus_font_navigation_white</font>
@@ -88,6 +105,7 @@
                 <static>Cualidades</static>
                 <disabled />
             </stringcontrol>
+
             <stringcontrol name="navigation_label_equipo">
                 <bounds>350,18,93,17</bounds>
                 <font>aptus_font_navigation_white</font>
@@ -95,6 +113,7 @@
                 <static>Equipo</static>
                 <disabled />
             </stringcontrol>
+
             <stringcontrol name="navigation_label_identificacion">
                 <bounds>442,18,113,17</bounds>
                 <font>aptus_font_navigation_white</font>
@@ -102,6 +121,7 @@
                 <static>Identidad</static>
                 <disabled />
             </stringcontrol>
+
             <stringcontrol name="navigation_label_simbionte">
                 <bounds>531,18,121,17</bounds>
                 <font>aptus_font_navigation_white</font>
@@ -112,26 +132,37 @@
         </sheetdata>
     </windowclass>
     <!-- El recorte pertenece a la subventana, no cambia el bitmap ni su escala. -->
+
     <windowclass name="aptus_char_content_background">
         <margins control="0,0,0,0" />
         <sheetdata>
             <genericcontrol name="artwork">
                 <bounds>0,0,659,365</bounds>
-                <icon>aptus_combat_background</icon><disabled />
+                <icon>aptus_combat_background</icon>
+                <disabled />
                 <skin_resource>aptus_combat_background</skin_resource>
                 <script file="scripts/skin_icon_aptus.lua" />
             </genericcontrol>
         </sheetdata>
     </windowclass>
+
     <windowclass name="aptus_char_options">
         <frame>charsheet</frame>
-        <placement><size width="330" height="95" /></placement>
-        <sizelimits><minimum width="330" height="95" /><maximum width="330" height="95" /></sizelimits>
+        <placement>
+            <size width="330" height="95" />
+        </placement>
+        <sizelimits>
+            <minimum width="330" height="95" />
+            <maximum width="330" height="95" />
+        </sizelimits>
         <sheetdata>
             <stringcontrol name="title">
-                <bounds>20,10,285,25</bounds><font>sheettext</font>
-                <static>Opciones de ficha</static><disabled />
+                <bounds>20,10,285,25</bounds>
+                <font>sheettext</font>
+                <static>Opciones de ficha</static>
+                <disabled />
             </stringcontrol>
+
             <genericcontrol name="character_link">
                 <bounds>20,40,26,26</bounds>
                 <icon>button_toolbar_link</icon>
@@ -144,9 +175,12 @@
                     end
                 </script>
             </genericcontrol>
+
             <stringcontrol name="hint">
-                <bounds>55,40,250,26</bounds><font>sheettext</font>
-                <static>Arrastra el enlace del personaje</static><disabled />
+                <bounds>55,40,250,26</bounds>
+                <font>sheettext</font>
+                <static>Arrastra el enlace del personaje</static>
+                <disabled />
             </stringcontrol>
         </sheetdata>
     </windowclass>

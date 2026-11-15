@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <windowclass name="aptus_quality" copy="record_window">
+        <frame>aptus_lane_aux_recordsheet</frame>
+        <placement>
+            <size width="600" height="520" />
+        </placement>
+        <sizelimits>
+            <minimum width="600" height="520" />
+            <dynamic />
+        </sizelimits>
+        <sheetdata>
+            <sub_content_framed_groupbox_top name="header">
+                <frame name="aptus_lane_aux_groupbox" offset="10,10,10,10" />
+            </sub_content_framed_groupbox_top>
+
+            <sub_content_framed_groupbox name="content">
+                <frame name="aptus_lane_aux_groupbox" offset="15,15,15,15" />
+            </sub_content_framed_groupbox>
+        </sheetdata>
+    </windowclass>
+
+    <windowclass name="aptus_quality_header">
+        <sheetdata>
+            <stringfield name="name">
+                <anchored height="26">
+                    <left offset="10" />
+                    <right offset="-10" />
+                    <top offset="4" />
+                </anchored>
+                <font>sheetlabel</font>
+                <readonly />
+            </stringfield>
+        </sheetdata>
+    </windowclass>
+
+    <windowclass name="aptus_quality_indexrow" copy="masterindexitem">
+        <script>function delete() APTUSQualityManager.requestDelete(getDatabaseNode()); end</script>
+    </windowclass>
+
+    <windowclass name="aptus_quality_main">
+        <script file="scripts/record_quality_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="general_title">
+                <anchored height="18">
+                    <left offset="10" />
+                    <right offset="-10" />
+                    <top offset="0" />
+                </anchored>
+                <font>aptus_equipment_compact</font>
+                <static>General</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="identity">
+                <bounds>0,0,1,1</bounds>
+                <font>aptus_equipment_compact</font>
+                <readonly />
+                <invisible />
+            </stringcontrol>
+
+            <stringcontrol name="label_name">
+                <anchored height="18">
+                    <left offset="10" />
+                    <right offset="-10" />
+                    <top offset="26" />
+                </anchored>
+                <font>aptus_equipment_compact</font>
+                <static>Nombre</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="draft_name">
+                <anchored height="24">
+                    <left offset="10" />
+                    <right offset="-10" />
+                    <top offset="46" />
+                </anchored>
+                <font>aptus_equipment_compact</font>
+                <frame name="fieldlight" offset="2,2,2,2" />
+                <nodrag />
+                <nodrop />
+            </stringcontrol>
+
+            <stringcontrol name="label_description">
+                <anchored height="18">
+                    <left offset="10" />
+                    <right offset="-10" />
+                    <top offset="80" />
+                </anchored>
+                <font>aptus_equipment_compact</font>
+                <static>Descripción</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="draft_description">
+                <anchored height="80">
+                    <left offset="10" />
+                    <right offset="-10" />
+                    <top offset="100" />
+                </anchored>
+                <font>aptus_equipment_compact</font>
+                <frame name="fieldlight" offset="2,2,2,2" />
+                <nodrag />
+                <nodrop />
+                <multilinespacing>16</multilinespacing>
+            </stringcontrol>
+
+            <scrollbar name="description_scroll">
+                <anchored to="draft_description" />
+                <target>draft_description</target>
+            </scrollbar>
+
+            <stringcontrol name="label_types">
+                <anchored height="18">
+                    <left offset="10" />
+                    <right offset="-10" />
+                    <top offset="190" />
+                </anchored>
+                <font>aptus_equipment_compact</font>
+                <static>Tipos</static>
+                <disabled />
+            </stringcontrol>
+
+            <windowlist name="type_list">
+                <anchored height="90">
+                    <left offset="10" />
+                    <right anchor="center" offset="-5" />
+                    <top offset="212" />
+                </anchored>
+                <class>aptus_quality_type_row</class>
+            </windowlist>
+
+            <windowlist name="type_list_right">
+                <anchored height="90">
+                    <left anchor="center" offset="5" />
+                    <right offset="-10" />
+                    <top offset="212" />
+                </anchored>
+                <class>aptus_quality_type_row</class>
+            </windowlist>
+
+            <scrollbar name="types_scroll">
+                <anchored to="type_list_right" />
+                <target>type_list_right</target>
+            </scrollbar>
+
+            <genericcontrol name="delete_art">
+                <anchored width="124" height="28">
+                    <right offset="-144" />
+                    <top offset="306" />
+                </anchored>
+                <icon>aptus_equipment_button_secondary</icon>
+                <disabled />
+            </genericcontrol>
+
+            <buttoncontrol name="delete_button">
+                <anchored width="124" height="28">
+                    <right offset="-144" />
+                    <top offset="306" />
+                </anchored>
+                <font>aptus_font_navigation_black</font>
+                <state text="Borrar" />
+                <script>function onButtonPress() window.deleteDefinition(); end</script>
+            </buttoncontrol>
+
+            <genericcontrol name="save_art">
+                <anchored width="119" height="28">
+                    <right offset="-10" />
+                    <top offset="306" />
+                </anchored>
+                <icon>aptus_equipment_button_primary</icon>
+                <disabled />
+            </genericcontrol>
+
+            <buttoncontrol name="save_button">
+                <anchored width="119" height="28">
+                    <right offset="-10" />
+                    <top offset="306" />
+                </anchored>
+                <font>aptus_font_navigation_black</font>
+                <state text="Guardar" />
+                <script>function onButtonPress() window.save(); end</script>
+            </buttoncontrol>
+
+            <stringcontrol name="status">
+                <anchored height="18">
+                    <left offset="10" />
+                    <right offset="-10" />
+                    <top offset="340" />
+                </anchored>
+                <font>aptus_equipment_compact</font>
+                <disabled />
+            </stringcontrol>
+        </sheetdata>
+    </windowclass>
+
+    <windowclass name="aptus_quality_type_row">
+        <script>
+local entry, values;
+function configure(t, draft) entry, values = t, draft; label.setValue(t.name); enabled.setValue(draft[t.id] and 1 or 0); end
+function toggle() if entry then values[entry.id] = enabled.getValue() == 1; end end
+</script>
+        <sheetdata>
+            <buttonc_checkbox name="enabled">
+                <bounds>5,2,24,24</bounds>
+                <script>function onButtonPress() window.toggle(); end</script>
+            </buttonc_checkbox>
+
+            <stringcontrol name="label">
+                <anchored height="22">
+                    <left offset="36" />
+                    <right offset="-5" />
+                    <top offset="3" />
+                </anchored>
+                <font>aptus_equipment_compact</font>
+                <disabled />
+            </stringcontrol>
+
+            <genericcontrol name="row_end">
+                <bounds>0,0,1,28</bounds>
+                <disabled />
+            </genericcontrol>
+        </sheetdata>
+    </windowclass>
+
+    <windowclass name="aptus_quality_reference_row">
+        <script file="scripts/equipment_quality_reference_row_aptus.lua" />
+        <sheetdata>
+            <stringcontrol name="summary">
+                <anchored height="24">
+                    <left offset="3" />
+                    <right offset="-73" />
+                    <top offset="3" />
+                </anchored>
+                <font>sheettext</font>
+                <disabled />
+            </stringcontrol>
+
+            <buttoncontrol name="open_button">
+                <anchored width="29" height="27">
+                    <right offset="-39" />
+                    <top offset="1" />
+                </anchored>
+                <icon normal="aptus_lupa" pressed="aptus_lupa" />
+                <tooltip text="Ver cualidad" />
+                <script>function onButtonPress() window.openDefinition(); end</script>
+            </buttoncontrol>
+
+            <buttoncontrol name="delete_button">
+                <anchored width="29" height="27">
+                    <right offset="-3" />
+                    <top offset="1" />
+                </anchored>
+                <icon normal="aptus_delete" pressed="aptus_delete" />
+                <tooltip text="Retirar asociación del borrador" />
+                <script>function onButtonPress() window.remove(); end</script>
+            </buttoncontrol>
+
+            <genericcontrol name="row_end">
+                <bounds>0,0,1,29</bounds>
+                <disabled />
+            </genericcontrol>
+        </sheetdata>
+    </windowclass>
+
+    <windowclass name="aptus_quality_associations">
+        <frame>aptus_lane_aux_recordsheet</frame>
+        <placement>
+            <size width="500" height="350" />
+            <nosave />
+        </placement>
+        <script file="scripts/quality_associations_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="header_art">
+                <bounds>24,30,452,30</bounds>
+                <frame name="aptus_lane_aux_groupbox" />
+                <disabled />
+            </genericcontrol>
+
+            <stringcontrol name="title">
+                <bounds>38,35,424,22</bounds>
+                <font>aptus_equipment_compact</font>
+                <disabled />
+            </stringcontrol>
+
+            <buttoncontrol name="close_button">
+                <bounds>461,3,29,27</bounds>
+                <icon normal="aptus_location_close" pressed="aptus_location_close" />
+                <tooltip text="Cerrar y descartar cambios pendientes" />
+                <script>function onButtonPress() window.close(); end</script>
+            </buttoncontrol>
+
+            <genericcontrol name="content_art">
+                <bounds>24,68,452,264</bounds>
+                <frame name="aptus_lane_aux_groupbox" />
+                <disabled />
+            </genericcontrol>
+
+            <stringcontrol name="hint">
+                <bounds>38,78,424,18</bounds>
+                <font>aptus_equipment_compact</font>
+                <static>Arrastra cualidades desde el catálogo CUALIDADES.</static>
+                <disabled />
+            </stringcontrol>
+
+            <stringcontrol name="list_heading">
+                <bounds>38,100,424,18</bounds>
+                <font>aptus_equipment_compact</font>
+                <static>Cualidades asociadas</static>
+                <disabled />
+            </stringcontrol>
+
+            <windowlist name="list">
+                <bounds>38,122,408,145</bounds>
+                <class>aptus_quality_reference_row</class>
+                <script>function onDrop(x,y,draginfo) return window.drop(draginfo); end</script>
+            </windowlist>
+
+            <scrollbar name="list_scroll">
+                <anchored to="list" />
+                <target>list</target>
+            </scrollbar>
+
+            <genericcontrol name="discard_art">
+                <bounds>199,286,124,28</bounds>
+                <icon>aptus_equipment_button_secondary</icon>
+                <disabled />
+            </genericcontrol>
+
+            <buttoncontrol name="discard_button">
+                <bounds>199,286,124,28</bounds>
+                <font>aptus_font_navigation_black</font>
+                <state text="Descartar" />
+                <script>function onButtonPress() window.close(); end</script>
+            </buttoncontrol>
+
+            <genericcontrol name="save_art">
+                <bounds>337,286,119,28</bounds>
+                <icon>aptus_equipment_button_primary</icon>
+                <disabled />
+            </genericcontrol>
+
+            <buttoncontrol name="save_button">
+                <bounds>337,286,119,28</bounds>
+                <font>aptus_font_navigation_black</font>
+                <state text="Guardar" />
+                <script>function onButtonPress() window.save(); end</script>
+            </buttoncontrol>
+        </sheetdata>
+    </windowclass>
+</root>

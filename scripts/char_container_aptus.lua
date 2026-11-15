@@ -9,6 +9,9 @@ function onInit()
         tTab.bActivate = false;
         if tTab.sName == "main" then
             tTab.bScroll = true;
+        elseif tTab.sName == "inventory" then
+            tTab.sClass = "aptus_char_equipment";
+            tTab.bScroll = false;
         elseif tTab.sName == "notes" then
             -- Identidad conserva el nombre de pestaña usado por la navegación.
             tTab.sClass = "aptus_char_identity";
@@ -64,7 +67,7 @@ function prepareTabViewport(tTab)
     c.setAnchor("bottom", "", "bottom", "absolute", 0);
     c.setAnchor("left", "", "left", "absolute", 0);
     -- Identidad no necesita barra exterior: su fondo ocupa el ancho completo.
-    local nRightOffset = (tTab.sName == "notes" or tTab.sName == "aptus_principal") and 0 or -20;
+    local nRightOffset = (tTab.sName == "notes" or tTab.sName == "aptus_principal" or tTab.sName == "inventory") and 0 or -20;
     c.setAnchor("right", "", "right", "absolute", nRightOffset);
     local cScroll = WindowTabManager.getTabScrollbar(self, tTab);
     if cScroll then

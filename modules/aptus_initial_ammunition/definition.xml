@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="4.1" release="2">
+    <name>APTUS Initial Ammunition</name>
+    <displayname>APTUS — Municiones iniciales</displayname>
+    <category>APTUS</category>
+    <author>APTUS</author>
+    <ruleset>CoreRPG</ruleset>
+</root>

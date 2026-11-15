@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Rectángulos nativos, como progressbarfill de CoreRPG, sin bitmap. -->
+    <template name="aptus_inventory_tree_segment">
+        <genericcontrol>
+            <bounds>0,0,1,1</bounds>
+            <backcolor>B0E9D5AF</backcolor>
+            <disabled />
+        </genericcontrol>
+    </template>
+    <!-- Sin datasource ni fields: ninguna fila escribe en el personaje. -->
+    <windowclass name="aptus_char_equipment">
+        <margins control="0,0,0,0" />
+        <script file="scripts/char_equipment_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="background">
+                <bounds>0,0,659,365</bounds>
+                <icon>aptus_equipo_background</icon>
+                <disabled />
+                <skin_resource>aptus_equipo_background</skin_resource>
+                <script file="scripts/skin_icon_aptus.lua" />
+            </genericcontrol>
+            <stringcontrol name="filter_label_0">
+                <bounds>40,21,35,18</bounds>
+                <font>aptus_inventory_text</font>
+                <static>Todo</static>
+                <disabled />
+            </stringcontrol>
+            <buttoncontrol name="filter_0">
+                <bounds>40,18,35,24</bounds>
+                <script>function onButtonPress() window.selectView(1); end</script>
+            </buttoncontrol>
+            <stringcontrol name="filter_label_1">
+                <bounds>81,21,66,18</bounds>
+                <font>aptus_inventory_text</font>
+                <static>Personaje</static>
+                <disabled />
+            </stringcontrol>
+            <buttoncontrol name="filter_1">
+                <bounds>81,18,66,24</bounds>
+                <script>function onButtonPress() window.selectView(2); end</script>
+            </buttoncontrol>
+            <stringcontrol name="filter_label_2">
+                <bounds>153,21,94,18</bounds>
+                <font>aptus_inventory_text</font>
+                <static>Localizaciones</static>
+                <disabled />
+            </stringcontrol>
+            <buttoncontrol name="filter_2">
+                <bounds>153,18,94,24</bounds>
+                <script>function onButtonPress() window.selectView(3); end</script>
+            </buttoncontrol>
+            <stringcontrol name="filter_label_3">
+                <bounds>253,21,68,18</bounds>
+                <font>aptus_inventory_text</font>
+                <static>Vehículos</static>
+                <disabled />
+            </stringcontrol>
+            <buttoncontrol name="filter_3">
+                <bounds>253,18,68,24</bounds>
+                <script>function onButtonPress() window.selectView(4); end</script>
+            </buttoncontrol>
+            <stringcontrol name="filter_label_4">
+                <bounds>327,21,53,18</bounds>
+                <font>aptus_inventory_text</font>
+                <static>Riqueza</static>
+                <disabled />
+            </stringcontrol>
+            <buttoncontrol name="filter_4">
+                <bounds>327,18,53,24</bounds>
+                <script>function onButtonPress() window.selectView(5); end</script>
+            </buttoncontrol>
+            <buttoncontrol name="add_equipment">
+                <bounds>386,18,20,24</bounds>
+                <tooltip text="Añadir desde el catálogo de equipo" />
+                <script>
+                    function onInit() addBitmapWidget({ icon="aptus_add", w=20, h=20 }); end
+                    function onButtonPress() window.addFromCatalogue(); end
+                </script>
+            </buttoncontrol>
+            <stringcontrol name="search">
+                <bounds>410,22,180,18</bounds>
+                <font>aptus_inventory_text</font>
+                <nodrag />
+                <nodrop />
+                <empty>Buscar en la muestra</empty>
+                <script>function onValueChanged() window.refreshPreview(); end</script>
+            </stringcontrol>
+            <genericcontrol name="search_underline">
+                <bounds>410,41,180,1</bounds>
+                <backcolor>607E7460</backcolor>
+                <disabled />
+            </genericcontrol>
+            <genericcontrol name="search_icon">
+                <bounds>598,18,27,25</bounds>
+                <icon>aptus_lupa</icon>
+                <disabled />
+            </genericcontrol>
+            <stringcontrol name="heading_name">
+                <bounds>40,58,215,16</bounds>
+                <font>aptus_inventory_text</font>
+                <static>Nombre</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="heading_count">
+                <bounds>257,58,26,16</bounds>
+                <font>aptus_inventory_text</font>
+                <static>Cant.</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="heading_state">
+                <bounds>287,58,32,16</bounds>
+                <font>aptus_inventory_text</font>
+                <static>Estado</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="heading_location">
+                <bounds>325,58,116,16</bounds>
+                <font>aptus_inventory_text</font>
+                <static>Ubicación</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="heading_load">
+                <bounds>445,58,36,16</bounds>
+                <font>aptus_inventory_text</font>
+                <static>CAR</static>
+                <center />
+                <disabled />
+            </stringcontrol>
+            <!-- Scrollbar nativo en los 15 px reservados: no reduce el ancho de la lista. -->
+            <windowlist name="preview">
+                <bounds>40,84,483,232</bounds>
+                <class>aptus_char_equipment_row</class>
+                <script>function onDrop(x,y,draginfo) return window.dropFromCatalogue(draginfo); end</script>
+            </windowlist>
+            <scrollbar name="preview_scrollbar">
+                <anchored merge="delete" />
+                <bounds>508,84,15,232</bounds>
+                <frame name="scrollbar_base" offset="0,0,0,0" />
+                <target>preview</target>
+                <invisible />
+            </scrollbar>
+            <stringcontrol name="empty_message">
+                <bounds>60,120,430,40</bounds>
+                <font>aptus_inventory_text</font>
+                <readonly />
+                <multilines />
+            </stringcontrol>
+            <stringcontrol name="preview_notice">
+                <bounds>40,330,480,16</bounds>
+                <font>aptus_inventory_text</font>
+                <static>Inventario del personaje · sólo lectura · carga pendiente</static>
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="load_title">
+                <bounds>549,60,70,18</bounds>
+                <font>aptus_inventory_text</font>
+                <static>CARGA</static>
+                <center />
+                <disabled />
+            </stringcontrol>
+            <genericcontrol name="load_track">
+                <bounds>543,100,7,180</bounds>
+                <backcolor>303E382D</backcolor>
+                <disabled />
+            </genericcontrol>
+            <genericcontrol name="load_fill">
+                <bounds>543,235,7,45</bounds>
+                <backcolor>706F8063</backcolor>
+                <invisible />
+                <disabled />
+            </genericcontrol>
+            <genericcontrol name="load_half_capacity_mark">
+                <bounds>541,234,11,2</bounds>
+                <backcolor>FFE9D5AF</backcolor>
+                <disabled />
+            </genericcontrol>
+            <genericcontrol name="load_one_half_capacity_mark">
+                <bounds>541,144,11,2</bounds>
+                <backcolor>FFE9D5AF</backcolor>
+                <disabled />
+            </genericcontrol>
+            <genericcontrol name="load_capacity_mark">
+                <bounds>541,189,11,2</bounds>
+                <backcolor>FFE9D5AF</backcolor>
+                <disabled />
+                <tooltip text="100 % de capacidad" />
+            </genericcontrol>
+            <stringcontrol name="load_penalty_1">
+                <bounds>554,111,70,24</bounds>
+                <font>aptus_load_penalty</font>
+                <center />
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="load_penalty_2">
+                <bounds>554,137,70,24</bounds>
+                <font>aptus_load_penalty</font>
+                <center />
+                <disabled />
+            </stringcontrol>
+            <genericcontrol name="load_silhouette">
+                <bounds>554,165,70,110</bounds>
+                <invisible />
+                <disabled />
+            </genericcontrol>
+            <stringcontrol name="load_value">
+                <bounds>547,280,74,30</bounds>
+                <font>aptus_load_value</font>
+                <static>—</static>
+                <center />
+                <disabled />
+            </stringcontrol>
+            <stringcontrol name="load_hint">
+                <bounds>536,310,95,32</bounds>
+                <font>aptus_load_state</font>
+                <multilinespacing>14</multilinespacing>
+                <static>Pendiente</static>
+                <center />
+                <disabled />
+            </stringcontrol>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_char_equipment_row">
+        <margins control="0,0,0,0" />
+        <script file="scripts/char_equipment_row_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="height">
+                <bounds>0,0,1,24</bounds>
+                <backcolor>00000000</backcolor>
+                <disabled />
+            </genericcontrol>
+            <genericcontrol name="type_icon">
+                <bounds>0,1,32,21</bounds>
+                <icon>aptus_arma_proy_item</icon>
+                <disabled />
+            </genericcontrol>
+            <stringcontrol name="item_name">
+                <bounds>34,2,181,20</bounds>
+                <font>aptus_inventory_row_text</font>
+                <readonly />
+                <script>function onDragStart(button, x, y, draginfo) return window.startInventoryDrag(draginfo); end</script>
+                <nodrop />
+            </stringcontrol>
+            <stringcontrol name="count">
+                <bounds>217,2,26,20</bounds>
+                <font>aptus_inventory_row_text</font>
+                <readonly />
+                <center />
+                <script>
+                    function onClickDown(button) return button == 1; end
+                    function onClickRelease(button)
+                        if button == 1 then return window.editQuantity(); end
+                    end
+                </script>
+            </stringcontrol>
+            <!-- Indicador sourceless: sin alternancia; abre selección directa. -->
+            <button_iconcycler name="state">
+                <bounds>247,0,32,24</bounds>
+                <readonly />
+                <sourceless />
+                <parameters>
+                    <nodefault />
+                    <labels>Equipado|Transportado|Sin equipar|Contenido</labels>
+                    <values>Equipado|Transportado|Sin equipar|Contenido</values>
+                </parameters>
+                <script file="scripts/char_equipment_state_aptus.lua" />
+            </button_iconcycler>
+            <genericcontrol name="location_selector">
+                <bounds>285,4,116,15</bounds>
+                <icon>aptus_equipo_selector</icon>
+                <script>
+                    function onClickDown(button) return button == 1; end
+                    function onClickRelease(button)
+                        if button == 1 then window.chooseLocation(); return true; end
+                    end
+                </script>
+            </genericcontrol>
+            <stringcontrol name="location">
+                <bounds>295,2,93,20</bounds>
+                <font>aptus_inventory_row_text</font>
+                <readonly />
+                <script>
+                    function onClickDown(button) return button == 1; end
+                    function onClickRelease(button)
+                        if button == 1 then window.chooseLocation(); return true; end
+                    end
+                </script>
+            </stringcontrol>
+            <stringcontrol name="load">
+                <bounds>405,2,36,20</bounds>
+                <font>aptus_inventory_row_text</font>
+                <readonly />
+                <center />
+            </stringcontrol>
+            <!-- Sólo presentación: sin enlace, destino ni evento de apertura. -->
+            <genericcontrol name="open_record">
+                <bounds>441,0,25,24</bounds>
+                <icon>aptus_equipo_ver</icon>
+                <tooltip text="Ver ficha de esta instancia" />
+                <script>
+                    function onClickDown() return true; end
+                    function onClickRelease() window.openInstance(); return true; end
+                </script>
+            </genericcontrol>
+        </sheetdata>
+    </windowclass>
+</root>
+

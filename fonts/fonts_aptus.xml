@@ -1,64 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
     <!-- Nombre del personaje -->
-    <font name="aptus_font_character_name">
-         <ttf file="fonts/Kalam-Regular.ttf" name="Kalam" size="48" />
-    </font>
 
+    <font name="aptus_font_character_name">
+        <ttf file="fonts/Kalam-Regular.ttf" name="Kalam" size="48" />
+    </font>
     <!-- Títulos de los conflictos -->
+
     <font name="aptus_font_conflict">
         <ttf file="fonts/jr!ha___.ttf" name="jr!hand" size="23" />
     </font>
-
     <!-- Dedicación, edad y rango -->
+
     <font name="aptus_font_character_details">
         <ttf file="fonts/RobotoCondensed-Regular.ttf" name="Roboto Condensed" size="20" />
     </font>
-
     <!-- Encabezados de sección -->
+
     <font name="aptus_font_section_title">
         <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed SemiBold" size="22" />
     </font>
     <!-- Navegación: misma tipografía y tamaño; sólo cambia el color. -->
+
     <font name="aptus_font_navigation_white">
         <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="14" />
         <color value="#FFFFFF" />
     </font>
+
     <font name="aptus_font_navigation_black">
         <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="14" />
         <color value="#000000" />
     </font>
     <!-- Principal: fuentes específicas de atributos, independientes de navegación. -->
+
     <font name="aptus_font_attribute_base">
         <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="16" />
         <color value="#FFFFFF" />
     </font>
+
     <font name="aptus_font_attribute_name">
         <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="16" />
         <color value="#FFFFFF" />
     </font>
+
     <font name="aptus_font_attribute_current">
         <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="28" />
         <color value="#000000" />
     </font>
+
     <font name="aptus_font_skill_inactive">
         <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="14" />
         <color value="#909090" />
     </font>
+
     <font name="aptus_font_skill_formula">
         <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="16" />
         <color value="#000000" />
     </font>
+
     <font name="aptus_font_location_name">
-        <ttf file="fonts/Kalam-Regular.ttf" name="Kalam" size="30" /><color value="#E9D5AF" />
+        <ttf file="fonts/Kalam-Regular.ttf" name="Kalam" size="30" />
+        <color value="#E9D5AF" />
     </font>
+
     <font name="aptus_font_location_section">
-        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="16" /><color value="#E9D5AF" />
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="16" />
+        <color value="#E9D5AF" />
     </font>
+
     <font name="aptus_font_location_navigation">
-        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="15" /><color value="#E9D5AF" />
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="15" />
+        <color value="#E9D5AF" />
     </font>
+
     <font name="aptus_font_location_underline">
-        <ttf file="fonts/RobotoCondensed-Regular.ttf" name="Roboto Condensed" size="12" /><color value="#A32C28" />
+        <ttf file="fonts/RobotoCondensed-Regular.ttf" name="Roboto Condensed" size="12" />
+        <color value="#A32C28" />
     </font>
+
+    <font name="aptus_equipment_compact">
+        <ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="12" />
+        <color value="#231E14" />
+    </font>
+    <!-- Títulos de las pestañas de EQUIPO. -->
+    <font name="aptus_equipment_page_title">
+        <ttf file="graphics/fonts/Noto_Sans/NotoSans-Bold.ttf" name="Noto Sans Bold" size="18" />
+        <color value="#FFFFFF" />
+    </font>
+
 </root>

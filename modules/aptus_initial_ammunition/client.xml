@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="4.1" release="2">
+    <reference static="true">
+        <aptus_equipment_templates>
+            <ammo-9x19mm>
+                <name type="string">9×19 mm</name>
+                <template_id type="string">aptus.initial.ammunition.9x19mm</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Bala de pistola utilizada habitualmente en pistolas semiautomáticas y subfusiles.</description>
+                    <picture type="token">graphics/municion_9_19_mm.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">50</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">50</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-9x19mm>
+            <ammo-45acp>
+                <name type="string">.45 ACP</name>
+                <template_id type="string">aptus.initial.ammunition.45acp</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Bala de pistola utilizada habitualmente en pistolas semiautomáticas de calibre .45.</description>
+                    <picture type="token">graphics/municion_45_ACP.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">50</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">50</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-45acp>
+            <ammo-40sw>
+                <name type="string">.40 S&amp;W</name>
+                <template_id type="string">aptus.initial.ammunition.40sw</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Bala de pistola utilizada habitualmente en pistolas semiautomáticas.</description>
+                    <picture type="token">graphics/municion_9_19_mm.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">50</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">50</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-40sw>
+            <ammo-38special>
+                <name type="string">.38 Special</name>
+                <template_id type="string">aptus.initial.ammunition.38special</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Bala de revólver utilizada habitualmente en revólveres de calibre .38.</description>
+                    <picture type="token">graphics/municion_38_Special.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">50</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">50</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-38special>
+            <ammo-357magnum>
+                <name type="string">.357 Magnum</name>
+                <template_id type="string">aptus.initial.ammunition.357magnum</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Bala de revólver utilizada habitualmente en revólveres de calibre .357 Magnum.</description>
+                    <picture type="token">graphics/municion_38_Special.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">50</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">50</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-357magnum>
+            <ammo-44magnum>
+                <name type="string">.44 Magnum</name>
+                <template_id type="string">aptus.initial.ammunition.44magnum</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Bala de revólver utilizada habitualmente en revólveres de gran calibre.</description>
+                    <picture type="token">graphics/municion_balas_gordas.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">20</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">20</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-44magnum>
+            <ammo-556x45mm>
+                <name type="string">5,56×45 mm</name>
+                <template_id type="string">aptus.initial.ammunition.556x45mm</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Bala de fusil utilizada habitualmente en fusiles de asalto y carabinas.</description>
+                    <picture type="token">graphics/municion_por_defecto.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">20</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">20</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-556x45mm>
+            <ammo-762x39mm>
+                <name type="string">7,62×39 mm</name>
+                <template_id type="string">aptus.initial.ammunition.762x39mm</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Bala de fusil utilizada habitualmente en fusiles de asalto y carabinas.</description>
+                    <picture type="token">graphics/municion_por_defecto.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">20</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">20</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-762x39mm>
+            <ammo-762x51mm>
+                <name type="string">7,62×51 mm</name>
+                <template_id type="string">aptus.initial.ammunition.762x51mm</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Bala de fusil utilizada habitualmente en fusiles de combate y rifles de precisión.</description>
+                    <picture type="token">graphics/municion_por_defecto.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">20</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">20</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-762x51mm>
+            <ammo-308winchester>
+                <name type="string">.308 Winchester</name>
+                <template_id type="string">aptus.initial.ammunition.308winchester</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Bala de rifle utilizada habitualmente en rifles de caza y rifles de precisión.</description>
+                    <picture type="token">graphics/municion_por_defecto.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">20</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">20</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-308winchester>
+            <ammo-3006springfield>
+                <name type="string">.30-06 Springfield</name>
+                <template_id type="string">aptus.initial.ammunition.3006springfield</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Bala de rifle utilizada habitualmente en rifles de caza.</description>
+                    <picture type="token">graphics/municion_por_defecto.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">20</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">20</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-3006springfield>
+            <ammo-calibre12>
+                <name type="string">Calibre 12</name>
+                <template_id type="string">aptus.initial.ammunition.calibre12</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Cartucho de escopeta utilizado habitualmente en escopetas de calibre 12.</description>
+                    <picture type="token">graphics/municion_cartuchosl.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">25</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">25</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-calibre12>
+            <ammo-calibre20>
+                <name type="string">Calibre 20</name>
+                <template_id type="string">aptus.initial.ammunition.calibre20</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Cartucho de escopeta utilizado habitualmente en escopetas de calibre 20.</description>
+                    <picture type="token">graphics/municion_cartuchosl.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">25</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">25</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-calibre20>
+            <ammo-410>
+                <name type="string">.410</name>
+                <template_id type="string">aptus.initial.ammunition.410</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Cartucho de escopeta utilizado habitualmente en escopetas de calibre .410.</description>
+                    <picture type="token">graphics/municion_cartuchosl.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">25</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">25</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-410>
+            <ammo-granada40mm>
+                <name type="string">Granada 40 mm</name>
+                <template_id type="string">aptus.initial.ammunition.granada40mm</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Granada utilizada habitualmente como munición de lanzagranadas de 40 mm.</description>
+                    <picture type="token">graphics/municion_por_defecto.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">6</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">3</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-granada40mm>
+            <ammo-flecha>
+                <name type="string">Flecha</name>
+                <template_id type="string">aptus.initial.ammunition.flecha</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Proyectil utilizado habitualmente como munición de arcos.</description>
+                    <picture type="token">graphics/municion_por_defecto.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">12</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">12</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-flecha>
+            <ammo-virote>
+                <name type="string">Virote</name>
+                <template_id type="string">aptus.initial.ammunition.virote</template_id>
+                <template_version type="number">2</template_version>
+                <schema_version type="number">1</schema_version>
+                <locked type="number">1</locked>
+                <properties>
+                    <type_id type="string">ammunition</type_id>
+                    <description type="string">Proyectil utilizado habitualmente como munición de ballestas.</description>
+                    <picture type="token">graphics/municion_por_defecto.png@APTUS Initial Ammunition</picture>
+                    <stackable type="number">1</stackable>
+                    <max_stack type="number">12</max_stack>
+                    <is_container type="number">0</is_container>
+                    <is_wealth type="number">0</is_wealth>
+                    <load_every type="number">12</load_every>
+                    <load_value type="number">1</load_value>
+                    <capacity type="number">0</capacity>
+                    <required_fue type="number">0</required_fue>
+                    <required_agi type="number">0</required_agi>
+                    <defense><pro type="number">0</pro><def type="number">0</def><agi type="number">0</agi><per type="number">0</per></defense>
+                </properties>
+            </ammo-virote>
+        </aptus_equipment_templates>
+    </reference>
+</root>

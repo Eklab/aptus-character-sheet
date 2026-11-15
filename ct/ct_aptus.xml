@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-
 <root>
     <!-- Solo el tracker del director contiene la columna Heridas APTUS. -->
+
     <windowclass name="combattracker_host" merge="join">
         <placement>
             <size width="700" />
@@ -20,6 +20,7 @@
                 </anchored>
                 <static text="Heridas" />
             </label_list_content_number_right>
+
             <label_ct_header_name_v2 name="label_name">
                 <anchored>
                     <right parent="label_wounds" anchor="left" relation="absolute" offset="-10" />
@@ -30,8 +31,8 @@
 
     <windowclass name="ct_entry" merge="join">
         <sheetdata>
-
             <!-- Heridas APTUS -->
+
             <numberfield name="wounds" insertbefore="name">
                 <anchored to="initresult" width="50" height="20">
                     <top />
@@ -45,7 +46,6 @@
                     <drophilight name="fieldfocus" offset="7,5,7,5" hidereadonly="true" />
                 </stateframe>
                 <tooltip text="Heridas APTUS (0-7)" />
-
                 <script>
                     function onWheel(notches)
                         if not Input.isControlPressed() then
@@ -66,12 +66,12 @@
                     <right parent="wounds" anchor="left" relation="absolute" offset="-10" />
                 </anchored>
             </string_ct_entry_name>
+
             <string_ct_entry_name_nonid name="nonid_name">
                 <anchored>
                     <right parent="wounds" anchor="left" relation="absolute" offset="-10" />
                 </anchored>
             </string_ct_entry_name_nonid>
-
         </sheetdata>
     </windowclass>
 </root>

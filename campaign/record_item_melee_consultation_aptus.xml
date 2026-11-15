@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Coordenadas relativas al cuerpo de ficha: origen global (0,34). -->
+    <windowclass name="aptus_item_melee_view">
+        <margins control="0,0,0,0" />
+        <script file="scripts/item_melee_consultation_aptus.lua" />
+        <sheetdata>
+            <tokencontrol name="picture">
+                <bounds>22,21,192,192</bounds><drawmode>fit</drawmode><disabled />
+            </tokencontrol>
+            <genericcontrol name="picture_border">
+                <bounds>18,17,200,201</bounds><icon>aptus_item_melee_border</icon><disabled />
+            </genericcontrol>
+            <stringcontrol name="description">
+                <bounds>24,232,178,136</bounds><font>aptus_item_consult_text</font>
+                <multilinespacing>17</multilinespacing><readonly /><nodrag /><nodrop />
+            </stringcontrol>
+            <scrollbar name="description_scroll">
+                <bounds>204,232,12,136</bounds><target>description</target>
+            </scrollbar>
+            <genericcontrol name="profile_section">
+                <bounds>239,19,393,25</bounds><icon>aptus_item_section</icon><disabled />
+            </genericcontrol>
+            <stringcontrol name="profile_section_text">
+                <bounds>249,21,380,21</bounds><font>aptus_inventory_row_text</font>
+                <static>PERFILES DE COMBATE</static><disabled />
+            </stringcontrol>
+            <genericcontrol name="column_background">
+                <bounds>239,46,393,24</bounds><icon>aptus_item_columns</icon><disabled />
+            </genericcontrol>
+            <stringcontrol name="heading_profile">
+                <bounds>249,48,100,20</bounds><font>aptus_inventory_row_text</font><static>Perfil</static><disabled />
+            </stringcontrol>
+            <stringcontrol name="heading_skill">
+                <bounds>354,48,89,20</bounds><font>aptus_inventory_row_text</font><static>Habilidad</static><center /><disabled />
+            </stringcontrol>
+            <stringcontrol name="heading_damage">
+                <bounds>453,48,74,20</bounds><font>aptus_inventory_row_text</font><static>Daño</static><center /><disabled />
+            </stringcontrol>
+            <stringcontrol name="heading_critical">
+                <bounds>538,48,86,20</bounds><font>aptus_inventory_row_text</font><static>Crítico</static><center /><disabled />
+            </stringcontrol>
+            <windowlist name="blocks">
+                <bounds>239,72,393,269</bounds><class>aptus_item_melee_block</class>
+            </windowlist>
+            <scrollbar name="blocks_scroll">
+                <bounds>632,72,12,269</bounds><target>blocks</target>
+            </scrollbar>
+            <stringcontrol name="message">
+                <bounds>239,349,392,28</bounds><font>aptus_item_consult_text</font>
+                <multilinespacing>14</multilinespacing><disabled />
+            </stringcontrol>
+        </sheetdata>
+    </windowclass>
+
+    <!-- Tarjeta de perfil fija de 52 px; separación nativa inferior de 6 px. -->
+    <windowclass name="aptus_item_melee_block">
+        <margins control="0,0,0,6" />
+        <script file="scripts/item_melee_block_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="profile_art">
+                <bounds>0,0,393,52</bounds><icon>aptus_item_melee_profile</icon><disabled />
+            </genericcontrol>
+            <genericcontrol name="section_art">
+                <bounds>0,0,392,25</bounds><icon>aptus_item_section</icon><disabled />
+            </genericcontrol>
+            <stringcontrol name="section_title">
+                <bounds>10,2,380,21</bounds><font>aptus_inventory_row_text</font>
+                <static>CUALIDADES DEL EQUIPO</static><disabled />
+            </stringcontrol>
+            <stringcontrol name="profile_name">
+                <bounds>6,6,100,20</bounds><font>aptus_item_consult_text</font><disabled />
+            </stringcontrol>
+            <stringcontrol name="skill">
+                <bounds>115,6,89,20</bounds><font>aptus_item_consult_text</font><center /><disabled />
+            </stringcontrol>
+            <stringcontrol name="damage">
+                <bounds>214,6,74,20</bounds><font>aptus_item_consult_text</font><center /><disabled />
+            </stringcontrol>
+            <stringcontrol name="critical">
+                <bounds>299,6,86,20</bounds><font>aptus_item_consult_text</font><center /><disabled />
+            </stringcontrol>
+            <stringcontrol name="profile_qualities">
+                <bounds>6,29,381,19</bounds><font>aptus_item_consult_text</font><disabled />
+            </stringcontrol>
+            <stringcontrol name="qualities">
+                <anchored><left offset="6" /><top offset="28" /><right offset="-6" /></anchored>
+                <font>aptus_item_consult_text</font><multilinespacing>17</multilinespacing>
+                <readonly /><nodrag /><nodrop />
+            </stringcontrol>
+        </sheetdata>
+    </windowclass>
+</root>

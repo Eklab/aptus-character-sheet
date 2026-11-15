@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Recursos a 1:1. Nombres de archivo originales, incluidas sus grafías. -->
+
+    <framedef name="aptus_equipment_background">
+        <bitmap file="graphics/frames/items/deafault/item_background.png" />
+        <offset>0,0,0,0</offset>
+    </framedef>
+
+    <icon name="aptus_equipment_image_border" file="graphics/frames/items/deafault/item_border.png" />
+
+    <icon name="aptus_equipment_tab_selected" file="graphics/frames/items/deafault/item_task_selected.png" />
+
+    <icon name="aptus_equipment_tab_data" file="graphics/icons/item_data.png" />
+
+    <icon name="aptus_equipment_tab_container" file="graphics/icons/item_container.png" />
+
+    <icon name="aptus_equipment_tab_combat" file="graphics/icons/item_combat.png" />
+
+    <icon name="aptus_equipment_tab_qualities" file="graphics/icons/item_cualidadest.png" />
+
+    <icon name="aptus_equipment_button_primary" file="graphics/icons/item_butom_primary.png" />
+
+    <icon name="aptus_equipment_button_secondary" file="graphics/icons/item_butom_secundary.png" />
+    <!-- Variantes exclusivas de perfiles; estilos previos intactos. -->
+    <font name="aptus_profile_light"><ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="12" /><color value="#E9D5AF" /></font>
+    <font name="aptus_profile_section"><ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="14" /><color value="#E9D5AF" /></font>
+    <font name="aptus_profile_damage"><ttf file="fonts/RobotoCondensed-SemiBold.ttf" name="Roboto Condensed" size="14" /><color value="#231E14" /></font>
+</root>

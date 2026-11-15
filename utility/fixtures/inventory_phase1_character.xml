@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fixture manual. Importar SÓLO como personaje nuevo en una campaña de prueba.
+     No referenciado por extension.xml; ningún dato se inserta automáticamente. -->
+<root version="4.1">
+    <character>
+        <name type="string">PRUEBA APTUS — Inventario fase 1</name>
+        <aptus_default_name_assigned type="number">1</aptus_default_name_assigned>
+        <inventorylist>
+        <id-00001>
+            <name type="string">Mochila</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00001</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">storage</type_id>
+            <is_container type="number">1</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00001>
+        <id-00002>
+            <name type="string">Linterna</name>
+            <count type="number">1</count>
+            <carried type="number">2</carried>
+            <template_id type="string">fixture:id-00002</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">electronic</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00001</container>
+            </aptus>
+        </id-00002>
+        <id-00003>
+            <name type="string">Bolsa</name>
+            <count type="number">1</count>
+            <carried type="number">0</carried>
+            <template_id type="string">fixture:id-00003</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">storage</type_id>
+            <is_container type="number">1</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00001</container>
+            </aptus>
+        </id-00003>
+        <id-00004>
+            <name type="string">Botiquín</name>
+            <count type="number">1</count>
+            <carried type="number">2</carried>
+            <template_id type="string">fixture:id-00004</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">electromechanical_system</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00003</container>
+            </aptus>
+        </id-00004>
+        <id-00005>
+            <name type="string">Venda</name>
+            <count type="number">3</count>
+            <carried type="number">0</carried>
+            <template_id type="string">fixture:id-00005</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">protection</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">1</stackable>
+            <max_stack type="number">99</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00003</container>
+            </aptus>
+        </id-00005>
+        <id-00006>
+            <name type="string">Cuerda</name>
+            <count type="number">2</count>
+            <carried type="number">2</carried>
+            <template_id type="string">fixture:id-00006</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">1</stackable>
+            <max_stack type="number">99</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00001</container>
+            </aptus>
+        </id-00006>
+        <id-00007>
+            <name type="string">Pistola</name>
+            <count type="number">1</count>
+            <carried type="number">2</carried>
+            <template_id type="string">fixture:id-00007</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">ranged_weapon</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00007>
+        <id-00008>
+            <name type="string">Munición</name>
+            <count type="number">12</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00008</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">melee_weapon</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">1</stackable>
+            <max_stack type="number">99</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00008>
+        <id-00009>
+            <name type="string">Objeto dejado en el suelo</name>
+            <count type="number">1</count>
+            <carried type="number">0</carried>
+            <template_id type="string">fixture:id-00009</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00009>
+        <id-00010>
+            <name type="string">Bolsa</name>
+            <count type="number">1</count>
+            <carried type="number">2</carried>
+            <template_id type="string">fixture:id-00010</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">storage</type_id>
+            <is_container type="number">1</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00010>
+        <id-00011>
+            <name type="string">Linterna</name>
+            <count type="number">1</count>
+            <carried type="number">0</carried>
+            <template_id type="string">fixture:id-00011</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">electronic</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00010</container>
+            </aptus>
+        </id-00011>
+        <id-00012>
+            <name type="string">Caja interior</name>
+            <count type="number">1</count>
+            <carried type="number">0</carried>
+            <template_id type="string">fixture:id-00012</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">storage</type_id>
+            <is_container type="number">1</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00003</container>
+            </aptus>
+        </id-00012>
+        <id-00013>
+            <name type="string">Documento profundo</name>
+            <count type="number">1</count>
+            <carried type="number">0</carried>
+            <template_id type="string">fixture:id-00013</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00012</container>
+            </aptus>
+        </id-00013>
+        <id-00014>
+            <name type="string">Objeto de prueba 14</name>
+            <count type="number">1</count>
+            <carried type="number">2</carried>
+            <template_id type="string">fixture:id-00014</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00014>
+        <id-00015>
+            <name type="string">Objeto de prueba 15</name>
+            <count type="number">1</count>
+            <carried type="number">0</carried>
+            <template_id type="string">fixture:id-00015</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00015>
+        <id-00016>
+            <name type="string">Objeto de prueba 16</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00016</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00016>
+        <id-00017>
+            <name type="string">Objeto de prueba 17</name>
+            <count type="number">1</count>
+            <carried type="number">2</carried>
+            <template_id type="string">fixture:id-00017</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00017>
+        <id-00018>
+            <name type="string">Objeto de prueba 18</name>
+            <count type="number">1</count>
+            <carried type="number">0</carried>
+            <template_id type="string">fixture:id-00018</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00018>
+        <id-00019>
+            <name type="string">Objeto de prueba 19</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00019</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00019>
+        <id-00020>
+            <name type="string">Referencia inexistente</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00020</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-99999</container>
+            </aptus>
+        </id-00020>
+        <id-00021>
+            <name type="string">Ciclo A</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00021</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">storage</type_id>
+            <is_container type="number">1</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00022</container>
+            </aptus>
+        </id-00021>
+        <id-00022>
+            <name type="string">Ciclo B</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00022</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">storage</type_id>
+            <is_container type="number">1</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00021</container>
+            </aptus>
+        </id-00022>
+        <id-00023>
+            <name type="string">Descendiente de ciclo</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00023</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00021</container>
+            </aptus>
+        </id-00023>
+        <id-00024>
+            <name type="string">Autociclo</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00024</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">storage</type_id>
+            <is_container type="number">1</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00024</container>
+            </aptus>
+        </id-00024>
+        <id-00025>
+            <name type="string">Padre no contenedor</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00025</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string">id-00007</container>
+            </aptus>
+        </id-00025>
+        <id-00026>
+            <name type="string">Objeto heredado</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+        </id-00026>
+        <id-00027>
+            <name type="string">Esquema futuro</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00027</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">2</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00027>
+        <id-00028>
+            <name type="string">Cantidad con tipo incorrecto</name>
+            <count type="string">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00028</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00028>
+        <id-00029>
+            <name type="string">Tipo desconocido</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00029</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">unknown</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+            <container type="string"></container>
+            </aptus>
+        </id-00029>
+        <id-00030>
+            <name type="string">Relación ausente</name>
+            <count type="number">1</count>
+            <carried type="number">1</carried>
+            <template_id type="string">fixture:id-00030</template_id>
+            <template_version type="number">1</template_version>
+            <properties>
+            <type_id type="string">utility</type_id>
+            <is_container type="number">0</is_container>
+            <stackable type="number">0</stackable>
+            <max_stack type="number">1</max_stack>
+            <load_every type="number">1</load_every>
+            <load_value type="number">1</load_value>
+            <capacity type="number">0</capacity>
+            </properties>
+            <aptus>
+            <instance_schema type="number">1</instance_schema>
+
+            </aptus>
+        </id-00030>
+        </inventorylist>
+    </character>
+</root>

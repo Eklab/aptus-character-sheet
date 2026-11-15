@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Variante visual local: conserva dialog_select.lua y su protocolo de selección. -->
+    <windowclass name="aptus_inventory_location" copy="select_dialog">
+        <script file="scripts/inventory_location_aptus.lua" />
+        <frame merge="replace">aptus_lane_aux_recordsheet</frame>
+        <windowmenu><simple /></windowmenu>
+        <sheetdata>
+            <windowtitlebar_utilitybox name="title">
+                <anchored height="37" />
+                <frame merge="replace" name="aptus_lane_aux_windowtitle" offset="30,0,30,0" />
+                <static>UBICACIÓN DEL OBJETO</static>
+            </windowtitlebar_utilitybox>
+            <!-- Cierre, botones, scrollbars y anclajes restantes heredados de CoreRPG. -->
+            <anchor_content_utilitybox_top name="contentanchor">
+                <anchored><top offset="38" /></anchored>
+            </anchor_content_utilitybox_top>
+            <stringc_content_framed_groupbox_top name="text">
+                <frame merge="delete" />
+                <font>aptus_inventory_row_text</font>
+            </stringc_content_framed_groupbox_top>
+            <list_content_framed_groupbox name="list">
+                <frame merge="delete" />
+                <class>aptus_inventory_location_entry</class>
+            </list_content_framed_groupbox>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_inventory_location_entry" copy="select_dialog_entry">
+        <sheetdata>
+            <buttonc_listitem_checkbox_left name="selected">
+                <script>
+                    function onValueChanged()
+                        super.onValueChanged();
+                        if window.text then
+                            window.text.setColor(getValue() == 1 and "FFFFFFFF" or "FFE9D5AF");
+                        end
+                    end
+                </script>
+            </buttonc_listitem_checkbox_left>
+            <label_listitem_center name="text">
+                <font>aptus_inventory_row_text</font>
+                <script>
+                    function onValueChanged() setTooltipText(getValue()); end
+                </script>
+            </label_listitem_center>
+        </sheetdata>
+    </windowclass>
+</root>

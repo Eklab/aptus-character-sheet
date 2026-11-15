@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <template name="aptus_instance_window_lock">
+        <toolbar_field_right>
+            <script file="scripts/inventory_item_lock_aptus.lua" />
+        </toolbar_field_right>
+    </template>
+    <windowclass name="aptus_inventory_item_menubar" copy="windowmenubar">
+        <script>
+            function onInit()
+                ToolbarManager.addList(self, { "close", "minimize", "" }, "right");
+                createControl("aptus_instance_window_lock", "locked");
+            end
+        </script>
+    </windowclass>
+    <!-- Se reutiliza la composición del catálogo, no sus operaciones de plantilla. -->
+    <windowclass name="aptus_inventory_item" copy="aptus_equipment">
+        <sharable merge="delete" />
+        <!-- Barra heredada de la plantilla; sólo CTA aplicables a instancias. -->
+        <windowmenu>
+            <norecord />
+            <nolink />
+            <nocustom />
+            <right>locked</right>
+        </windowmenu>
+        <script file="scripts/inventory_item_window_aptus.lua" />
+        <sheetdata>
+            <windowmenubar_recordsheet name="menubar">
+                <class>aptus_inventory_item_menubar</class>
+            </windowmenubar_recordsheet>
+            <subwindow name="content">
+                <class>aptus_inventory_item_main</class>
+            </subwindow>
+        </sheetdata>
+    </windowclass>
+
+    <windowclass name="aptus_inventory_item_main" copy="aptus_equipment_main">
+        <script file="scripts/record_inventory_item_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="consult_background">
+                <bounds>0,0,651,433</bounds><icon>aptus_item_melee_background</icon><disabled /><invisible />
+            </genericcontrol>
+            <subwindow name="consultation">
+                <bounds>0,34,650,399</bounds><noscroll /><invisible />
+                <script>function onInstanceCreated() window.onConsultationCreated(); end</script>
+            </subwindow>
+            <stringcontrol name="label_hide_contents">
+                <bounds>444,318,140,20</bounds><font>sheetlabel</font><static>Ocultar contenido</static><disabled /><invisible />
+            </stringcontrol>
+            <buttonc_checkbox name="draft_hide_contents">
+                <bounds>588,314,24,24</bounds><invisible />
+                <tooltip text="Oculta los descendientes a los jugadores; no modifica CARGA ni representa una cerradura." />
+            </buttonc_checkbox>
+            <!-- Sólo la instancia: mismo token y fit; tamaño acordado para edición. -->
+            <tokencontrol name="preview"><bounds>18,45,157,157</bounds></tokencontrol>
+            <buttoncontrol name="copy_button" merge="delete" />
+            <genericcontrol name="copy_art" merge="delete" />
+            <genericcontrol name="delete_art">
+                <bounds>204,383,124,28</bounds>
+                <icon>aptus_equipment_button_secondary</icon><disabled />
+            </genericcontrol>
+            <buttoncontrol name="delete_button">
+                <bounds>204,383,124,28</bounds><font>sheettext</font>
+                <state text="Eliminar" />
+                <tooltip text="Eliminar esta instancia y todo su contenido, previa confirmación" />
+                <script>function onButtonPress() window.requestDelete(); end</script>
+            </buttoncontrol>
+            <!-- Misma recarga de Descartar; sólo se añade su mensaje local. -->
+            <buttoncontrol name="discard_button">
+                <script>function onButtonPress() window.discard(); end</script>
+            </buttoncontrol>
+            <stringcontrol name="metadata">
+                <bounds>20,12,530,20</bounds>
+                <font>aptus_inventory_text</font>
+                <multilinespacing merge="delete" />
+                <invisible merge="delete" />
+            </stringcontrol>
+            <stringcontrol name="instance_context">
+                <bounds>22,381,148,16</bounds>
+                <font>aptus_inventory_text</font>
+                <multilinespacing>16</multilinespacing>
+                <disabled />
+                <!-- Sólo geometría: mismo valor, tooltip y ciclo de mensajes del padre. -->
+                <script>
+                    local measure;
+                    function onValueChanged()
+                        if not measure then measure = addTextWidget({ font=getFont(), text="" }); end
+                        local line, lines = "", 1;
+                        for word in getValue():gmatch("%S+") do
+                            local candidate = line == "" and word or line .. " " .. word;
+                            measure.setText(candidate);
+                            local width = measure.getSize();
+                            if line ~= "" and width > 148 then
+                                lines = lines + 1; line = word;
+                            else line = candidate; end
+                        end
+                        measure.setText("");
+                        local height = math.min(lines, 2) * 16;
+                        setAnchor("top", "", "top", "absolute", 367 + (44 - height) / 2);
+                        setAnchoredHeight(height);
+                    end
+                </script>
+            </stringcontrol>
+        </sheetdata>
+    </windowclass>
+</root>

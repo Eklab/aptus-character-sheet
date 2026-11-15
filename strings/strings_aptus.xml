@@ -1,67 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <root>
+    <string name="library_recordtype_label_aptus_quality">CUALIDADES</string>
+
+    <string name="library_recordtype_single_aptus_quality">Cualidad</string>
+
+    <string name="library_recordtype_empty_aptus_quality">Cualidad nueva</string>
+
+    <string name="library_recordtype_export_aptus_quality">CUALIDADES</string>
+
+    <string name="library_recordtype_label_aptus_equipment">EQUIPO</string>
+
+    <string name="library_recordtype_single_aptus_equipment">Equipo</string>
+
+    <string name="library_recordtype_empty_aptus_equipment">Equipo nuevo</string>
+
+    <string name="library_recordtype_export_aptus_equipment">EQUIPO</string>
+
     <string name="aptus_label_attributes">Atributos</string>
 
     <string name="aptus_attribute_fue">Fuerza</string>
+
     <string name="aptus_attribute_agi">Agilidad</string>
+
     <string name="aptus_attribute_con">Constitución</string>
+
     <string name="aptus_attribute_per">Percepción</string>
+
     <string name="aptus_attribute_int">Inteligencia</string>
+
     <string name="aptus_attribute_esp">Espíritu</string>
 
     <string name="aptus_label_professions">Profesiones</string>
+
     <string name="aptus_label_age">Edad</string>
+
     <string name="aptus_label_rank">Rango</string>
-
     <!-- Catálogo de habilidades -->
-    <string name="library_recordtype_label_aptus_skill">Habilidades</string>
-    <string name="library_recordtype_single_aptus_skill">Habilidad</string>
 
+    <string name="library_recordtype_label_aptus_skill">Habilidades</string>
+
+    <string name="library_recordtype_single_aptus_skill">Habilidad</string>
     <!-- Catálogo de armas -->
-    <string name="library_recordtype_label_aptus_weapon">Armas</string>
-    <string name="library_recordtype_single_aptus_weapon">Arma</string>
     <!-- Catálogo de tipos de personaje -->
+
     <string name="library_recordtype_label_aptus_character_type">Tipos de personaje</string>
+
     <string name="library_recordtype_single_aptus_character_type">Tipo de personaje</string>
+
     <string name="library_recordtype_empty_aptus_character_type">Nuevo tipo de personaje</string>
+
     <string name="library_recordtype_label_aptus_dedication_class">Clases de dedicación</string>
+
     <string name="library_recordtype_single_aptus_dedication_class">Clase de dedicación</string>
+
     <string name="library_recordtype_empty_aptus_dedication_class">Nueva clase de dedicación</string>
+
     <string name="library_recordtype_label_aptus_structure">Localizaciones y vehículos</string>
+
     <string name="library_recordtype_single_aptus_structure">Registro</string>
+
     <string name="library_recordtype_empty_aptus_structure">Sin nombre</string>
+
     <string name="aptus_structure_locations">LOCALIZACIONES</string>
+
     <string name="aptus_structure_vehicles">VEHÍCULOS</string>
+
     <string name="aptus_structure_name">Nombre</string>
+
     <string name="aptus_structure_type_location">Localización</string>
+
     <string name="aptus_structure_type_vehicle">Vehículo</string>
+
     <string name="aptus_structure_type">Tipo registrado</string>
+
     <string name="aptus_structure_type_unavailable">Tipo no disponible</string>
+
     <string name="aptus_structure_feature_storage">Almacenaje</string>
+
     <string name="aptus_structure_feature_security">Seguridad</string>
+
     <string name="aptus_structure_feature_simple_vehicle">Vehículo simple</string>
+
     <string name="aptus_structure_feature_systems">Sistemas</string>
+
     <string name="aptus_structure_under_construction">En construcción</string>
+
     <string name="aptus_structure_pending">Pendiente</string>
+
     <string name="aptus_structure_enabled">Activa</string>
+
     <string name="aptus_structure_disabled">Inactiva</string>
+
     <string name="aptus_structure_features">Funcionalidades disponibles</string>
+
     <string name="aptus_structure_toggle">Activar / desactivar</string>
+
     <string name="aptus_structure_tab_main">PRINCIPAL</string>
+
     <string name="aptus_structure_tab_configuration">CONFIGURACIÓN</string>
+
     <string name="aptus_structure_description">Descripción</string>
+
     <string name="aptus_structure_choose_type">Selecciona un tipo antes de crear el registro</string>
+
     <string name="aptus_structure_select_valid_type">Selecciona un tipo válido de esta categoría.</string>
+
     <string name="aptus_structure_create">Crear</string>
+
     <string name="aptus_structure_cancel">Cancelar</string>
+
     <string name="aptus_structure_native_vehicles">Vehículos de CoreRPG</string>
+
     <string name="aptus_structure_notes">Notas compartidas</string>
+
     <string name="aptus_structure_note_add">Añadir nota</string>
+
     <string name="aptus_structure_note_edit">Editar nota</string>
+
     <string name="aptus_structure_note_save">Guardar</string>
+
     <string name="aptus_structure_note_save_failed">No se pudo guardar: registro eliminado o sin permiso.</string>
+
     <string name="aptus_structure_notes_player_pending">Consulta compartida. Edición de jugadores pendiente de verificar identidad.</string>
+
     <string name="aptus_location_location">Ubicación</string>
+
     <string name="aptus_location_remove_picture">Quitar imagen de la localización</string>
 </root>

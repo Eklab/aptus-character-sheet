@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Ruta original del proyecto: deafault. Recursos intactos y a tamaño nativo. -->
+    <icon name="aptus_item_melee_background" file="graphics/frames/items/deafault/item_background_arma_cc.png" />
+    <icon name="aptus_item_melee_border" file="graphics/frames/items/deafault/item_border_arma_cc.png" />
+    <icon name="aptus_item_section" file="graphics/frames/items/deafault/item_titulos_arma_cc.png" />
+    <icon name="aptus_item_columns" file="graphics/frames/items/deafault/item_titulos_perfil_arma_cc.png" />
+    <icon name="aptus_item_melee_profile" file="graphics/frames/items/deafault/item_perfil_arma_cc.png" />
+    <font name="aptus_item_consult_text">
+        <ttf file="fonts/RobotoCondensed-Regular.ttf" name="Roboto Condensed" size="14" />
+        <color value="#292119" />
+    </font>
+</root>

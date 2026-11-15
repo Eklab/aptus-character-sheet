@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <windowclass name="aptus_inventory_state">
+        <frame>aptus_lane_aux_recordsheet</frame>
+        <placement><size width="400" height="180" /><nosave /></placement>
+        <windowmenu><simple /></windowmenu>
+        <script file="scripts/inventory_state_aptus.lua" />
+        <sheetdata>
+            <windowtitlebar_utilitybox name="title">
+                <anchored height="37" />
+                <frame merge="replace" name="aptus_lane_aux_windowtitle" offset="30,0,30,0" />
+                <static>ESTADO DEL OBJETO</static>
+            </windowtitlebar_utilitybox>
+            <windowmenubar_utilitybox name="menubar" />
+            <genericcontrol name="current_2">
+                <bounds>28,48,344,28</bounds><backcolor>506D614C</backcolor><invisible /><disabled />
+            </genericcontrol>
+            <genericcontrol name="icon_2"><bounds>40,50,32,24</bounds><icon>aptus_equipo_equipada</icon><disabled /></genericcontrol>
+            <buttoncontrol name="option_2">
+                <bounds>28,48,344,28</bounds><font>aptus_inventory_row_text</font><state text="Equipado" />
+                <tooltip text="Equipado" />
+                <script>function onButtonPress() window.selectState(2); end</script>
+            </buttoncontrol>
+            <genericcontrol name="current_1">
+                <bounds>28,84,344,28</bounds><backcolor>506D614C</backcolor><invisible /><disabled />
+            </genericcontrol>
+            <genericcontrol name="icon_1"><bounds>40,86,32,24</bounds><icon>aptus_equipo_transportado</icon><disabled /></genericcontrol>
+            <buttoncontrol name="option_1">
+                <bounds>28,84,344,28</bounds><font>aptus_inventory_row_text</font><state text="Transportado" />
+                <tooltip text="Transportado" />
+                <script>function onButtonPress() window.selectState(1); end</script>
+            </buttoncontrol>
+            <genericcontrol name="current_0">
+                <bounds>28,120,344,28</bounds><backcolor>506D614C</backcolor><invisible /><disabled />
+            </genericcontrol>
+            <stringcontrol name="icon_0"><bounds>40,122,32,24</bounds><font>aptus_inventory_row_text</font><static>—</static><center /><disabled /></stringcontrol>
+            <buttoncontrol name="option_0">
+                <bounds>28,120,344,28</bounds><font>aptus_inventory_row_text</font><state text="Sin equipar" />
+                <tooltip text="Sin equipar" />
+                <script>function onButtonPress() window.selectState(0); end</script>
+            </buttoncontrol>
+        </sheetdata>
+    </windowclass>
+</root>

@@ -1,43 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <root>
     <!-- TIRADA -->
-    <icon name="aptus_roll"
-          file="graphics/icons/aptus_roll.png" />
 
+    <icon name="aptus_roll" file="graphics/icons/aptus_roll.png" />
     <!-- INICIATIVA -->
-    <icon name="aptus_initiative"
-          file="graphics/icons/aptus_iniciative.png" />
 
+    <icon name="aptus_initiative" file="graphics/icons/aptus_iniciative.png" />
     <!-- CONFIGURACION -->
-    <icon name="aptus_settings"
-      file="graphics/icons/aptus_settings.png" />
 
+    <icon name="aptus_settings" file="graphics/icons/aptus_settings.png" />
     <!-- CERRAR VENTANA -->
-    <icon name="aptus_close"
-        file="graphics/icons/aptus_close.png" />
 
+    <icon name="aptus_close" file="graphics/icons/aptus_close.png" />
     <!-- Acciones de cabecera APTUS sobre fondo claro -->
+
     <icon name="aptus_close_black" file="graphics/icons/aptus_close_black.png" />
+
     <icon name="aptus_min_black" file="graphics/icons/aptus_min_black.png" />
-
     <!-- ANADIR -->
-    <icon name="aptus_add" file="graphics/icons/aptus_add.png" />
 
+    <icon name="aptus_add" file="graphics/icons/aptus_add_2.png" />
     <!-- SKILL -->
+
     <icon name="aptus_skills" file="graphics/icons/aptus_skill.png" />
 
     <linksettings>
         <class key="aptus_skill" normal="aptus_skills" />
     </linksettings>
-
     <!-- Dado roto -->
+
     <icon name="aptus_roto" file="graphics/icons/aptus_roto.png" />
-
     <!-- Aptus play tirada -->
-    <icon name="aptus_play" file="graphics/icons/aptus_play.png" />
 
+    <icon name="aptus_play" file="graphics/icons/aptus_play.png" />
     <!-- MARCAS DE HERIDAS -->
+
     <framedef name="aptus_frame_herida_1">
         <bitmap file="graphics/frames/aptus_herida_1.png" />
     </framedef>
@@ -66,4 +63,7 @@
         <bitmap file="graphics/frames/aptus_herida_7.png" />
     </framedef>
 
+    <icon name="aptus_delete" file="graphics/icons/aptus_delete.png" />
+
+    <icon name="aptus_lupa" file="graphics/icons/aptus_lupa.png" />
 </root>

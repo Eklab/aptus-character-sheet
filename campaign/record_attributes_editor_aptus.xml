@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <root>
     <windowclass name="aptus_attributes_editor">
         <script>
@@ -34,15 +33,11 @@
         <placement>
             <size width="600" height="550" />
         </placement>
-
         <sheetdata>
             <buttoncontrol name="close_editor">
                 <bounds>400,5,45,40</bounds>
-
                 <icon normal="aptus_close" pressed="aptus_close" />
-
                 <tooltip text="Cerrar editor" />
-
                 <script>
                     function onButtonPress()
                         window.close()
@@ -193,6 +188,7 @@
             </numberfield>
 
             <!-- SECCIÓN MODIFICADORES -->
+
             <stringcontrol name="modifiers_title">
                 <bounds>20,325,250,25</bounds>
                 <static text="MODIFICADORES" />
@@ -200,11 +196,8 @@
 
             <buttoncontrol name="add_modifier">
                 <bounds>540,325,25,25</bounds>
-
                 <icon normal="aptus_add" pressed="aptus_add" />
-
                 <tooltip text="Añadir modificador" />
-
                 <script>
                     function onButtonPress()
                         local nodeChar = window.getDatabaseNode()
@@ -261,7 +254,6 @@
                 <class>aptus_modifier_row</class>
                 <datasource>effects</datasource>
             </windowlist>
-
         </sheetdata>
     </windowclass>
 </root>

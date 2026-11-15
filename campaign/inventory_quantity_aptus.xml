@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <windowclass name="aptus_inventory_quantity">
+        <frame>aptus_lane_aux_recordsheet</frame>
+        <placement><size width="400" height="180" /><nosave /></placement>
+        <windowmenu><simple /></windowmenu>
+        <script file="scripts/inventory_quantity_aptus.lua" />
+        <sheetdata>
+            <windowtitlebar_utilitybox name="title">
+                <anchored height="37" />
+                <frame merge="replace" name="aptus_lane_aux_windowtitle" offset="30,0,30,0" />
+                <static>MODIFICAR CANTIDAD</static>
+            </windowtitlebar_utilitybox>
+            <windowmenubar_utilitybox name="menubar" />
+            <genericcontrol name="content_panel">
+                <bounds>24,38,352,92</bounds>
+                <frame name="aptus_lane_aux_groupbox" offset="0,0,0,0" />
+                <disabled />
+            </genericcontrol>
+            <stringcontrol name="caption"><bounds>36,49,328,32</bounds><font>sheetlabel</font><multilinespacing>16</multilinespacing><disabled /></stringcontrol>
+            <numbercontrol name="quantity"><bounds>150,80,100,22</bounds><font>sheettext</font><frame name="fieldlight" offset="5,5,5,5" /></numbercontrol>
+            <stringcontrol name="problem"><bounds>36,108,328,18</bounds><font>sheettext</font><disabled /></stringcontrol>
+            <genericcontrol name="accept_art"><bounds>112,140,124,28</bounds><icon>aptus_equipment_button_secondary</icon><disabled /></genericcontrol>
+            <genericcontrol name="cancel_art"><bounds>248,140,124,28</bounds><icon>aptus_equipment_button_secondary</icon><disabled /></genericcontrol>
+            <buttoncontrol name="accept"><bounds>112,140,124,28</bounds><font>aptus_equipment_compact</font><state text="Aceptar" /><script>function onButtonPress() window.confirm(); end</script></buttoncontrol>
+            <buttoncontrol name="cancel"><bounds>248,140,124,28</bounds><font>aptus_equipment_compact</font><state text="Cancelar" /><script>function onButtonPress() window.close(); end</script></buttoncontrol>
+        </sheetdata>
+    </windowclass>
+</root>

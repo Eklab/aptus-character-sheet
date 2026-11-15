@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
     <!-- Prueba de composición a escala 1:1; los recursos tienen 653 px de ancho. -->
+
     <windowclass name="aptus_test_charactersheet">
         <margins control="0,0,0,0" />
         <placement>
@@ -34,6 +35,7 @@
                 <icon>aptus_header_background</icon>
                 <disabled />
             </genericcontrol>
+
             <genericcontrol name="character_illustration">
                 <anchored to="header_background" width="222" height="213">
                     <top offset="30" />
@@ -42,6 +44,7 @@
                 <icon>aptus_character_illustration</icon>
                 <script file="scripts/test_character_illustration.lua" />
             </genericcontrol>
+
             <genericcontrol name="header_divider">
                 <!-- Centro del separador en el borde inferior del fondo (238 - 82). -->
                 <anchored to="header_background" width="653" height="164">
@@ -51,6 +54,7 @@
                 <icon>aptus_header_divider</icon>
                 <disabled />
             </genericcontrol>
+
             <genericcontrol name="navigation_background">
                 <anchored to="header_background" width="653" height="50">
                     <top offset="230" />
@@ -59,8 +63,11 @@
                 <icon>aptus_navigation_background</icon>
                 <disabled />
             </genericcontrol>
+
             <!-- ================================================= -->
+
             <!-- TEXTOS PROVISIONALES DE CABECERA                   -->
+
             <!-- ================================================= -->
 
             <stringcontrol name="test_character_name">

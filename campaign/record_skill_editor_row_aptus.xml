@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <root>
     <windowclass name="aptus_skill_editor_row">
-
         <script file="scripts/char_skill_editor_row_aptus.lua" />
-
         <margins control="0,0,0,10" />
-
-       <sheetdata>
-
+        <sheetdata>
             <!-- Marco -->
+
             <genericcontrol name="skill_frame">
                 <bounds>0,0,595,110</bounds>
                 <frame name="groupbox" />
             </genericcontrol>
 
             <!-- Eliminar habilidad -->
+
             <buttoncontrol name="delete_skill">
                 <bounds>565,8,16,16</bounds>
                 <icon normal="aptus_close" pressed="aptus_close" />
@@ -62,7 +59,7 @@
 
             <stringfield name="attribute">
                 <bounds>305,28,85,35</bounds>
-                <frame name="fielddark" offset="9,0,5,0"/>
+                <frame name="fielddark" offset="9,0,5,0" />
             </stringfield>
 
             <numberfield name="level">
@@ -71,6 +68,7 @@
             </numberfield>
 
             <!-- Reserva de dados -->
+
             <stringcontrol name="roll_reserve">
                 <bounds>503,28,22,35</bounds>
                 <center />
@@ -78,6 +76,7 @@
             </stringcontrol>
 
             <!-- Separador Play -->
+
             <genericcontrol name="roll_separator">
                 <bounds>525,39,14,14</bounds>
                 <icon>aptus_play</icon>
@@ -85,6 +84,7 @@
             </genericcontrol>
 
             <!-- Dados recogidos -->
+
             <stringcontrol name="roll_collect">
                 <bounds>540,28,22,35</bounds>
                 <center />
@@ -92,6 +92,7 @@
             </stringcontrol>
 
             <!-- Dado ROTO -->
+
             <genericcontrol name="roll_roto">
                 <bounds>525,35,21,21</bounds>
                 <icon>aptus_roto</icon>
@@ -144,7 +145,6 @@
                 <bounds>535,80,20,20</bounds>
                 <source>progression.profession</source>
             </button_checkbox>
-
         </sheetdata>
     </windowclass>
 </root>

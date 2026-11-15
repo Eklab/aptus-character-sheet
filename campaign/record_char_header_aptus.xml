@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
     <!-- Prueba de composición a escala 1:1; los recursos tienen 653 px de ancho. -->
+
     <windowclass name="aptus_char_header">
         <margins control="0,0,0,0" />
-        <sizelimits><minimum width="653" height="280" /></sizelimits>
+        <sizelimits>
+            <minimum width="653" height="280" />
+        </sizelimits>
         <script>
             function onInit()
                 name.setReadOnly(true);
@@ -36,6 +39,7 @@
                 <skin_resource>aptus_header_background</skin_resource>
                 <script file="scripts/skin_icon_aptus.lua" />
             </genericcontrol>
+
             <genericcontrol name="character_illustration">
                 <anchored to="header_background" width="222" height="213">
                     <top offset="30" />
@@ -44,6 +48,7 @@
                 <icon>aptus_character_illustration</icon>
                 <script file="scripts/test_character_illustration.lua" />
             </genericcontrol>
+
             <genericcontrol name="header_divider">
                 <!-- Centro del separador en el borde inferior del fondo (238 - 82). -->
                 <anchored to="header_background" width="653" height="164">
@@ -55,6 +60,7 @@
                 <skin_resource>aptus_header_divider</skin_resource>
                 <script file="scripts/skin_icon_aptus.lua" />
             </genericcontrol>
+
             <genericcontrol name="navigation_background">
                 <anchored to="header_background" width="653" height="50">
                     <top offset="230" />
@@ -65,11 +71,15 @@
                 <skin_resource>aptus_navigation_background</skin_resource>
                 <script file="scripts/skin_icon_aptus.lua" />
             </genericcontrol>
+
             <!-- ================================================= -->
+
             <!-- TEXTOS PROVISIONALES DE CABECERA                   -->
+
             <!-- ================================================= -->
 
             <!-- Sólo lectura. El futuro editor de Identidad se vinculará al mismo name. -->
+
             <stringfield name="name">
                 <readonly />
                 <anchored width="350" height="60">
@@ -137,8 +147,8 @@
                 <disabled />
             </stringcontrol>
 
-
             <!-- Acciones propias, siempre visibles en la cabecera permanente. -->
+
             <buttoncontrol name="aptus_minimize_button">
                 <bounds>558,0,51,48</bounds>
                 <icon normal="aptus_min_black" pressed="aptus_min_black" />
@@ -149,6 +159,7 @@
                     end
                 </script>
             </buttoncontrol>
+
             <buttoncontrol name="aptus_close_button">
                 <bounds>594,0,51,48</bounds>
                 <icon normal="aptus_close_black" pressed="aptus_close_black" />
