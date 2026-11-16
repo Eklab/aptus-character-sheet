@@ -21,8 +21,22 @@ function isViewLocked()
     if top.isInstanceLocked then return top.isInstanceLocked(); end
     return DB.getValue(getDatabaseNode(), "locked", 0) ~= 0;
 end
+function isInspectionOnly()
+    local top = WindowManager.getTopWindow(self);
+    return top.isInspectionOnly and top.isInspectionOnly() or false;
+end
+function getActionContext()
+    local top = WindowManager.getTopWindow(self);
+    return top.getActionContext and top.getActionContext() or nil;
+end
+function hasCurrentContext()
+    local top = WindowManager.getTopWindow(self);
+    return (not top.canViewInWindow or top.canViewInWindow())
+        and APTUSInventoryManager.isContextValid(getActionContext());
+end
 function canEditCurrentInstance()
-    return not isViewLocked() and APTUSInventoryManager.canEditInstance(getDatabaseNode());
+    return hasCurrentContext() and not isInspectionOnly() and not isViewLocked()
+        and APTUSInventoryManager.canEditInstance(getDatabaseNode(), getActionContext());
 end
 
 function getConsultationClass()
@@ -160,7 +174,7 @@ function update()
     discard_button.setVisible(editable);
     discard_art.setVisible(editable);
     updateDependentFields();
-    delete_button.setReadOnly(bDeletePending or not APTUSInventoryManager.canDeleteInstance(getDatabaseNode()));
+    delete_button.setReadOnly(isInspectionOnly() or bDeletePending or not APTUSInventoryManager.canDeleteInstance(getDatabaseNode(), false, getActionContext()));
     if bLastEditable ~= editable then
         -- La primera lectura bloqueada no es un cambio de modo ni genera mensajes.
         if bLastEditable ~= nil or editable then
@@ -174,6 +188,8 @@ end
 
 function reload()
     if bClosed then return; end
+    local top = WindowManager.getTopWindow(self);
+    if top.canViewInWindow and not top.canViewInWindow() then top.close(); return; end
     local node = getDatabaseNode();
     if not APTUSInventoryManager.canViewInstance(node) then WindowManager.getTopWindow(self).close(); return; end
     -- getDraft sólo lee; no ejecuta el guardado ni materializa valores predeterminados.
@@ -204,7 +220,7 @@ function captureCollections()
 end
 function rebuildCollections()
     local parent = self;
-    local bEditable = APTUSInventoryManager.canEditInstance(getDatabaseNode());
+    local bEditable = canEditCurrentInstance();
     for _, entry in ipairs({ { "qualities", quality_list, "quality" }, { "profiles", profile_list, "profile" } }) do
         local collection, list, mode = entry[1], entry[2], entry[3];
         for _, w in ipairs(list.getWindows()) do w.close(); end
@@ -220,7 +236,7 @@ function rebuildCollections()
     end
 end
 function addCollectionEntry(collection)
-    if not APTUSInventoryManager.canEditInstance(getDatabaseNode()) then return; end
+    if not canEditCurrentInstance() then return; end
     if collection == "qualities" then configureGeneralQualities(); return; end
     captureCollections();
     if collection ~= "profiles" then return; end
@@ -229,16 +245,20 @@ function addCollectionEntry(collection)
     for _, row in ipairs(profile_list.getWindows()) do row.openIfKey(newKey); end
 end
 function isAssociationsEditable()
-    return not bClosed and APTUSInventoryManager.canEditInstance(getDatabaseNode());
+    return not bClosed and canEditCurrentInstance();
 end
 function configureGeneralQualities()
-    if bClosed then return; end
+    if bClosed or not isAssociationsEditable() then return; end
     captureCollections();
     local original = tCollections;
+    local context = getActionContext();
     local token = APTUSQualityManager.associationToken(original.qualities);
     DialogManager.openDialog("aptus_quality_associations", {
         title = "Cualidades de EQUIPO", entries = original.qualities,
-        isValid = function() return not bClosed and tCollections == original; end,
+        isValid = function() return not bClosed and hasCurrentContext() and tCollections == original; end,
+        onOpened = function(window)
+            APTUSInventoryManager.trackContextDialog(context, window, "aptus_quality_associations");
+        end,
         editable = function() return not bClosed and isAssociationsEditable(); end,
         apply = function(values)
             if bClosed or tCollections ~= original or not isAssociationsEditable()
@@ -254,17 +274,17 @@ function dropGeneralQuality(draginfo)
     return true;
 end
 function removeCollectionEntry(collection, key)
-    if not APTUSInventoryManager.canEditInstance(getDatabaseNode()) then return; end
+    if not canEditCurrentInstance() then return; end
     captureCollections();
     tCollections[collection][key] = nil;
     rebuildCollections();
 end
 function updateDependentFields()
     if not draft_capacity then return; end
-    local editable = not bClosed and APTUSInventoryManager.canEditInstance(getDatabaseNode());
+    local editable = not bClosed and canEditCurrentInstance();
     draft_max_stack.setReadOnly(not editable or draft_stackable.getValue() ~= 1);
     draft_capacity.setReadOnly(not editable or draft_is_container.getValue() ~= 1);
-    local visible = Session.IsHost and sPage == "container" and draft_is_container.getValue() == 1;
+    local visible = not isInspectionOnly() and APTUSInventoryManager.isContextHost(getActionContext()) and sPage == "container" and draft_is_container.getValue() == 1;
     label_hide_contents.setVisible(visible);
     draft_hide_contents.setVisible(visible);
     draft_hide_contents.setReadOnly(not visible or not canEditCurrentInstance());
@@ -279,7 +299,7 @@ function save()
     end
     if draft.is_container == 1 then draft.stackable = 0; draft.max_stack = 1; end
     bAction = true;
-    local ok, message = APTUSInventoryManager.saveInstance(getDatabaseNode(), draft, sExpected);
+    local ok, message = APTUSInventoryManager.saveInstance(getDatabaseNode(), draft, sExpected, getActionContext());
     if ok then
         reload();
         local w = WindowManager.getTopWindow(self);
@@ -302,7 +322,7 @@ end
 
 -- La ventana sólo solicita la operación; el gestor confirma y elimina.
 function requestDelete()
-    if bClosed or bDeletePending then return; end
+    if bClosed or bDeletePending or isInspectionOnly() or not hasCurrentContext() then return; end
     bDeletePending = true;
     update();
     APTUSInventoryManager.requestDeleteInstance(getDatabaseNode(), function(ok, message, outcome)
@@ -311,14 +331,14 @@ function requestDelete()
         update();
         if ok then WindowManager.getTopWindow(self).close();
         else showMessage(message, outcome == "cancelled" and "confirmation" or "error"); end
-    end, function() return not bClosed; end);
+    end, function() return not bClosed and not isInspectionOnly() and hasCurrentContext(); end, getActionContext());
 end
 
 function updatePreview()
     if preview and draft_picture then preview.setPrototype(draft_picture.getValue() or ""); end
 end
 function dropPicture(draginfo)
-    if not APTUSInventoryManager.canEditInstance(getDatabaseNode()) then return false; end
+    if not canEditCurrentInstance() then return false; end
     if not StringManager.contains({ "image", "portrait", "token" }, draginfo.getType()) then return false; end
     local asset = draginfo.getTokenData();
     if not asset or asset == "" then return false; end

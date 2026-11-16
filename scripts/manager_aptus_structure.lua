@@ -1,4 +1,4 @@
--- Modelo común de Localizaciones y Vehículos. Sin reglas funcionales en fase 1.
+-- Modelo común de Localizaciones y Vehículos e inventarios persistentes.
 local sRoot = "aptus_structures";
 local sRecordType = "aptus_structure";
 local tTypes, tFeatures = {}, {};
@@ -79,6 +79,11 @@ function getIdentity(node) return DB.getValue(node, "identity", ""); end
 function isStructure(node)
     return node ~= nil and RecordDataManager.getRecordTypeFromRecordPath(DB.getPath(node)) == sRecordType;
 end
+-- La visibilidad y el Acceso conservan el gestor de permisos existente.
+function canAccessResources(node)
+    return isStructure(node) and isFeatureActive(node, "storage")
+        and (Session.IsHost or APTUSLocationPermissions.hasAccess(node, Session.UserName));
+end
 function canEdit(node)
     return Session.IsHost and isStructure(node) and not WindowManager.getReadOnlyState(node);
 end
@@ -92,8 +97,8 @@ end
 function isFeatureImplemented(node, sId)
     local tFeature = tFeatures[sId];
     if not tFeature then return false; end
-    -- Sólo la vista provisional de Almacenaje de Localizaciones está disponible.
-    return tFeature.implemented or (sId == "storage" and getCategory(node) == "locations");
+    -- Almacenaje utiliza el mismo motor y está disponible en ambas categorías.
+    return tFeature.implemented or sId == "storage";
 end
 function setFeatureEnabled(node, sId, bEnabled)
     local tFeature = tFeatures[sId];
@@ -183,4 +188,60 @@ end
 
 function onTabletopInit()
     if Session.IsHost then DB.createNode(sRoot); end
+end
+
+-- Contexto de consulta: nunca cambia Session, ownership ni permisos persistentes.
+function isHostViewer(viewer)
+    return Session.IsHost and (not viewer or viewer.mode == "host");
+end
+function getViewerUsername(viewer)
+    if Session.IsHost and viewer then
+        if viewer.mode == "player_preview" then return viewer.username or ""; end
+        if viewer.mode ~= "host" then return ""; end
+    end
+    return Session.UserName;
+end
+function canViewAs(node, viewer)
+    if not isStructure(node) or DB.findNode(DB.getPath(node)) ~= node then return false; end
+    return isHostViewer(viewer) or APTUSLocationPermissions.hasVisibility(node, getViewerUsername(viewer));
+end
+function canAccessAs(node, viewer)
+    return canViewAs(node, viewer) and (isHostViewer(viewer)
+        or APTUSLocationPermissions.hasAccess(node, getViewerUsername(viewer)));
+end
+function canConsultResources(node, viewer)
+    return isFeatureActive(node, "storage") and canAccessAs(node, viewer);
+end
+function getVisibleStructures(category, viewer)
+    local result = {};
+    for _, node in pairs(DB.getChildren(sRoot)) do
+        if getCategory(node) == category and canViewAs(node, viewer) then table.insert(result, node); end
+    end
+    table.sort(result, function(a,b)
+        local first, second = tostring(DB.getValue(a,"name","")):lower(), tostring(DB.getValue(b,"name","")):lower();
+        return first == second and DB.getPath(a) < DB.getPath(b) or first < second;
+    end);
+    return result;
+end
+
+-- Grupos virtuales de consulta. No crea objetos ni altera el inventario origen.
+function getResourceGroups(category, viewer, onlyWithResources)
+    local groups = {};
+    for _, node in ipairs(getVisibleStructures(category, viewer)) do
+        local inventory = { roots={}, items={} };
+        local message;
+        if not isFeatureActive(node, "storage") then message = "Almacenaje no disponible.";
+        elseif not canAccessAs(node, viewer) then message = "Sin acceso a los recursos.";
+        else
+            inventory = APTUSInventoryManager.getViewedInventory(node, viewer);
+            if #inventory.items == 0 then message = "Almacenaje vacío."; end
+        end
+        if not onlyWithResources or #inventory.items > 0 then
+            local name = DB.getValue(node, "name", "");
+            table.insert(groups, { path=DB.getPath(node), category=category,
+                name=type(name) == "string" and name:match("%S") and name or "Sin nombre",
+                inventory=inventory, message=message });
+        end
+    end
+    return groups;
 end

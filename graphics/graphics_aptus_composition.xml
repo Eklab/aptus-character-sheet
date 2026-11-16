@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+    <icon name="aptus_impersonar_off" file="graphics/icons/aptus_impersonar_off.png" />
+    <icon name="aptus_impersonar_on" file="graphics/icons/aptus_impersonar_on.png" />
     <icon name="aptus_header_background" file="graphics/themes/default/aptus_header_background_default.png" />
 
     <icon name="aptus_character_illustration" file="graphics/themes/default/aptus_character_illustration_default.png" />

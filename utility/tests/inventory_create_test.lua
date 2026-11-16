@@ -54,6 +54,7 @@ end
 function DB.getParent(n) return n.parent; end
 function DB.getModule(n) while n do if n.module then return n.module; end n=n.parent; end return ""; end
 function DB.isReadOnly(n) while n do if n.readonly then return true; end n=n.parent; end return false; end
+function DB.getOwner(n) while n do if n.owner then return n.owner; end n=n.parent; end return nil; end
 function DB.isOwner(n) while n do if n.owner then return n.owner==Session.UserName; end n=n.parent; end return false; end
 function DB.createChild(n,p)
     writes=writes+1;
@@ -331,7 +332,8 @@ local old=resolve(nested,"inventorylist.legacy",true); put(old,"name","string","
 local otherToken,oldToken=manager.getInstanceEditToken(unrelated),manager.getInstanceEditToken(old);
 -- Cargar el controlador real de ventana para verificar cierre mediante onDelete.
 local function openInstance(n)
-    local w={getDatabaseNode=function() return n; end,super={onInit=function() end},content={setValue=function() end}};
+    local w={getDatabaseNode=function() return n; end,getClass=function()return "aptus_inventory_item";end,
+        super={onInit=function() end},content={setValue=function() end}};
     function w.close() w.closed=true; w.onClose(); end
     setmetatable(w,{__index=function(_,key) return common[key] or _G[key]; end});
     assert(loadfile("scripts/inventory_item_window_aptus.lua","t",w))(); w.onInit(); return w;
@@ -339,7 +341,10 @@ end
 local rootWindow,childWindow=openInstance(root),openInstance(doc);
 -- Cargar los observadores reales de EQUIPO; sustituir sólo el renderizado FGU.
 local refreshes=0;
-local pane={getDatabaseNode=function() return nested; end,load_fill={setVisible=function() end}};
+local pane={getDatabaseNode=function() return nested; end,getClass=function()return "aptus_char_equipment";end,
+    APTUSLocationPermissions={subscribe=function()end,unsubscribe=function()end},
+    APTUSStructureManager={getRootPath=function()return "aptus_structures";end},
+    load_fill={setVisible=function() end}};
 setmetatable(pane,{__index=function(_,key) return common[key] or _G[key]; end});
 assert(loadfile("scripts/char_equipment_aptus.lua","t",pane))();
 pane.refreshPreview=function() refreshes=refreshes+1; end; pane.selectView=function() end;
@@ -504,4 +509,28 @@ assert(loadfile("utility/tests/inventory_state_test.lua"))()({
 assert(loadfile("utility/tests/inventory_hidden_contents_test.lua"))()({
     manager=manager, DB=DB, Session=Session, newCharacter=scenario, template=template, put=put,
     writes=function() return writes; end,
+});
+
+assert(loadfile("utility/tests/structure_inventory_test.lua"))()({
+    manager=manager, DB=DB, Session=Session, newCharacter=scenario, template=template, put=put,
+    newStructure=function(id) return resolve("aptus_structures."..id,nil,true); end,
+    writes=function() return writes; end,
+});
+
+assert(loadfile("utility/tests/structure_consultation_test.lua"))()({
+    manager=manager, DB=DB, Session=Session, newCharacter=scenario, template=template, put=put,
+    newStructure=function(id) return resolve("aptus_structures."..id,nil,true); end,
+    writes=function() return writes; end,
+});
+
+assert(loadfile("utility/tests/inventory_context_test.lua"))()({
+    manager=manager,DB=DB,Session=Session,newCharacter=scenario,template=template,put=put,
+    newStructure=function(id)return resolve("aptus_structures."..id,nil,true);end,
+    writes=function()return writes;end,
+});
+
+assert(loadfile("utility/tests/inventory_simple_transfer_test.lua"))()({
+ manager=manager,DB=DB,Session=Session,newCharacter=scenario,template=template,put=put,
+ newStructure=function(id)return resolve("aptus_structures."..id,nil,true);end,
+ writes=function()return writes;end,fail=function(path)fault=path;end,
 });

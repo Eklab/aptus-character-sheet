@@ -21,6 +21,7 @@
                 test_conflict_1.bringToFront();
                 test_conflict_2.bringToFront();
                 test_conflict_3.bringToFront();
+                aptus_impersonate_button.bringToFront();
                 aptus_minimize_button.bringToFront();
                 aptus_close_button.bringToFront();
             end
@@ -149,6 +150,16 @@
 
             <!-- Acciones propias, siempre visibles en la cabecera permanente. -->
 
+            <buttoncontrol name="aptus_impersonate_button">
+                <anchored to="header_background" width="51" height="48">
+                    <!-- Cabecera de 653 px: x=576, y=48+5; sin depender de los CTA posteriores. -->
+                    <right offset="-26" />
+                    <top offset="53" />
+                </anchored>
+                <icon normal="aptus_impersonar_off" pressed="aptus_impersonar_off" />
+                <invisible />
+                <script file="scripts/char_structure_preview_button.lua" />
+            </buttoncontrol>
             <buttoncontrol name="aptus_minimize_button">
                 <bounds>558,0,51,48</bounds>
                 <icon normal="aptus_min_black" pressed="aptus_min_black" />

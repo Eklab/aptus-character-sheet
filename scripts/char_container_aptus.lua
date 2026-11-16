@@ -1,5 +1,17 @@
+local previewPlayer = false;
+local viewerPath;
+local inventoryContextRevision = 0;
+local contextClosed = false;
+local contextInvalidators = {};
+local function invalidateInventoryContext()
+    inventoryContextRevision = inventoryContextRevision + 1;
+    local callbacks = contextInvalidators;contextInvalidators = {};
+    for _, callback in ipairs(callbacks) do pcall(callback); end
+end
 -- CoreRPG conserva la creación de subventanas y el estado de las pestañas.
 function onInit()
+    viewerPath = DB.getPath(getDatabaseNode());
+    DB.addHandler(viewerPath, "onObserverUpdate", refreshStructureViewer);
     -- Migración diferida de fichas antiguas; sólo escribe con permisos.
     APTUSCharacterManager.ensureDefaultName(getDatabaseNode());
     WindowTabManager.setTabTemplate("charsheet", "aptus_tabs_hidden");
@@ -38,6 +50,7 @@ function onInit()
     -- Vinculación explícita, igual que WindowTabManager.updateTabDisplay.
     overview.setValue("aptus_char_header", getDatabasePath());
     super.onInit();
+    refreshStructureViewer();
 
     registerMenuItem("Opciones de ficha", "button_toolbar_link", 8);
     registerMenuItem("Enlace arrastrable del personaje", "button_toolbar_link", 8, 1);
@@ -139,4 +152,64 @@ function onTabChanged()
     if aptus_identity and aptus_identity.subwindow and aptus_identity.subwindow.name then
         aptus_identity.subwindow.name.setReadOnly(true);
     end
+end
+
+-- Contexto efímero y exclusivo de esta ventana; nunca altera Session ni ownership.
+function getStructureViewer()
+    if not Session.IsHost then return {mode="player",username=Session.UserName}; end
+    local owner = DB.getOwner(getDatabaseNode()) or "";
+    if owner == "" or owner == Session.UserName then previewPlayer = false; end
+    if previewPlayer then return {mode="player_preview",username=owner}; end
+    return {mode="host",username=Session.UserName};
+end
+function toggleStructureViewer()
+    local owner = DB.getOwner(getDatabaseNode()) or "";
+    if not Session.IsHost or owner == "" or owner == Session.UserName then return; end
+    previewPlayer = not previewPlayer;
+    refreshStructureViewer();
+end
+-- Captura de permisos local. La revisión invalida diálogos incluso al alternar
+-- Impersonar dos veces y volver al mismo usuario; nunca se modifica Session.
+function getInventoryContext()
+    local viewer = getStructureViewer();
+    local node, revision = getDatabaseNode(), inventoryContextRevision;
+    local realHost = Session.IsHost;
+    local owner = realHost and (DB.getOwner(node) or "") or nil;
+    local owned = not realHost and DB.isOwner(node);
+    local path = DB.getPath(node);
+    local real = Session.UserName;
+    local mode = viewer.mode;
+    local context = {
+        aptus_inventory_context=true, actor_real=real, actor_effective=viewer.username,
+        character_path=path, impersonating=mode == "player_preview",
+        mode=mode, username=viewer.username,
+        isValid=function()
+            return not contextClosed and inventoryContextRevision == revision
+                and DB.findNode(path) == node and Session.UserName == real and Session.IsHost == realHost
+                and ((realHost and (DB.getOwner(node) or "") == owner) or (not realHost and DB.isOwner(node) == owned))
+                and getStructureViewer().mode == mode;
+        end,
+    };
+    context.onInvalidate = function(callback)
+        if context.isValid() then table.insert(contextInvalidators, callback); else callback(); end
+    end;
+    return context;
+end
+function refreshStructureViewer()
+    invalidateInventoryContext();
+    getStructureViewer();
+    if overview and overview.subwindow and overview.subwindow.aptus_impersonate_button then
+        overview.subwindow.aptus_impersonate_button.updateViewerUI();
+    end
+    local equipment = WindowTabManager.getTabDisplay(self, {sName="inventory"});
+    if equipment and equipment.subwindow and equipment.subwindow.onStructureViewerChanged then
+        equipment.subwindow.onStructureViewerChanged();
+    end
+end
+function onClose()
+    contextClosed = true;
+    invalidateInventoryContext();
+    previewPlayer = false;
+    if viewerPath then DB.removeHandler(viewerPath, "onObserverUpdate", refreshStructureViewer); end
+    if super and super.onClose then super.onClose(); end
 end

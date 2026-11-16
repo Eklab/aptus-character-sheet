@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Vista compacta, sin otro motor: comparte controlador y filas de EQUIPO. -->
+    <windowclass name="aptus_structure_inventory">
+        <margins control="0,0,0,0" />
+        <script file="scripts/char_equipment_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="dark_background">
+                <anchored><left /><right /><top /><bottom /></anchored>
+                <backcolor>FF080807</backcolor><disabled />
+            </genericcontrol>
+            <stringcontrol name="search">
+                <bounds>12,12,320,22</bounds><font>aptus_inventory_row_text</font><frame name="fielddark" offset="2,2,2,2" />
+                <script>function onValueChanged() window.refreshPreview(); end</script>
+            </stringcontrol>
+            <buttoncontrol name="add_equipment">
+                <bounds>382,12,24,24</bounds><icon normal="button_add" pressed="button_add" />
+                <tooltip text="Añadir equipo al Almacenaje" />
+                <script>function onButtonPress() window.addFromCatalogue(); end</script>
+            </buttoncontrol>
+            <stringcontrol name="heading_name"><bounds>6,43,160,18</bounds><font>aptus_inventory_text</font><static>Nombre</static><disabled /></stringcontrol>
+            <stringcontrol name="heading_count"><bounds>171,43,26,18</bounds><font>aptus_inventory_text</font><static>Cant.</static><center /><disabled /></stringcontrol>
+            <stringcontrol name="heading_location"><bounds>203,43,116,18</bounds><font>aptus_inventory_text</font><static>Ubicación</static><disabled /></stringcontrol>
+            <stringcontrol name="heading_load"><bounds>323,43,36,18</bounds><font>aptus_inventory_text</font><static>CAR</static><center /><disabled /></stringcontrol>
+            <windowlist name="preview">
+                <anchored><left offset="6" /><right offset="-21" /><top offset="66" /><bottom offset="-22" /></anchored>
+                <class>aptus_structure_inventory_row</class>
+                <script>function onDrop(x,y,draginfo) return window.dropFromCatalogue(draginfo); end</script>
+            </windowlist>
+            <scrollbar name="preview_scrollbar">
+                <anchored to="preview" width="15"><left anchor="right" offset="0" /><top /><bottom /></anchored>
+                <frame name="scrollbar_base" offset="0,0,0,0" /><target>preview</target><invisible />
+            </scrollbar>
+            <stringcontrol name="empty_message"><bounds>12,76,390,38</bounds><font>aptus_inventory_text</font><readonly /><multilines /></stringcontrol>
+            <stringcontrol name="preview_notice">
+                <anchored height="16"><left offset="6" /><right offset="-6" /><bottom offset="-2" /></anchored>
+                <font>aptus_inventory_text</font><disabled />
+            </stringcontrol>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_structure_inventory_row" copy="aptus_char_equipment_row">
+        <sheetdata>
+            <stringcontrol name="count"><bounds>165,2,26,20</bounds></stringcontrol>
+            <genericcontrol name="location_selector"><bounds>197,4,116,15</bounds></genericcontrol>
+            <stringcontrol name="location"><bounds>207,2,93,20</bounds></stringcontrol>
+            <stringcontrol name="load"><bounds>317,2,36,20</bounds></stringcontrol>
+            <genericcontrol name="open_record"><bounds>355,0,25,24</bounds></genericcontrol>
+            <button_iconcycler name="state"><invisible /></button_iconcycler>
+        </sheetdata>
+    </windowclass>
+    <!-- Definida después de su base para no depender de copias adelantadas. -->
+    <windowclass name="aptus_location_storage" copy="aptus_structure_inventory" />
+</root>

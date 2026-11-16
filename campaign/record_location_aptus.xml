@@ -234,27 +234,6 @@
         </sheetdata>
     </windowclass>
 
-    <windowclass name="aptus_location_storage">
-        <margins control="0,0,0,0" />
-        <script file="scripts/location_storage_aptus.lua" />
-        <sheetdata>
-            <stringcontrol name="title">
-                <bounds>12,12,400,28</bounds>
-                <font>sheetlabel</font>
-                <static>ALMACENAJE</static>
-                <disabled />
-            </stringcontrol>
-
-            <stringcontrol name="hint">
-                <bounds>12,52,400,60</bounds>
-                <font>sheettext</font>
-                <multilinespacing>20</multilinespacing>
-                <static>Dispones de acceso al almacenaje de esta localización</static>
-                <disabled />
-            </stringcontrol>
-        </sheetdata>
-    </windowclass>
-
     <windowclass name="aptus_location_main">
         <margins control="0,0,0,0" />
         <script file="scripts/location_main_aptus.lua" />

@@ -22,6 +22,53 @@ local function containerId(node)
     if DB.getType(child) ~= "string" then return nil; end
     return DB.getValue(child);
 end
+local function structureOwner(node)
+    return node and DB.getPath(node):match("^aptus_structures%.[^.@]+$") ~= nil
+        and APTUSStructureManager and APTUSStructureManager.isStructure(node);
+end
+function isStructureInventory(node) return structureOwner(node) == true; end
+function isContextValid(context)
+    if context == nil then return true; end
+    return context.aptus_inventory_context == true and type(context.isValid) == "function"
+        and context.isValid() and context.actor_real == Session.UserName
+        and (Session.IsHost or (not context.impersonating and context.actor_effective == Session.UserName));
+end
+local function actor(context)
+    if not context then return Session.UserName, Session.IsHost; end
+    if context.aptus_inventory_context then
+        if not isContextValid(context) then return nil, false; end
+        return context.actor_effective, Session.IsHost and context.mode == "host" and not context.impersonating;
+    end
+    -- Compatibilidad de los snapshots de consulta anteriores, sin habilitar escrituras.
+    return Session.IsHost and context.username or Session.UserName, Session.IsHost and context.mode == "host";
+end
+local function owns(node, context)
+    local user, host = actor(context);
+    if host then return true; end
+    if not user or not node then return false; end
+    if Session.IsHost then
+        -- Respetar un propietario explícito; resolver la herencia hasta el inventario.
+        local cursor = node;
+        while cursor do
+            local owner = DB.getOwner(cursor);
+            if owner and owner ~= "" then return owner == user; end
+            cursor = DB.getParent(cursor);
+        end
+        return false;
+    end
+    return DB.isOwner(node);
+end
+function isContextHost(context) local _, host = actor(context); return host; end
+function canReadInventory(node, viewer)
+    if viewer and viewer.aptus_inventory_context and not isContextValid(viewer) then return false; end
+    if structureOwner(node) then
+        if viewer then return DB.findNode(DB.getPath(node)) == node and APTUSStructureManager.canConsultResources(node, viewer); end
+        return DB.findNode(DB.getPath(node)) == node and APTUSStructureManager.canAccessResources(node);
+    end
+    return node ~= nil and DB.getPath(node):match("^charsheet%.[^.@]+$") ~= nil
+        and (not viewer or owns(node, viewer));
+end
+
 local function integer(value, minimum)
     return type(value) == "number" and value == value and value < math.huge
         and value >= minimum and value == math.floor(value);
@@ -178,10 +225,10 @@ local function readProperties(node)
     return result;
 end
 
-function getCharacterInventory(nodeChar)
+function getCharacterInventory(nodeChar, viewer)
     local result = { roots = {}, items = {}, diagnostics = {}, ignored = 0, total_load = 0, load_complete = true };
-    if not nodeChar or not DB.getPath(nodeChar):match("^charsheet%.[^.@]+$") then
-        table.insert(result.diagnostics, "Se requiere un personaje de campaña");
+    if not canReadInventory(nodeChar, viewer) then
+        table.insert(result.diagnostics, "Se requiere un inventario APTUS accesible");
         result.total_load, result.load_complete = nil, false;
         return result;
     end
@@ -249,7 +296,9 @@ function getCharacterInventory(nodeChar)
         if item.problem then reject(item.id, item.problem);
         else
             item.visible_to_user = true;
-            if not (Session and Session.IsHost) then
+            item.viewer_is_host = Session and Session.IsHost or false;
+            if viewer then local _, host = actor(viewer); item.viewer_is_host = host; end
+            if not item.viewer_is_host then
                 local ancestor = byId[item.parent_id];
                 while ancestor do
                     if ancestor.hide_contents then item.visible_to_user = false; break; end
@@ -305,23 +354,110 @@ local function encode(value)
     return "{" .. table.concat(parts) .. "}";
 end
 
-function canManageCharacter(nodeChar)
+function canManageInventory(nodeChar, context)
+    if not isContextValid(context) or (context and not owns(nodeChar, context)) then return false; end
+    if context and structureOwner(nodeChar) then local _, host = actor(context); if not host then return false; end end
+    if structureOwner(nodeChar) then
+        return DB.findNode(DB.getPath(nodeChar)) == nodeChar and APTUSStructureManager.canEdit(nodeChar)
+            and APTUSStructureManager.isFeatureActive(nodeChar, "storage");
+    end
     return nodeChar ~= nil and DB.getPath(nodeChar):match("^charsheet%.[^.@]+$") ~= nil
         and DB.findNode(DB.getPath(nodeChar)) == nodeChar and (DB.getModule(nodeChar) or "") == ""
         and not DB.isReadOnly(nodeChar) and not WindowManager.getReadOnlyState(nodeChar)
         and (Session.IsHost or DB.isOwner(nodeChar));
 end
 
-function getInstanceCharacter(node)
-    if not node or not DB.getPath(node):match("^charsheet%.[^.@]+%.inventorylist%.[^.@]+$") then return nil; end
+-- Alias conservados para los consumidores de personaje; el propietario puede ser estructura.
+function canManageCharacter(node, context) return canManageInventory(node, context); end
+function getInventoryOwner(node)
+    if not node or not DB.getPath(node):match("%.inventorylist%.[^.@]+$") then return nil; end
     local list = DB.getParent(node);
-    return list and DB.getParent(list);
+    local owner = list and DB.getParent(list);
+    if owner and (DB.getPath(owner):match("^charsheet%.[^.@]+$") or structureOwner(owner)) then return owner; end
+end
+function getInstanceCharacter(node) return getInventoryOwner(node); end
+function getInventory(owner) return getCharacterInventory(owner); end
+
+-- Autorización funcional, sin ejecutar traslados ni conceder edición de estructuras.
+function canViewInventory(owner, context)
+    if not isContextValid(context) or not owner or DB.findNode(DB.getPath(owner)) ~= owner then return false; end
+    if structureOwner(owner) then return APTUSStructureManager.canViewAs(owner, context); end
+    return canReadInventory(owner, context) and owns(owner, context);
+end
+function canAccessInventory(owner, context)
+    if not canViewInventory(owner, context) then return false; end
+    if structureOwner(owner) then
+        local user, host = actor(context);
+        return APTUSStructureManager.isFeatureActive(owner, "storage") and (host
+            or (user and APTUSLocationPermissions.hasVisibility(owner, user) and APTUSLocationPermissions.hasAccess(owner, user)));
+    end
+    return canReadInventory(owner, context) and owns(owner, context) and (DB.getModule(owner) or "") == "";
+end
+function canSelectTransferSource(node, context)
+    local owner = getInventoryOwner(node);
+    if not canAccessInventory(owner, context) or not canViewInstance(node, context) then return false; end
+    for _, item in ipairs(getCharacterInventory(owner, context).items) do
+        if item.node == node then return item.visible_to_user; end
+    end
+    return false;
+end
+function canSelectTransferDestination(owner, parent, source, context)
+    if not canAccessInventory(owner, context) then return false; end
+    if not parent then return true; end
+    if getInventoryOwner(parent) ~= owner or not canSelectTransferSource(parent, context)
+        or field(parent, "properties.is_container", "number") ~= 1 then return false; end
+    local _, host = actor(context);
+    if not host and field(parent, "properties.hide_contents", "number") == 1 then return false; end
+    local cursor, seen, list = parent, {}, DB.getChild(owner, "inventorylist");
+    while cursor do
+        if cursor == source then return false; end
+        local id = containerId(cursor);
+        if id == "" then return true; end
+        if not id or seen[id] then return false; end
+        seen[id] = true;cursor = DB.getChild(list, id);
+    end
+    return false;
+end
+function canTransfer(node, owner, quantity, parent, context)
+    if not canSelectTransferSource(node, context) then return false; end
+    local sourceOwner = getInventoryOwner(node);
+    if sourceOwner ~= owner and not structureOwner(sourceOwner) and not structureOwner(owner)
+        and not isContextHost(context) then return false; end
+    quantity = quantity or field(node, "count", "number");
+    if field(node, "properties.is_container", "number") == 1
+        and (field(node, "count", "number") ~= 1 or quantity ~= 1) then return false; end
+    return integer(quantity, 1) and quantity <= 9007199254740991 and quantity <= field(node, "count", "number")
+        and canSelectTransferDestination(owner, parent, node, context);
+end
+
+-- Snapshot de consulta sin referencias a descendientes ocultos en items/children.
+function getViewedInventory(owner, viewer)
+    local snapshot = getCharacterInventory(owner, viewer);
+    local result = {roots={}, items={}, diagnostics={}, ignored=0};
+    local visible = {};
+    for _, item in ipairs(snapshot.items) do
+        if item.visible_to_user then
+            local copy = {};
+            for key, value in pairs(item) do if key ~= "children" then copy[key] = value; end end
+            copy.children = {}; visible[item.id] = copy; table.insert(result.items, copy);
+        end
+    end
+    for _, item in ipairs(snapshot.items) do
+        local copy = visible[item.id];
+        if copy then
+            if item.parent_id == "" then table.insert(result.roots, copy);
+            elseif visible[item.parent_id] then table.insert(visible[item.parent_id].children, copy); end
+        end
+    end
+    return result;
 end
 
 -- Restricción de interfaz, no altera permisos DB ni la sincronización.
-function isItemVisible(node)
+function isItemVisible(node, context)
     if not node then return false; end
-    if Session and Session.IsHost then return true; end
+    if context and not isContextValid(context) then return false; end
+    local _, host = actor(context);
+    if host then return true; end
     local list, cursor, seen = DB.getParent(node), node, {};
     while cursor do
         local id = containerId(cursor);
@@ -336,12 +472,17 @@ function isItemVisible(node)
     return false;
 end
 
-function canViewInstance(node)
-    return getInstanceCharacter(node) ~= nil and DB.findNode(DB.getPath(node)) == node and isInstance(node) and isItemVisible(node);
+function canViewInstance(node, context)
+    return getInstanceCharacter(node) ~= nil and canReadInventory(getInventoryOwner(node), context)
+        and DB.findNode(DB.getPath(node)) == node and isInstance(node) and isItemVisible(node, context);
 end
 
-function canEditInstance(node)
-    if not canViewInstance(node) or not canManageCharacter(getInstanceCharacter(node))
+function canManageInstance(node, context)
+    return isContextValid(context) and owns(node, context) and canViewInstance(node, context)
+        and canManageCharacter(getInstanceCharacter(node), context) and not DB.isReadOnly(node);
+end
+function canEditInstance(node, context)
+    if not canManageInstance(node, context)
         or DB.isReadOnly(node) or WindowManager.getReadOnlyState(node) then return false; end
     for _, key in ipairs({ "qualities", "profiles" }) do
         local branch = DB.getChild(node, "properties." .. key);
@@ -412,8 +553,8 @@ function getTemplateOptions()
     return options;
 end
 
-local function createSingleFromTemplate(nodeChar, nodeTemplate)
-    if not canManageCharacter(nodeChar) then return nil, "No puedes crear objetos en este personaje."; end
+local function createSingleFromTemplate(nodeChar, nodeTemplate, context)
+    if not canManageCharacter(nodeChar, context) then return nil, "No puedes crear objetos en este personaje."; end
     local problem = getTemplateProblem(nodeTemplate);
     if problem then return nil, problem; end
     local list = DB.getChild(nodeChar, "inventorylist");
@@ -422,6 +563,7 @@ local function createSingleFromTemplate(nodeChar, nodeTemplate)
         id = DB.getValue(nodeTemplate, "template_id", ""), version = DB.getValue(nodeTemplate, "template_version", 0),
         properties = encode(readProperties(DB.getChild(nodeTemplate, "properties"))) };
     local created, newList;
+    local initialCarried = structureOwner(nodeChar) and 0 or 1;
     local ok, err = pcall(function()
         if not list then list = DB.createChild(nodeChar, "inventorylist"); newList = true; end
         if not list then error("No se pudo crear la colección"); end
@@ -430,7 +572,7 @@ local function createSingleFromTemplate(nodeChar, nodeTemplate)
         -- Carried antes del nombre: evita la propagación nativa por nombres de
         -- location sobre otros objetos heredados. No se llama a ItemManager.
         DB.setValue(created, "count", "number", 1);
-        DB.setValue(created, "carried", "number", 1);
+        DB.setValue(created, "carried", "number", initialCarried);
         DB.setValue(created, "name", "string", before.name);
         DB.setValue(created, "template_id", "string", before.id);
         DB.setValue(created, "template_version", "number", before.version);
@@ -442,7 +584,7 @@ local function createSingleFromTemplate(nodeChar, nodeTemplate)
         local valid, reason = isInstance(created);
         if not valid then error(reason); end
         if field(created, "name", "string") ~= before.name or field(created, "count", "number") ~= 1
-            or field(created, "carried", "number") ~= 1 or field(created, "aptus.container", "string") ~= ""
+            or field(created, "carried", "number") ~= initialCarried or field(created, "aptus.container", "string") ~= ""
             or field(created, "template_id", "string") ~= before.id
             or field(created, "template_version", "number") ~= before.version
             or encode(readProperties(DB.getChild(created, "properties"))) ~= before.properties then
@@ -513,13 +655,13 @@ function getInstanceDraft(node)
     return draft;
 end
 
-function saveInstance(node, draft, expected)
-    if not canEditInstance(node) then return false, "La instancia no existe o no tienes permiso de edición."; end
+function saveInstance(node, draft, expected, context)
+    if not canEditInstance(node, context) then return false, "La instancia no existe o no tienes permiso de edición."; end
     if getInstanceEditToken(node) ~= expected then return false, "El objeto cambió. Releer antes de guardar."; end
     if type(draft) ~= "table" then return false, "Borrador no válido."; end
     local storedHidden = DB.getValue(node, "properties.hide_contents", 0);
     if draft.hide_contents == nil then draft.hide_contents = storedHidden; end
-    if not Session.IsHost and draft.hide_contents ~= storedHidden then
+    if not isContextHost(context) and draft.hide_contents ~= storedHidden then
         return false, "Sólo el DJ puede modificar Ocultar contenido.";
     end
     if draft.is_container == 0 then draft.hide_contents = 0; end
@@ -615,11 +757,14 @@ function saveInstance(node, draft, expected)
 end
 
 -- Eliminación explícita: permisos de inventario, independientes del candado de propiedades.
-function canDeleteInstance(node, internalContents)
+function canDeleteInstance(node, internalContents, context)
+    if not isContextValid(context) or (context and not owns(node, context)) then return false; end
     local character = getInstanceCharacter(node);
+    if context and not owns(character, context) then return false; end
     if not character or DB.findNode(DB.getPath(character)) ~= character
-        or not (internalContents and isInstance(node) or canViewInstance(node)) or (DB.getModule(character) or "") ~= ""
+        or not (internalContents and isInstance(node) or canViewInstance(node, context)) or (DB.getModule(character) or "") ~= ""
         or DB.isReadOnly(character) or DB.isReadOnly(DB.getParent(node)) or DB.isReadOnly(node) then return false; end
+    if structureOwner(character) then local _, host = actor(context); return host and APTUSStructureManager.canAccessResources(character); end
     return Session.IsHost or (DB.isOwner(character) and DB.isOwner(node));
 end
 
@@ -646,8 +791,8 @@ local function deleteGraph(list)
 end
 
 -- Plan de sólo lectura. Recorrido iterativo por IDs del mismo inventorylist.
-function planDeleteInstance(node)
-    if not canDeleteInstance(node) then return nil, "El objeto no existe, no es una instancia APTUS válida o no tienes permiso para eliminarlo."; end
+function planDeleteInstance(node, context)
+    if not canDeleteInstance(node, false, context) then return nil, "El objeto no existe, no es una instancia APTUS válida o no tienes permiso para eliminarlo."; end
     local list = DB.getParent(node);
     local nodes, children, problem = deleteGraph(list);
     if problem then return nil, problem; end
@@ -672,7 +817,7 @@ function planDeleteInstance(node)
         if seen[id] then return nil, "Se ha detectado un ciclo o una relación repetida en el contenido."; end
         seen[id] = true;
         local current = nodes[id];
-        if not canDeleteInstance(current, true) then
+        if not canDeleteInstance(current, true, context) then
             return nil, "El contenido incluye un registro incompatible o sin permisos: " .. id .. ". No se ha eliminado nada.";
         end
         local entries = children[id] or {};
@@ -688,8 +833,11 @@ function planDeleteInstance(node)
     return plan;
 end
 
-function getDeleteConfirmation(plan)
+function getDeleteConfirmation(plan, context)
     if #plan.entries > 1 then
+        if context and not isContextHost(context) then
+            return "¿Quieres eliminar " .. plan.name .. " y todo su contenido, incluidos los contenedores interiores?";
+        end
         return "¿Quieres eliminar " .. plan.name .. " y todos los objetos que contiene? Esta acción también eliminará el contenido de los contenedores interiores.\n\nRegistros afectados: " .. tostring(#plan.entries) .. ".";
     end
     if plan.count > 1 then
@@ -706,13 +854,13 @@ local function sameDeletePlan(a, b)
 end
 
 -- Sólo accesible desde la confirmación. Sin transacciones ni reconstrucción de registros.
-local function executeDeletePlan(plan)
+local function executeDeletePlan(plan, context)
     local deleted = 0;
     local ok, problem = pcall(function()
         for i = #plan.entries, 1, -1 do
             local entry = plan.entries[i];
             local node = DB.findNode(entry.path);
-            if node ~= entry.node or not canDeleteInstance(node, true) or getInstanceEditToken(node) ~= entry.token then
+            if node ~= entry.node or not canDeleteInstance(node, true, context) or getInstanceEditToken(node) ~= entry.token then
                 error("Un registro cambió o perdió sus permisos durante la operación.");
             end
             local _, children, issue = deleteGraph(DB.getParent(node));
@@ -737,8 +885,8 @@ end
 
 -- Coordinación del diálogo nativo, separada de la planificación y ejecución.
 -- notify(ok, mensaje, resultado); isActive permite cancelar si la ficha se cierra.
-function requestDeleteInstance(node, notify, isActive)
-    local plan, problem = planDeleteInstance(node);
+function requestDeleteInstance(node, notify, isActive, context)
+    local plan, problem = planDeleteInstance(node, context);
     if not plan then
         if notify then notify(false, problem, "error"); end
         return false;
@@ -747,22 +895,22 @@ function requestDeleteInstance(node, notify, isActive)
         local answered = false;
         DialogManager.openDialog("dialog_okcancel", {
             sTitle="Eliminar instancia de equipo",
-            sText=(changed and "El contenido ha cambiado. Revisa y confirma de nuevo la operación actualizada.\n\n" or "") .. getDeleteConfirmation(expected),
+            sText=(changed and "El contenido ha cambiado. Revisa y confirma de nuevo la operación actualizada.\n\n" or "") .. getDeleteConfirmation(expected, context),
             fnCallback=function(result)
                 if answered then return; end
                 answered = true;
-                if isActive and not isActive() then return; end
+                if not isContextValid(context) or (isActive and not isActive()) then return; end
                 if result ~= "ok" then
                     if notify then notify(false, "Eliminación cancelada.", "cancelled"); end
                     return;
                 end
-                local current, issue = planDeleteInstance(DB.findNode(expected.path));
+                local current, issue = planDeleteInstance(DB.findNode(expected.path), context);
                 if not current then
                     if notify then notify(false, issue, "error"); end
                     return;
                 end
                 if not sameDeletePlan(expected, current) then ask(current, true); return; end
-                local ok, message, outcome = executeDeletePlan(current);
+                local ok, message, outcome = executeDeletePlan(current, context);
                 if notify then notify(ok, message, outcome); end
             end,
         });
@@ -780,7 +928,8 @@ function removeOperationListener(callback) operationListeners[callback] = nil; e
 local function units(value, minimum)
     return integer(value, minimum) and value <= 9007199254740991;
 end
-local function mutate(operation)
+local function mutate(operation, context)
+    if not isContextValid(context) then return nil, "El contexto de permisos ha cambiado. Vuelve a abrir la acción."; end
     if inventoryBusy then return nil, "Hay otra operación de inventario en curso."; end
     inventoryBusy = true;
     local ok, result, problem, nodes = pcall(operation);
@@ -792,18 +941,18 @@ local function mutate(operation)
     if not ok then Debug.console("APTUS inventario [unidades] " .. tostring(result)); return nil, "Operación interrumpida: " .. tostring(result); end
     return result, problem, nodes;
 end
-local function writable(node)
+local function writable(node, context)
     local character = getInstanceCharacter(node);
-    if not character or not canManageCharacter(character) or not isInstance(node) or not isItemVisible(node)
+    if not character or not isContextValid(context) or not canManageCharacter(character, context) or not isInstance(node) or not isItemVisible(node, context)
         or DB.isReadOnly(node) or DB.isReadOnly(DB.getParent(node)) then return false; end
     local count = DB.getChild(node, "count");
     return count and units(field(node, "count", "number"), 1)
-        and not DB.isReadOnly(count) and (Session.IsHost or DB.isOwner(node));
+        and not DB.isReadOnly(count) and owns(node, context);
 end
-local function liveItem(node)
+local function liveItem(node, context)
     local character = getInstanceCharacter(node);
     if character then
-        for _, item in ipairs(getCharacterInventory(character).items) do if item.node == node then return item; end end
+        for _, item in ipairs(getCharacterInventory(character, context).items) do if item.node == node then return item; end end
     end
 end
 local function limit(node)
@@ -828,13 +977,16 @@ function areStackCompatible(a, b, carried)
     local maximum = limit(a);
     return type(maximum) == "number" and limit(b) == maximum and signature(a, carried) == signature(b);
 end
-local function destination(character, parent, source)
-    if not canManageCharacter(character) then return nil, "No tienes permiso sobre el inventario destino."; end
+local function destination(character, parent, source, context)
+    if not canManageCharacter(character, context) then return nil, "No tienes permiso sobre el inventario destino."; end
     local list = DB.getChild(character, "inventorylist");
     if list and (DB.getType(list) ~= "node" or DB.isReadOnly(list)) then return nil, "Inventario destino no editable."; end
     if not parent then return ""; end
-    if getInstanceCharacter(parent) ~= character or not writable(parent)
-        or field(parent, "properties.is_container", "number") ~= 1 or not liveItem(parent) then
+    if context and not canSelectTransferDestination(character, parent, source, context) then
+        return nil, "Contenedor destino inaccesible para el usuario efectivo.";
+    end
+    if getInstanceCharacter(parent) ~= character or not writable(parent, context)
+        or field(parent, "properties.is_container", "number") ~= 1 or not liveItem(parent, context) then
         return nil, "Contenedor destino no válido o sin permisos.";
     end
     local cursor = parent;
@@ -856,16 +1008,29 @@ local function writeCount(node, count)
     DB.setValue(node, "count", "number", count);
     if field(node, "count", "number") ~= count then error("No se pudo verificar la cantidad de " .. DB.getPath(node)); end
 end
+-- Sólo la transferencia simple ejecutada por el anfitrión usa Acceso en lugar
+-- de edición. No se emplea para propiedades, cantidades libres ni otros comandos.
+local function transferWritable(node, context)
+    if not Session.IsHost or not canSelectTransferSource(node, context)
+        or DB.isReadOnly(node) or DB.isReadOnly(DB.getParent(node)) then return false; end
+    local count = DB.getChild(node, "count");
+    return count and not DB.isReadOnly(count) and units(field(node, "count", "number"), 1);
+end
 
 -- Planifica antes de escribir. Copias primero, cantidades después y baja del único
 -- origen al final: un fallo anterior puede restaurarse sin borrar el origen.
-local function distribute(source, character, parentId, amount, remaining, keepSource, existingFirst, targetCarried)
-    if not writable(source) or not liveItem(source) then return nil, "Objeto origen incompatible, relación inválida o sin permisos."; end
+local function distribute(source, character, parentId, amount, remaining, keepSource, existingFirst, targetCarried, context, simpleTransfer)
+    local function mayWrite(node)
+        if simpleTransfer then return transferWritable(node, context); end
+        return writable(node, context);
+    end
+    if not mayWrite(source) or not liveItem(source, context) then return nil, "Objeto origen incompatible, relación inválida o sin permisos."; end
     if hasChildren(source) then return nil, "No se reparten unidades de un objeto con contenido."; end
     local maximum, issue = limit(source);
     if maximum == nil then return nil, issue; end
     local original = field(source, "count", "number");
     local sourcePath = DB.getPath(source);
+    local sourceToken = simpleTransfer and getInstanceEditToken(source);
     local changes, copies, results = {}, {}, {};
     local sourceCount = remaining;
     local left = amount;
@@ -881,9 +1046,9 @@ local function distribute(source, character, parentId, amount, remaining, keepSo
     end
     if keepSource and not existingFirst and left > 0 then allocate(source); end
     if maximum then
-        local candidates = getCharacterInventory(character).items;
+        local candidates = getCharacterInventory(character, context).items;
         for _, item in ipairs(candidates) do
-            if left > 0 and item.node ~= source and item.parent_id == parentId and writable(item.node)
+            if left > 0 and item.node ~= source and item.parent_id == parentId and mayWrite(item.node)
                 and areStackCompatible(source, item.node, targetCarried) then allocate(item.node); end
         end
     end
@@ -894,17 +1059,18 @@ local function distribute(source, character, parentId, amount, remaining, keepSo
     end
     if field(source, "properties.is_container", "number") == 1 and amount + remaining ~= 1 then return nil, "Un contenedor debe conservar cantidad uno."; end
     local deleting = sourceCount == 0;
-    if deleting then
-        local plan, problem = planDeleteInstance(source);
+    if deleting and not simpleTransfer then
+        local plan, problem = planDeleteInstance(source, context);
         if not plan then return nil, problem; end
         if #plan.entries ~= 1 then return nil, "No se pueden eliminar unidades de un contenedor con contenido."; end
-    elseif not keepSource then
+    elseif not keepSource and not simpleTransfer then
         table.insert(changes, {node=source, old=original, count=remaining});
     end
     local snapshot = readProperties(source);
     snapshot.aptus.container = {kind="string", value=parentId};
     if targetCarried ~= nil then snapshot.carried = {kind="number", value=targetCarried}; end
     local created, list, newList = {}, DB.getChild(character, "inventorylist"), false;
+    local createdCounts = {};
     local previousParent = containerId(source);
     local parentExisted = DB.getChild(source, "aptus.container") ~= nil;
     local parentChanged, stateChanged = false, false;
@@ -922,6 +1088,7 @@ local function distribute(source, character, parentId, amount, remaining, keepSo
             local node = DB.createChild(list);
             if not node then error("No se pudo crear una pila"); end
             table.insert(created, node);
+            createdCounts[node] = count;
             -- Carried antes de name para no activar propagación nativa por nombres.
             local carried = snapshot.carried;
             DB.setValue(node, "carried", "number", carried.value);
@@ -933,11 +1100,33 @@ local function distribute(source, character, parentId, amount, remaining, keepSo
             table.insert(results, node);
         end
         for _, change in ipairs(changes) do
-            if not writable(change.node) or field(change.node, "count", "number") ~= change.old then error("Una pila cambió o perdió permisos"); end
+            if not mayWrite(change.node) or field(change.node, "count", "number") ~= change.old then error("Una pila cambió o perdió permisos"); end
             if change.count ~= change.old then
                 change.applied = true;
                 writeCount(change.node, change.count);
             end
+        end
+        if simpleTransfer then
+            if not simpleTransfer.validate() or getInstanceEditToken(source) ~= sourceToken then error("El origen o los permisos cambiaron durante la incorporación"); end
+            local incorporated = 0;
+            for _, node in ipairs(created) do
+                snapshot.count = {kind="number", value=createdCounts[node]};
+                if not mayWrite(node) or not isInstance(node) or encode(readProperties(node)) ~= encode(snapshot) then error("Destino copiado no verificado"); end
+                incorporated = incorporated + createdCounts[node];
+            end
+            for _, change in ipairs(changes) do
+                if not mayWrite(change.node) or field(change.node, "count", "number") ~= change.count
+                    or containerId(change.node) ~= parentId or not areStackCompatible(source, change.node, targetCarried) then error("Fusión destino no verificada"); end
+                incorporated = incorporated + change.count - change.old;
+            end
+            if incorporated ~= amount then error("Cantidad incorporada no verificada"); end
+            -- Desde aquí no se deshace el destino: prioridad a conservar objetos.
+            simpleTransfer.destinationVerified = true;
+            if deleting then
+                pcall(DB.deleteNode, source);
+                if DB.findNode(sourcePath) then error("No se pudo retirar el origen"); end
+            else writeCount(source, remaining); end
+            return;
         end
         if keepSource and not deleting and previousParent ~= parentId then
             parentChanged = true;
@@ -950,13 +1139,16 @@ local function distribute(source, character, parentId, amount, remaining, keepSo
             if field(source, "carried", "number") ~= targetCarried then error("Estado no verificado"); end
         end
         if deleting then
-            if not writable(source) or field(source, "count", "number") ~= original then error("El origen cambió antes de finalizar"); end
+            if not writable(source, context) or field(source, "count", "number") ~= original then error("El origen cambió antes de finalizar"); end
             -- Una excepción posterior a un borrado efectivo no debe duplicar unidades.
             pcall(DB.deleteNode, source);
             if DB.findNode(sourcePath) then error("No se pudo retirar la pila origen"); end
         end
     end);
     if not ok then
+        if simpleTransfer and simpleTransfer.destinationVerified then
+            return nil, "Destino incorporado y verificado, pero no se pudo verificar la retirada del origen. No reintentar: el DJ debe revisar posibles duplicados.", results;
+        end
         local restored, rollbackProblem = pcall(function()
             if stateChanged then
                 DB.setValue(source, "carried", "number", previousCarried);
@@ -978,49 +1170,54 @@ local function distribute(source, character, parentId, amount, remaining, keepSo
             if newList and list and not next(DB.getChildren(list)) then DB.deleteNode(list); end
         end);
         Debug.console("APTUS inventario [reparto] " .. tostring(problem));
+        if simpleTransfer and not restored then simpleTransfer.cleanupIncomplete = true; end
         return nil, restored and "Operación cancelada; cantidades restauradas."
             or ("No se pudo verificar la restauración. Revisar con el DJ: " .. tostring(rollbackProblem));
     end
     return results[1] or (not deleting and source) or true, nil, results;
 end
 
-function setQuantity(node, quantity)
+function setQuantity(node, quantity, context)
     return mutate(function()
         if not units(quantity, 0) then return nil, "La cantidad debe ser un entero no negativo representable con exactitud."; end
-        if not writable(node) or not liveItem(node) then return nil, "Objeto no editable o con relación inválida."; end
+        if not writable(node, context) or not liveItem(node, context) then return nil, "Objeto no editable o con relación inválida."; end
         if hasChildren(node) then return nil, "No se modifica la cantidad de un contenedor con contenido."; end
-        return distribute(node, getInstanceCharacter(node), containerId(node), quantity, 0, true, false);
-    end);
+        return distribute(node, getInstanceCharacter(node), containerId(node), quantity, 0, true, false, nil, context);
+    end, context);
 end
-function removeUnits(node, quantity)
-    if not writable(node) or not units(quantity, 1) or quantity > field(node, "count", "number") then return nil, "Número de unidades no válido."; end
-    return setQuantity(node, field(node, "count", "number") - quantity);
+function removeUnits(node, quantity, context)
+    if not writable(node, context) or not units(quantity, 1) or quantity > field(node, "count", "number") then return nil, "Número de unidades no válido."; end
+    return setQuantity(node, field(node, "count", "number") - quantity, context);
 end
-function mergeStacks(node)
+function mergeStacks(node, context)
     return mutate(function()
-        if not writable(node) or not liveItem(node) then return nil, "Objeto no editable."; end
+        if not writable(node, context) or not liveItem(node, context) then return nil, "Objeto no editable."; end
         local maximum, problem = limit(node);
         if not maximum then return nil, problem or "El objeto no es apilable."; end
-        return distribute(node, getInstanceCharacter(node), containerId(node), field(node, "count", "number"), 0, true, true);
-    end);
+        return distribute(node, getInstanceCharacter(node), containerId(node), field(node, "count", "number"), 0, true, true, nil, context);
+    end, context);
 end
-function transfer(node, character, quantity, parent, targetCarried)
+function transfer(node, character, quantity, parent, targetCarried, context)
     return mutate(function()
-        if not writable(node) or not liveItem(node) then return nil, "Objeto origen no editable."; end
+        if not writable(node, context) or not liveItem(node, context) then return nil, "Objeto origen no editable."; end
         local count = field(node, "count", "number");
         quantity = quantity or count;
         if not units(quantity, 1) or quantity > count then return nil, "Cantidad de traslado no válida."; end
-        local parentId, problem = destination(character, parent, node);
+        local parentId, problem = destination(character, parent, node, context);
         if parentId == nil then return nil, problem; end
         local sameCharacter = getInstanceCharacter(node) == character;
+        if not sameCharacter and (structureOwner(character) or structureOwner(getInventoryOwner(node))) then
+            return nil, "Las transferencias entre inventarios de estructuras y otros inventarios quedan pendientes.";
+        end
         local previousCarried = field(node, "carried", "number");
         if targetCarried ~= nil and (not integer(targetCarried, 0) or not tStates[targetCarried]) then return nil, "Estado no válido."; end
         if targetCarried == nil then
-            if parentId ~= "" then targetCarried = 0;
+            if structureOwner(character) then targetCarried = 0;
+            elseif parentId ~= "" then targetCarried = 0;
             elseif containerId(node) ~= "" then targetCarried = 1;
             else targetCarried = previousCarried; end
         end
-        if parentId ~= "" and targetCarried ~= 0 then return nil, "Un objeto contenido debe permanecer sin equipar."; end
+        if (parentId ~= "" or structureOwner(character)) and targetCarried ~= 0 then return nil, "Un objeto contenido debe permanecer sin equipar."; end
         if sameCharacter and parentId == containerId(node) and (parentId ~= "" or targetCarried == previousCarried) then return node; end
         if targetCarried ~= previousCarried and DB.isReadOnly(DB.getChild(node, "carried")) then return nil, "Estado no editable."; end
         if sameCharacter and parentId == containerId(node) then
@@ -1040,7 +1237,7 @@ function transfer(node, character, quantity, parent, targetCarried)
         end
         if hasChildren(node) then
             if not sameCharacter then return nil, "El traslado de contenedores con contenido entre personajes requiere mover su árbol; no se ha modificado nada."; end
-            local plan, issue = planDeleteInstance(node);
+            local plan, issue = planDeleteInstance(node, context);
             if not plan then return nil, issue; end
             if field(node, "properties.is_container", "number") ~= 1 then return nil, "El objeto tiene referencias de contenido incompatibles."; end
             local child = DB.getChild(node, "aptus.container");
@@ -1062,17 +1259,17 @@ function transfer(node, character, quantity, parent, targetCarried)
             end
             return node;
         end
-        return distribute(node, character, parentId, quantity, count - quantity, sameCharacter and quantity == count, true, targetCarried);
-    end);
+        return distribute(node, character, parentId, quantity, count - quantity, sameCharacter and quantity == count, true, targetCarried, context);
+    end, context);
 end
-function createFromTemplate(character, template, quantity, parent)
+function createFromTemplate(character, template, quantity, parent, context)
     return mutate(function()
         quantity = quantity or 1;
         if not units(quantity, 1) then return nil, "La cantidad debe ser un entero positivo representable con exactitud."; end
-        local parentId, problem = destination(character, parent);
+        local parentId, problem = destination(character, parent, nil, context);
         if parentId == nil then return nil, problem; end
         local previousList = DB.getChild(character, "inventorylist");
-        local created, issue = createSingleFromTemplate(character, template);
+        local created, issue = createSingleFromTemplate(character, template, context);
         if not created then return nil, issue; end
         local createdPath = DB.getPath(created);
         -- La primera instancia sirve como snapshot independiente de la plantilla.
@@ -1083,7 +1280,7 @@ function createFromTemplate(character, template, quantity, parent)
             end);
             if not ok or containerId(created) ~= parentId or field(created, "carried", "number") ~= 0 then DB.deleteNode(created); return nil, "No se pudo asignar el contenedor."; end
         end
-        local ok, result, reason, nodes = pcall(distribute, created, character, parentId, quantity, 0, true, true);
+        local ok, result, reason, nodes = pcall(distribute, created, character, parentId, quantity, 0, true, true, nil, context);
         if not ok then reason = "No se pudo preparar el reparto: " .. tostring(result); result = nil; end
         if not result then
             if DB.findNode(createdPath) then DB.deleteNode(created); end
@@ -1093,43 +1290,60 @@ function createFromTemplate(character, template, quantity, parent)
             return nil, reason;
         end
         return result, nil, nodes;
-    end);
+    end, context);
 end
 
 -- Adaptadores de interfaz: la cantidad y los movimientos siguen pasando por el gestor.
-function requestQuantityInput(title, initial, callback)
+function trackContextDialog(context, window, class, selection)
+    if not context or not context.onInvalidate or not window then return; end
+    context.onInvalidate(function()
+        -- No cerrar un diálogo posterior abierto desde otra ficha o ventana independiente.
+        if Interface.findWindow(class, "") ~= window then return; end
+        if selection then
+            local queue = window.getSelectionQueue();
+            for i = #queue, 1, -1 do
+                if queue[i] == selection then
+                    table.remove(queue, i);
+                    if i == 1 then window.activateNextSelection(); end
+                    return;
+                end
+            end
+        else window.close(); end
+    end);
+end
+function requestQuantityInput(title, initial, callback, context)
     local previous = Interface.findWindow("aptus_inventory_quantity", "");
     if previous then previous.close(); end
     local window = Interface.openWindow("aptus_inventory_quantity", "");
-    if window then window.configure(title, initial, callback); end
+    if window then window.configure(title, initial, callback);trackContextDialog(context, window, "aptus_inventory_quantity"); end
 end
-function requestSetQuantity(node)
-    if not writable(node) then ChatManager.SystemMessage("Objeto no editable."); return; end
+function requestSetQuantity(node, context)
+    if not writable(node, context) then ChatManager.SystemMessage("Objeto no editable."); return; end
     local path, expected = DB.getPath(node), getInstanceEditToken(node);
     requestQuantityInput("Cantidad total de esta pila (0 solicita su eliminación)", field(node, "count", "number"), function(quantity)
-        if DB.findNode(path) ~= node or getInstanceEditToken(node) ~= expected then
+        if not isContextValid(context) or DB.findNode(path) ~= node or getInstanceEditToken(node) ~= expected then
             ChatManager.SystemMessage("El objeto cambió; vuelve a abrir el control de cantidad."); return;
         end
         if quantity == 0 then
-            requestDeleteInstance(node, function(ok, message) if not ok then ChatManager.SystemMessage(message); end end);
+            requestDeleteInstance(node, function(ok, message) if not ok then ChatManager.SystemMessage(message); end end, nil, context);
             return;
         end
-        local result, problem = setQuantity(node, quantity);
+        local result, problem = setQuantity(node, quantity, context);
         if not result then ChatManager.SystemMessage(problem); end
-    end);
+    end, context);
 end
 
 -- Opciones exclusivamente del mismo personaje; usa la validación de destino de transfer.
-function getLocationOptions(node)
-    if not writable(node) or not liveItem(node) then return {}; end
+function getLocationOptions(node, context)
+    if not writable(node, context) or not liveItem(node, context) then return {}; end
     local character = getInstanceCharacter(node);
-    local inventory = getCharacterInventory(character);
+    local inventory = getCharacterInventory(character, context);
     local byId, labels, options = {}, {}, {
-        {text="Raíz del inventario", linkclass="charsheet", linkrecord=DB.getPath(character)}
+        {text="Raíz del inventario", linkclass=structureOwner(character) and "aptus_structure" or "charsheet", linkrecord=DB.getPath(character)}
     };
     for _, item in ipairs(inventory.items) do byId[item.id] = item; end
     for _, item in ipairs(inventory.items) do
-        if item.is_container and destination(character, item.node, node) ~= nil then
+        if item.is_container and destination(character, item.node, node, context) ~= nil then
             local parts, cursor = {item.name}, item;
             while cursor.parent_id ~= "" do
                 cursor = byId[cursor.parent_id];
@@ -1150,23 +1364,29 @@ function getLocationOptions(node)
     end
     return options;
 end
-function requestLocation(node, notify)
-    local options = getLocationOptions(node);
+function requestLocation(node, notify, context)
+    local options = getLocationOptions(node, context);
     if #options == 0 then if notify then notify(false, "Objeto no editable o sin ubicación válida."); end; return; end
     local character = getInstanceCharacter(node);
     local path, expected = DB.getPath(node), getInstanceEditToken(node);
-    Interface.openWindow("aptus_inventory_location", "").requestSelectionByData({
-        title="Ubicación del objeto", msg="Selecciona la raíz o un contenedor del mismo personaje.",
+    local window = Interface.openWindow("aptus_inventory_location", "");
+    if not window then return; end
+    local selection = {
+        title="Ubicación del objeto", msg=structureOwner(character)
+            and "Selecciona la raíz o un contenedor de esta estructura."
+            or "Selecciona la raíz o un contenedor del mismo personaje.",
         options=options, min=1, max=1,
-        callback=function(selections, context, links)
-            if DB.findNode(path) ~= node or getInstanceCharacter(node) ~= character or getInstanceEditToken(node) ~= expected then
+        callback=function(selections, selectionContext, links)
+            if not isContextValid(context) or DB.findNode(path) ~= node or getInstanceCharacter(node) ~= character or getInstanceEditToken(node) ~= expected then
                 if notify then notify(false, "El objeto cambió; vuelve a seleccionar su ubicación."); end
                 return;
             end
             local link = links and links[1];
             if not link then return; end
             local parent;
-            if link.linkclass == "charsheet" and link.linkrecord == DB.getPath(character) then
+            if link.linkclass == "charsheet" and link.linkrecord == DB.getPath(character) and not structureOwner(character) then
+                parent = nil;
+            elseif link.linkclass == "aptus_structure" and link.linkrecord == DB.getPath(character) and structureOwner(character) then
                 parent = nil;
             elseif link.linkclass == "aptus_inventory_item" then
                 parent = DB.findNode(link.linkrecord);
@@ -1178,21 +1398,25 @@ function requestLocation(node, notify)
                 if notify then notify(false, "Destino incompatible."); end
                 return;
             end
-            local result, problem = transfer(node, character, nil, parent);
+            local result, problem = transfer(node, character, nil, parent, nil, context);
             if notify then notify(result ~= nil, problem); end
         end,
-    });
+    };
+    window.requestSelectionByData(selection);
+    trackContextDialog(context, window, "aptus_inventory_location", selection);
 end
 
 -- Selección de Estado: valores persistidos originales, sin migraciones al leer.
-function setState(node, carried)
-    if not writable(node) or not liveItem(node) then return nil, "Objeto no editable o relación inválida."; end
+function setState(node, carried, context)
+    if structureOwner(getInventoryOwner(node)) then return nil, "Las estructuras no utilizan Estado de personaje."; end
+    if not writable(node, context) or not liveItem(node, context) then return nil, "Objeto no editable o relación inválida."; end
     if not integer(carried, 0) or not tStates[carried] then return nil, "Estado no válido."; end
     if containerId(node) ~= "" and carried == 0 then return node; end
-    return transfer(node, getInstanceCharacter(node), nil, nil, carried);
+    return transfer(node, getInstanceCharacter(node), nil, nil, carried, context);
 end
-function requestState(node, notify)
-    if not writable(node) or not liveItem(node) then
+function requestState(node, notify, context)
+    if structureOwner(getInventoryOwner(node)) then return; end
+    if not writable(node, context) or not liveItem(node, context) then
         if notify then notify(false, "Objeto no editable o relación inválida."); end
         return;
     end
@@ -1203,11 +1427,236 @@ function requestState(node, notify)
     if not window then return; end
     local current = containerId(node) == "" and field(node, "carried", "number") or 0;
     window.configure(current, function(carried)
-        if DB.findNode(path) ~= node or getInstanceEditToken(node) ~= expected then
+        if not isContextValid(context) or DB.findNode(path) ~= node or getInstanceEditToken(node) ~= expected then
             if notify then notify(false, "El objeto cambió; vuelve a seleccionar su estado."); end
             return;
         end
-        local result, problem = setState(node, carried);
+        local result, problem = setState(node, carried, context);
         if notify then notify(result ~= nil, problem); end
     end);
+    trackContextDialog(context, window, "aptus_inventory_state");
+end
+
+-- Fase 2B.2: transporte y ejecución de transferencias simples. Sin UI nueva.
+local SIMPLE_REQUEST = "aptus_inventory_simple_request";
+local SIMPLE_RESULT = "aptus_inventory_simple_result";
+local simpleSequence = 0;
+local simpleEpoch;
+local recentSimple, recentOrder = {}, {};
+local simpleQueue, queuedSimple, pendingSimple = {}, {}, {};
+local drainingSimple = false;
+local SIMPLE_CACHE_LIMIT, SIMPLE_QUEUE_LIMIT = 256, 64;
+
+-- Revisión opaca, no criptográfica: no enviar encode(properties) mediante OOB.
+-- Dos acumuladores y longitud; no incorpora ningún campo persistente al modelo.
+function getSimpleTransferRevision(node)
+    if not node or not isInstance(node) then return nil; end
+    local tree = readProperties(node);tree.locked = nil;
+    tree.aptus.container = {kind="string",value=containerId(node)};
+    local value = encode(tree);
+    local first, second = 0, 0;
+    for i=1,#value do
+        local byte = value:byte(i);
+        first = (first * 131 + byte) % 2147483647;
+        second = (second * 137 + byte) % 2147483647;
+    end
+    return string.format("%08x%08x:%d",first,second,#value);
+end
+local function simpleFailure(request, message, status)
+    return {id=request and request.id or "",ok=false,status=status or "rejected",message=message,result_path=""};
+end
+local function validateSimpleTransfer(request, context)
+    if not isContextValid(context) then return nil,"El contexto de permisos ha cambiado."; end
+    for _,key in ipairs({"id","user","real_user","context_mode","context_character","source_owner","source",
+        "source_parent","destination_owner","destination_parent","expected_revision","expected_destination_revision"}) do
+        if type(request[key])~="string" or #request[key]>2048 then return nil,"Solicitud de transferencia incompleta."; end
+    end
+    if request.id=="" or request.user=="" or request.real_user=="" then return nil,"Identificación de solicitud no válida."; end
+    local user,host = actor(context);
+    if user~=request.user then return nil,"El usuario efectivo ha cambiado."; end
+    local node,owner,parent = DB.findNode(request.source),DB.findNode(request.destination_owner),nil;
+    if not node or not owner or not getInventoryOwner(node)
+        or DB.getPath(getInventoryOwner(node))~=request.source_owner then return nil,"El origen o el destino ya no existen en el inventario esperado."; end
+    if containerId(node)~=request.source_parent or getSimpleTransferRevision(node)~=request.expected_revision then
+        return nil,"El origen cambió. Actualiza el inventario antes de solicitar otra transferencia.";
+    end
+    if request.destination_parent~="" then
+        parent=DB.findNode(request.destination_parent);
+        if not parent or getInventoryOwner(parent)~=owner then return nil,"El contenedor destino ya no pertenece al inventario esperado."; end
+        if getSimpleTransferRevision(parent)~=request.expected_destination_revision then return nil,"El contenedor destino cambió."; end
+    end
+    local quantity=tonumber(request.quantity);
+    if not units(quantity,1) or not canTransfer(node,owner,quantity,parent,context) then return nil,"Cantidad, origen o destino no autorizados para el usuario efectivo."; end
+    if hasChildren(node) then return nil,"No se trasladan contenedores con contenido en esta etapa."; end
+    local list=DB.getChild(owner,"inventorylist");
+    if DB.isReadOnly(owner) or (list and (DB.getType(list)~="node" or DB.isReadOnly(list)))
+        or not transferWritable(node,context) or (parent and not transferWritable(parent,context)) then
+        return nil,"Los registros necesarios para la transferencia no son modificables.";
+    end
+    return {node=node,owner=owner,parent=parent,quantity=quantity,parent_id=parent and DB.getName(parent) or "",
+        carried=(structureOwner(owner) or parent) and 0 or 1,host=host};
+end
+
+function buildSimpleTransferRequest(node, owner, quantity, parent, context)
+    if not isContextValid(context) or not node or not owner or not getInventoryOwner(node) then
+        return nil,"Objeto, destino o contexto no válidos.";
+    end
+    quantity=quantity or field(node,"count","number");
+    if not units(quantity,1) or not canTransfer(node,owner,quantity,parent,context) then return nil,"Transferencia no autorizada."; end
+    local user,host=actor(context);
+    if not simpleEpoch then simpleEpoch=tostring({});end
+    simpleSequence=simpleSequence+1;
+    local request={type=SIMPLE_REQUEST,id=tostring(Session.UserName)..":"..tostring(os.time())..":"..simpleEpoch..":"..simpleSequence,
+        user=user,real_user=Session.UserName,context_mode=context and context.mode or (host and "host" or "player"),
+        context_character=context and context.character_path or "",source_owner=DB.getPath(getInventoryOwner(node)),source=DB.getPath(node),
+        source_parent=containerId(node),destination_owner=DB.getPath(owner),destination_parent=parent and DB.getPath(parent) or "",
+        quantity=tostring(quantity),expected_revision=getSimpleTransferRevision(node),
+        expected_destination_revision=parent and getSimpleTransferRevision(parent) or ""};
+    -- No validar capacidad como límite duro. El anfitrión revalida todo al ejecutar.
+    return request;
+end
+
+local function executeSimpleTransfer(request, context)
+    local policy={};
+    local result,problem,nodes=mutate(function()
+        local plan,issue=validateSimpleTransfer(request,context);
+        if not plan then return nil,issue; end
+        if getInventoryOwner(plan.node)==plan.owner and containerId(plan.node)==plan.parent_id then return plan.node; end
+        policy.validate=function()return validateSimpleTransfer(request,context)~=nil;end;
+        return distribute(plan.node,plan.owner,plan.parent_id,plan.quantity,field(plan.node,"count","number")-plan.quantity,
+            false,true,plan.carried,context,policy);
+    end,context);
+    if not result then
+        local status=(policy.destinationVerified or policy.cleanupIncomplete) and "uncertain" or "rejected";
+        if status=="uncertain" then
+            ChatManager.SystemMessage("APTUS: transferencia incompleta. Revisar "..request.source_owner.." → "..request.destination_owner
+                ..". Se conserva el destino verificado si comenzó la retirada. No reintentar automáticamente.");
+        end
+        return simpleFailure(request,problem or "No se pudo completar la transferencia.",status);
+    end
+    local noop=not policy.destinationVerified;
+    return {id=request.id,ok=true,status=noop and "unchanged" or "success",message=noop and "La ubicación ya era la seleccionada." or "Transferencia completada.",
+        result_path=DB.getPath(result)};
+end
+
+local function copySimpleResult(value)
+    local result={};for key,item in pairs(value)do result[key]=item;end;return result;
+end
+local function simpleKey(request)return request.real_user.."\n"..request.id;end
+local function cacheSimple(key,fingerprint,result)
+    recentSimple[key]={fingerprint=fingerprint,result=copySimpleResult(result)};
+    table.insert(recentOrder,key);
+    while #recentOrder>SIMPLE_CACHE_LIMIT do recentSimple[table.remove(recentOrder,1)]=nil;end
+end
+local function replySimple(callback,result)
+    if callback then
+        local ok,issue=pcall(callback,copySimpleResult(result));
+        if not ok then Debug.console("APTUS transferencia [respuesta] "..tostring(issue));end
+    end
+end
+function flushSimpleTransfers()
+    if not Session.IsHost or drainingSimple or inventoryBusy then return;end
+    drainingSimple=true;
+    while #simpleQueue>0 and not inventoryBusy do
+        local entry=table.remove(simpleQueue,1);
+        local ok,result=pcall(executeSimpleTransfer,entry.request,entry.context);
+        if not ok then
+            Debug.console("APTUS transferencia [ejecución] "..tostring(result));
+            result=simpleFailure(entry.request,"Error de ejecución. Revisar los inventarios con el DJ antes de reintentar.","uncertain");
+            ChatManager.SystemMessage("APTUS: error de transferencia; revisar origen y destino antes de reintentar.");
+        end
+        cacheSimple(entry.key,entry.fingerprint,result);
+        queuedSimple[entry.key]=nil;
+        for _,callback in ipairs(entry.callbacks)do replySimple(callback,result);end
+    end
+    drainingSimple=false;
+end
+local function queueSimpleTransfer(request,context,callback)
+    local key=simpleKey(request);local fingerprint=encode(request);
+    local previous=recentSimple[key];
+    if previous then
+        if previous.fingerprint~=fingerprint then replySimple(callback,simpleFailure(request,"El identificador ya corresponde a otra solicitud."));
+        else local result=copySimpleResult(previous.result);result.replayed=true;replySimple(callback,result);end
+        return;
+    end
+    local queued=queuedSimple[key];
+    if queued then
+        if queued.fingerprint~=fingerprint then replySimple(callback,simpleFailure(request,"Identificador pendiente con otros parámetros."));
+        elseif callback and #queued.callbacks<SIMPLE_QUEUE_LIMIT then table.insert(queued.callbacks,callback);end
+        return;
+    end
+    if #simpleQueue>=SIMPLE_QUEUE_LIMIT then replySimple(callback,simpleFailure(request,"Hay demasiadas solicitudes pendientes."));return;end
+    local entry={key=key,fingerprint=fingerprint,request=request,context=context,callbacks={}};
+    if callback then table.insert(entry.callbacks,callback);end
+    queuedSimple[key]=entry;table.insert(simpleQueue,entry);flushSimpleTransfers();
+end
+
+-- Sólo valores escalares; no transportar instancias, colecciones ni closures.
+local simpleFields={"id","user","real_user","context_mode","context_character","source_owner","source","source_parent",
+    "destination_owner","destination_parent","quantity","expected_revision","expected_destination_revision"};
+local function simplePayload(value)
+    if type(value)~="table" then return nil;end
+    local result={type=SIMPLE_REQUEST};
+    for _,key in ipairs(simpleFields)do
+        if type(value[key])~="string" or #value[key]>2048 then return nil;end
+        result[key]=value[key];
+    end
+    if result.id=="" or result.user=="" or result.real_user=="" then return nil;end
+    return result;
+end
+function submitSimpleTransferRequest(value,callback,context)
+    local request=simplePayload(value);
+    if not request or not isContextValid(context) then return nil,"Solicitud o contexto no válidos.";end
+    local user=actor(context);
+    if request.real_user~=Session.UserName or request.user~=user then return nil,"La identidad de la solicitud cambió.";end
+    if Session.IsHost then queueSimpleTransfer(request,context,callback);
+    else
+        if pendingSimple[request.id] then return nil,"Esta solicitud ya está pendiente de respuesta.";end
+        local total=0;for _ in pairs(pendingSimple)do total=total+1;end
+        if total>=SIMPLE_QUEUE_LIMIT then return nil,"Hay demasiadas solicitudes sin respuesta. No se reintentan automáticamente.";end
+        pendingSimple[request.id]={callback=callback,context=context};
+        Comm.deliverOOBMessage(request,"");
+    end
+    return request.id;
+end
+function requestSimpleTransfer(node,owner,quantity,parent,callback,context)
+    local request,problem=buildSimpleTransferRequest(node,owner,quantity,parent,context);
+    if not request then return nil,problem;end
+    return submitSimpleTransferRequest(request,callback,context);
+end
+function onSimpleTransferRequest(value)
+    if not Session.IsHost then return;end
+    local request=simplePayload(value);if not request then return;end
+    -- Entorno de confianza: usuario declarado convencional, sin autenticar contra trampas.
+    -- Un cliente nunca solicita una ejecución administrativa ni Impersonar al DJ.
+    local user=request.real_user;
+    -- mode player_preview reutiliza la evaluación por usuario del anfitrión;
+    -- la operación procede de un cliente, no es una acción del DJ impersonando.
+    local context={aptus_inventory_context=true,actor_real=Session.UserName,actor_effective=user,
+        request_actor=user,origin="client",username=user,mode="player_preview",impersonating=false,character_path=request.context_character};
+    context.isValid=function()
+        if request.user~=user or request.context_mode~="player" then return false;end
+        if request.context_character=="" then return true;end
+        local character=DB.findNode(request.context_character);
+        return character and DB.getPath(character):match("^charsheet%.[^.@]+$")~=nil and DB.getOwner(character)==user;
+    end;
+    queueSimpleTransfer(request,context,function(result)
+        result.type=SIMPLE_RESULT;result.recipient=user;
+        result.ok=result.ok and "1" or "0";result.replayed=result.replayed and "1" or "0";
+        Comm.deliverOOBMessage(result,user);
+    end);
+end
+function onSimpleTransferResult(value)
+    if Session.IsHost or type(value)~="table" or value.recipient~=Session.UserName then return;end
+    local pending=pendingSimple[value.id];if not pending then return;end
+    pendingSimple[value.id]=nil;
+    local result={id=value.id,ok=value.ok=="1",status=value.status,message=value.message,result_path=value.result_path,
+        replayed=value.replayed=="1",context_stale=not isContextValid(pending.context)};
+    replySimple(pending.callback,result);
+end
+function onInit()
+    if Session.IsHost then
+        OOBManager.registerOOBMsgHandler(SIMPLE_REQUEST,onSimpleTransferRequest);
+        addOperationListener(flushSimpleTransfers);
+    else OOBManager.registerOOBMsgHandler(SIMPLE_RESULT,onSimpleTransferResult);end
 end

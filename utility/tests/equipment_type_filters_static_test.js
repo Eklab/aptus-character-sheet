@@ -36,7 +36,7 @@ assert(common.includes('DB.getType(child) == "string"'));
 assert(common.includes('RecordDataManager.getDataPaths(sType)'));
 assert(common.includes('table.sort(options,'));
 for(const source of [index,select,common,xml])assert(!/DB\.(createNode|createChild|setValue|deleteNode|deleteChild|copyNode)\s*\(/.test(source));
-assert(char.includes('APTUSEquipmentManager.openTemplateSelection({'));
+assert(char.includes('APTUSEquipmentManager.openTemplateSelection(selection)'));
 assert(char.includes('pcall(APTUSInventoryManager.createFromTemplate,'));
 assert(read('extension.xml').includes('campaign/equipment_type_filters_aptus.xml'));
 for(const text of [xml,read('extension.xml')]){

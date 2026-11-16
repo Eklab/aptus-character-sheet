@@ -4,6 +4,8 @@
     <icon name="aptus_equipo_equipada" file="graphics/themes/default/aptus_equipo_equipada.png" />
     <icon name="aptus_equipo_transportado" file="graphics/themes/default/aptus_equipo_transportado.png" />
     <icon name="aptus_equipo_ver" file="graphics/themes/default/aptus_equipo_ver.png" />
+    <icon name="aptus_localizacion_view" file="graphics/icons/aptus_localizacion_view.png" />
+    <icon name="aptus_vehicle_view" file="graphics/icons/aptus_vehicle_view.png" />
     <icon name="aptus_equipo_selector" file="graphics/themes/default/aptus_equipo_selector.png" />
     <icon name="aptus_utilidad_item" file="graphics/icons/aptus_utilidad_item.png" />
     <icon name="aptus_arma_cc_item" file="graphics/icons/aptus_arma_cc_item.png" />

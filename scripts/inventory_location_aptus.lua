@@ -18,7 +18,7 @@ function activateNextSelection()
     if closed or Session.IsHost then return; end
     local queue = getSelectionQueue();
     local first = queue[1] and queue[1].options and queue[1].options[1];
-    if not first or first.linkclass ~= "charsheet" then return; end
+    if not first or (first.linkclass ~= "charsheet" and first.linkclass ~= "aptus_structure") then return; end
     watchedPath = first.linkrecord .. ".inventorylist.*.properties.hide_contents";
     for _, event in ipairs({"onAdd", "onUpdate", "onDelete"}) do
         DB.addHandler(watchedPath, event, onContentsVisibilityChanged);

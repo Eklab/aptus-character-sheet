@@ -20,6 +20,16 @@
                 <script>function onButtonPress() window.selectTab("permissions"); end</script>
             </buttoncontrol>
 
+            <buttoncontrol name="tab_storage">
+                <bounds>265,0,110,26</bounds><font>sheetlabel</font><state text="Almacenaje" />
+                <tooltip text="Activar Almacenaje en General para gestionar este inventario" />
+                <script>function onButtonPress() window.selectTab("storage"); end</script>
+            </buttoncontrol>
+            <stringcontrol name="active_storage"><bounds>280,24,80,12</bounds><font>aptus_font_location_underline</font><center /><static>____________</static><disabled /><invisible /></stringcontrol>
+            <subwindow name="storage_page">
+                <anchored><top offset="42" /><left /><right /><bottom /></anchored>
+                <class>aptus_structure_inventory</class><noscroll /><invisible />
+            </subwindow>
             <stringcontrol name="active_general">
                 <bounds>30,24,80,12</bounds>
                 <font>aptus_font_location_underline</font>
@@ -159,7 +169,7 @@
                 <bounds>15,32,510,36</bounds>
                 <font>sheettext</font>
                 <multilinespacing>16</multilinespacing>
-                <static>Visibilidad y Acceso habilitados para pruebas. El anfitrión verifica los estados. Sin autorización de inventario implementada.</static>
+                <static>Visibilidad permite consultar la ficha. Acceso permite consultar Almacenaje cuando la funcionalidad está activada. La gestión del inventario corresponde al DJ.</static>
                 <disabled />
             </stringcontrol>
 

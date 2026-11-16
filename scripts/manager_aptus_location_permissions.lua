@@ -17,7 +17,7 @@ end
 
 local function isLocation(node)
     return node and APTUSStructureManager.isStructure(node)
-        and APTUSStructureManager.getCategory(node) == "locations";
+        and (APTUSStructureManager.getCategory(node) == "locations" or APTUSStructureManager.getCategory(node) == "vehicles");
 end
 
 local function permissionRecord(node, bCreate)

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Consulta de recursos en la misma tabla; sin selector ni subinventario editable. -->
+    <windowclass name="aptus_structure_inventory_consult_row" copy="aptus_char_equipment_row">
+        <sheetdata>
+            <genericcontrol name="location_selector"><invisible /><disabled /></genericcontrol>
+            <button_iconcycler name="state"><invisible /></button_iconcycler>
+        </sheetdata>
+    </windowclass>
+    <windowclass name="aptus_inventory_structure_group">
+        <margins control="0,0,0,0" />
+        <script file="scripts/char_equipment_structures_aptus.lua" />
+        <sheetdata>
+            <genericcontrol name="height"><bounds>0,0,1,24</bounds><disabled /></genericcontrol>
+            <genericcontrol name="branch"><bounds>5,22,1,2</bounds><backcolor>B0E9D5AF</backcolor><disabled /></genericcontrol>
+            <genericcontrol name="kind"><bounds>0,1,32,21</bounds><disabled /></genericcontrol>
+            <stringcontrol name="name"><bounds>34,2,181,20</bounds><font>aptus_inventory_row_text</font><readonly /><nodrag /><nodrop /></stringcontrol>
+            <stringcontrol name="count"><bounds>217,2,26,20</bounds><font>aptus_inventory_row_text</font><static>-</static><center /><disabled /></stringcontrol>
+            <stringcontrol name="location"><bounds>295,2,93,20</bounds><font>aptus_inventory_row_text</font><static>-</static><disabled /></stringcontrol>
+            <stringcontrol name="load"><bounds>405,2,36,20</bounds><font>aptus_inventory_row_text</font><static>-</static><center /><disabled /></stringcontrol>
+            <stringcontrol name="message"><bounds>247,2,194,20</bounds><font>aptus_inventory_text</font><disabled /></stringcontrol>
+            <genericcontrol name="open_structure">
+                <bounds>441,0,25,24</bounds>
+                <script>
+                    function onClickDown(button) return button == 1; end
+                    function onClickRelease(button)
+                        if button == 1 then window.openStructure(); return true; end
+                    end
+                </script>
+            </genericcontrol>
+        </sheetdata>
+    </windowclass>
+</root>

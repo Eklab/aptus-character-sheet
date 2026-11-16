@@ -56,6 +56,8 @@
         <includefile source="campaign/record_char_identity_aptus.xml" />
         <includefile source="graphics/graphics_aptus_char_equipment.xml" />
         <includefile source="campaign/record_char_equipment_aptus.xml" />
+        <includefile source="campaign/record_structure_inventory_aptus.xml" />
+        <includefile source="campaign/record_char_equipment_structures_aptus.xml" />
         <includefile source="campaign/inventory_quantity_aptus.xml" />
         <includefile source="campaign/inventory_location_aptus.xml" />
         <includefile source="campaign/inventory_state_aptus.xml" />

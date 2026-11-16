@@ -12,7 +12,7 @@ assert(manager.includes('accumulated[parent.id] = accumulated[parent.id] + gross
 assert(manager.includes('item.reduction_active = item.is_container and item.parent_id == ""'));
 assert(manager.includes('signature(a, carried) == signature(b)'));
 assert(manager.includes('snapshot.carried = {kind="number", value=targetCarried}'));
-assert(manager.includes('return transfer(node, getInstanceCharacter(node), nil, nil, carried)'));
+assert(manager.includes('return transfer(node, getInstanceCharacter(node), nil, nil, carried, context)'));
 assert(manager.includes('if containerId(node) ~= "" and carried == 0 then return node; end'));
 assert(manager.includes('elseif containerId(node) ~= "" then targetCarried = 1'));
 assert(manager.includes('if parentId ~= "" then targetCarried = 0'));

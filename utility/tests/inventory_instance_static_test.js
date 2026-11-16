@@ -2,9 +2,9 @@
 // Desde character-sheet: node utility/tests/inventory_instance_static_test.js
 const fs = require('fs'), assert = require('assert');
 const files = ['manager_aptus_equipment','manager_aptus_inventory','record_equipment_aptus',
-  'record_inventory_item_aptus','inventory_item_window_aptus','char_equipment_row_aptus','item_melee_consultation_aptus','item_melee_block_aptus','inventory_item_lock_aptus','equipment_profile_aptus',
-  'equipment_profile_summary_aptus','equipment_profile_configuration_aptus','inventory_quantity_aptus','inventory_location_aptus','inventory_state_aptus','char_equipment_aptus','char_equipment_state_aptus']
-  .map(n=>'scripts/'+n+'.lua').concat(['utility/tests/inventory_create_test.lua','utility/tests/equipment_save_test.lua','utility/tests/inventory_instance_view_test.lua','utility/tests/damage_types_test.lua','utility/tests/ammunition_test.lua','utility/tests/inventory_units_test.lua','utility/tests/inventory_container_load_test.lua','utility/tests/inventory_state_test.lua','utility/tests/inventory_hidden_contents_test.lua']);
+  'record_inventory_item_aptus','quality_associations_aptus','inventory_item_window_aptus','char_equipment_row_aptus','item_melee_consultation_aptus','item_melee_block_aptus','inventory_item_lock_aptus','equipment_profile_aptus',
+  'equipment_profile_summary_aptus','equipment_profile_configuration_aptus','char_container_aptus','char_structure_preview_button','char_equipment_structures_aptus','manager_aptus_structure','manager_aptus_location_permissions','location_configuration_aptus','structure_window_aptus','inventory_quantity_aptus','inventory_location_aptus','inventory_state_aptus','char_equipment_aptus','char_equipment_state_aptus','test_inventory_simple_transfer_aptus']
+  .map(n=>'scripts/'+n+'.lua').concat(['utility/tests/inventory_create_test.lua','utility/tests/equipment_save_test.lua','utility/tests/inventory_instance_view_test.lua','utility/tests/damage_types_test.lua','utility/tests/ammunition_test.lua','utility/tests/inventory_units_test.lua','utility/tests/inventory_container_load_test.lua','utility/tests/inventory_state_test.lua','utility/tests/inventory_hidden_contents_test.lua','utility/tests/structure_inventory_test.lua','utility/tests/structure_consultation_test.lua','utility/tests/inventory_context_test.lua','utility/tests/inventory_simple_transfer_test.lua']);
 for (const path of files) {
   const source = fs.readFileSync(path,'utf8').replace(/--\[(=*)\[[\s\S]*?\]\1\]|--[^\n]*|\[(=*)\[[\s\S]*?\]\2\]|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g,' ');
   const blocks=[], brackets=[];
@@ -91,7 +91,7 @@ assert(controller.includes('nMessageProtectedUntil')&&controller.includes('bMess
 assert(!instance.includes('Cantidad:')&&!controller.includes('Estado efectivo:'));
 console.log('OK: título persistido con tooltip/recorte y mensajes locales sin datos de inventario.');
 
-assert(controller.includes('delete_button.setReadOnly(bDeletePending or not APTUSInventoryManager.canDeleteInstance'));
+assert(controller.includes('delete_button.setReadOnly(isInspectionOnly() or bDeletePending or not APTUSInventoryManager.canDeleteInstance'));
 assert(!/DB\.delete(Node|Child)/.test(controller));
 assert(outer.includes('"onDelete", onItemDeleted')&&outer.includes('function onItemDeleted() close(); end'));
 assert(manager.includes('DialogManager.openDialog("dialog_okcancel"'));
@@ -105,7 +105,7 @@ assert(outer.includes('local bInstanceLocked = true'));
 const opening=outer.slice(outer.indexOf('function onInit()'),outer.indexOf('function onClose()'));
 assert(!/DB\.(setValue|createNode|createChild)/.test(opening));
 assert(instance.includes('<toolbar_field_right>')&&instance.includes('createControl("aptus_instance_window_lock", "locked")'));
-assert(controller.includes('not isViewLocked() and APTUSInventoryManager.canEditInstance'));
+assert(controller.includes('APTUSInventoryManager.canEditInstance(getDatabaseNode(), getActionContext())'));
 console.log('OK: candado de ventana inicialmente cerrado sin escritura durante apertura.');
 
 const messageControl=instance.match(/<stringcontrol name="instance_context">([\s\S]*?)<\/stringcontrol>/)[1];

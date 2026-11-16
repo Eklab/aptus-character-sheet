@@ -18,7 +18,7 @@
         <tab merge="add">
             <name>configuration</name>
             <textres>aptus_structure_tab_configuration</textres>
-            <class>aptus_structure_configuration</class>
+            <class>aptus_location_configuration_content</class>
             <mode>host</mode>
         </tab>
     </windowclass>

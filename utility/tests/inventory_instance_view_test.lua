@@ -42,6 +42,8 @@ function equipment.getEntryValue(t,key,default) return t and t[key] and t[key].v
 function equipment.getTypeName(v) return ({ranged_weapon="Arma de proyectiles",utility="Utilidad",storage="Almacenaje",melee_weapon="Arma CC"})[v]; end
 function equipment.getTypes() return {{id="utility",name="Utilidad"},{id="storage",name="Almacenaje"}}; end
 local inventory={};
+function inventory.isContextValid()return true;end
+
 function inventory.canViewInstance() return true; end
 function inventory.canEditInstance() return true; end
 function inventory.canDeleteInstance() return true; end
@@ -64,6 +66,7 @@ local env={Session={IsHost=true},APTUSInventoryManager=inventory,APTUSEquipmentM
     os={time=function() return now; end},
     WindowManager={getTopWindow=function() return {isInstanceLocked=function() return locked; end,close=function() closed=true; end,onNameUpdated=function() renamed=true; end}; end},
     getDatabaseNode=function() return node; end};
+inventory.isContextHost=function()return env.Session.IsHost;end;
 -- Controles locales del editor: no necesitan implementar el motor gráfico.
 for name in source:gmatch('"([%w_]+)"') do env[name]=control(); end
 for _,name in ipairs({"metadata","instance_context","requirements_note","page_title","tab_selected","preview",
@@ -182,6 +185,21 @@ view.draft_is_container.setValue(1); view.selectPage("container");
 assert(view.label_hide_contents.visible and view.draft_hide_contents.visible);
 env.Session.IsHost=false;view.update();assert(not view.label_hide_contents.visible and not view.draft_hide_contents.visible);
 env.Session.IsHost=true;view.draft_is_container.setValue(0);view.update();assert(not view.draft_hide_contents.visible);
+-- Consulta con privilegios reales de DJ: la ventana impone lectura antes de
+-- cualquier gestor, incluso invocando directamente eventos con locked=0.
+local oldTop=env.WindowManager.getTopWindow;
+locked=false;
+env.WindowManager.getTopWindow=function()return {isInspectionOnly=function()return true;end,
+    isInstanceLocked=function()return false;end,canViewInWindow=function()return true;end};end;
+local beforeInspectionSaves=saves;
+inventory.requestDeleteInstance=function()error("No debe solicitar borrado desde consulta");end;
+view.update();assert(not view.canEditCurrentInstance() and not view.isAssociationsEditable());
+assert(not view.save_button.visible and not view.discard_button.visible and view.delete_button.readonly);
+view.save();view.requestDelete();view.addCollectionEntry("profiles");view.removeCollectionEntry("profiles","fake");
+view.cycleType();view.configureGeneralQualities();assert(view.dropPicture({})==false);
+assert(view.dropGeneralQuality({})==false and saves==beforeInspectionSaves);
+assert(not view.draft_hide_contents.visible);
+env.WindowManager.getTopWindow=oldTop;
 local message=view.instance_context.value; view.onClose(); view.showMessage("No mostrar","error");
 assert(view.instance_context.value==message and not closed);
 print("OK: título persistido, recorte nativo configurado, candado, mensajes, prioridad y borradores.");

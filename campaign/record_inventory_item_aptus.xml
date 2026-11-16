@@ -34,6 +34,15 @@
         </sheetdata>
     </windowclass>
 
+    <!-- Misma ficha y controles. La consulta no crea contenido hasta recibir un
+         contexto validado; clase separada para no reutilizar una ventana editable. -->
+    <windowclass name="aptus_inventory_item_consult" copy="aptus_inventory_item">
+        <tooltip merge="delete" />
+        <sheetdata>
+            <subwindow name="content"><class merge="delete" /></subwindow>
+        </sheetdata>
+    </windowclass>
+
     <windowclass name="aptus_inventory_item_main" copy="aptus_equipment_main">
         <script file="scripts/record_inventory_item_aptus.lua" />
         <sheetdata>

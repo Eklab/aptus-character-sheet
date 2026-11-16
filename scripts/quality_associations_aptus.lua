@@ -1,6 +1,9 @@
 local data, entries;
 function setData(t)
+    if t.isValid and not t.isValid() then data=t;close();return;end
     data, entries = t, APTUSQualityManager.clone(t.entries);
+    if t.onOpened then t.onOpened(self); end
+    if t.isValid and not t.isValid() then return; end
     title.setValue(t.title or "Cualidades asociadas");
     refresh();
 end
